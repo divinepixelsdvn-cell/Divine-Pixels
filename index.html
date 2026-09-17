@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>డిజిటల్ డిజైన్ స్టోర్ - PSD & గ్రాఫిక్ టెంప్లేట్స్</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Global Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #fdf6ec;
+      color: #3d2b1f;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1250px;
+      margin: 0 auto;
+    }
+
+    /* Top Bar / Header */
+    header {
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(154, 82, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+
+    .brand-logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #4a2c14;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-logo span {
+      color: #f97316;
+    }
+
+    .brand-logo p {
+      font-size: 11px;
+      color: #a1734f;
+      font-weight: 500;
+    }
+
+    .search-box {
+      display: flex;
+      flex: 0.6;
+      background: #fdf1e2;
+      border-radius: 25px;
+      padding: 8px 18px;
+      align-items: center;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+      padding-left: 10px;
+    }
+
+    .user-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .user-actions a {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4a2c14;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .user-actions a:hover {
+      background: #fdf1e2;
+    }
+
+    /* Navigation Menu */
+    .category-bar {
+      background: #3d2411;
+    }
+
+    .menu-links {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      row-gap: 4px;
+    }
+
+    .menu-links li {
+      position: relative;
+    }
+
+    .menu-links a {
+      display: block;
+      color: #f3dcc2;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .menu-links a:hover {
+      background: #291708;
+      color: #ffb454;
+    }
+
+    .cover-pic {
+      background: #0f1c30;
+      text-align: center;
+      padding: 0;
+      border-bottom: 1px solid #f3dcc2;
+    }
+
+    .cover-pic img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cover-tag {
+      color: #a1734f;
+      font-size: 14px;
+      font-weight: 600;
+      background: #ffffff;
+      padding: 10px 0;
+    }
+
+    /* Hero / Announcement Section */
+    .hero-banner {
+      background: linear-gradient(135deg, #c2410c 0%, #f59e0b 100%);
+      color: #ffffff;
+      padding: 40px 0;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .hero-banner h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .hero-banner p {
+      font-size: 15px;
+      opacity: 0.95;
+    }
+
+    /* Section Titles */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 35px 0 20px;
+      border-bottom: 2px solid #f3dcc2;
+      padding-bottom: 8px;
+    }
+
+    .section-title h3 {
+      font-size: 20px;
+      color: #4a2c14;
+      position: relative;
+    }
+
+    .section-title h3::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: #f97316;
+    }
+
+    .section-title a {
+      font-size: 13px;
+      color: #ea580c;
+      font-weight: 600;
+    }
+
+    /* Product Grid Layout */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(154, 82, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: 1px solid #f3dcc2;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px rgba(154, 82, 0, 0.12);
+    }
+
+    .card-thumb {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      background-color: #f3dcc2;
+      overflow: hidden;
+    }
+
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #f97316;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-category {
+      font-size: 11px;
+      color: #a1734f;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #3d2b1f;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: #6b5040;
+      margin-bottom: 15px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-price {
+      font-size: 16px;
+      font-weight: 700;
+      color: #c2410c;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .card-price::before {
+      content: '\20b9';
+      font-size: 13px;
+      margin-right: 1px;
+      color: #a1734f;
+    }
+
+    .card-action {
+      margin-top: auto;
+    }
+
+    .btn-view {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: #ea580c;
+      color: #ffffff;
+      padding: 9px 0;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-view:hover {
+      background: #c2410c;
+    }
+
+    /* Payment Modal */
+    .pay-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(41, 23, 8, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .pay-overlay.open {
+      display: flex;
+    }
+
+    .pay-modal {
+      background: #fff;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 380px;
+      padding: 26px;
+      position: relative;
+      box-shadow: 0 30px 60px -20px rgba(41, 23, 8, 0.4);
+    }
+
+    .pay-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #fdf1e2;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      color: #a1734f;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pay-modal h3 {
+      font-size: 18px;
+      color: #3d2b1f;
+      margin-bottom: 4px;
+    }
+
+    .pay-modal-desc {
+      font-size: 13px;
+      color: #6b5040;
+      margin-bottom: 14px;
+    }
+
+    .pay-modal-price {
+      font-size: 22px;
+      font-weight: 700;
+      color: #c2410c;
+      margin-bottom: 16px;
+    }
+
+    .pay-modal-price::before {
+      content: '\20b9';
+      font-size: 16px;
+    }
+
+    .pay-modal label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #6b5040;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .pay-modal input[type=email] {
+      width: 100%;
+      background: #fdf1e2;
+      border: 1.5px solid #f3dcc2;
+      color: #3d2b1f;
+      padding: 11px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: #ea580c;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pay-btn:hover {
+      background: #c2410c;
+    }
+
+    .pay-modal-msg {
+      font-size: 12.5px;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      display: none;
+      background: rgba(14, 169, 107, 0.12);
+      color: #0ea96b;
+    }
+
+    .pay-modal-msg.show {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      background: #291708;
+      color: #d9b48f;
+      padding: 40px 0 20px;
+      margin-top: 50px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h4 {
+      color: #ffb454;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .footer-col ul li a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #4a2c14;
+      font-size: 12px;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .search-box {
+        width: 100%;
+      }
+      .hero-banner h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="container top-nav">
+      <div class="brand-logo">
+        <a href="#">
+          <h1>DIVINE<span>PIXELS</span></h1>
+          <p>HIGH QUALITY PSD & GRAPHIC TEMPLATES</p>
+        </a>
+      </div>
+      <div class="search-box">
+        <i class="fas fa-search" style="color: #a1734f;"></i>
+        <input type="text" placeholder="సెర్చ్ చేయండి (ఉదా: Wedding Flex, Telugu PSD, Birthday)...">
+      </div>
+      <div class="user-actions">
+        <a href="#"><i class="fas fa-user"></i> My Account</a>
+      </div>
+    </div>
+
+    <!-- Category Bar -->
+    <nav class="category-bar">
+      <div class="container">
+        <ul class="menu-links">
+          <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="#">Flex Design PSD</a></li>
+          <li><a href="#">Wedding Albums (12x36)</a></li>
+          <li><a href="#">Telugu Banners</a></li>
+          <li><a href="#">Invitation Cards</a></li>
+          <li><a href="#">Visiting Cards</a></li>
+          <li><a href="#">PNG Backgrounds</a></li>
+          <li><a href="#">Video Projects</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <!-- Cover Logo Section -->
+  <section class="cover-pic">
+    <img src="divine-pixels-logo.png" alt="Divine Pixels Gallery Logo">
+    <p class="cover-tag">PSD ఫైల్స్ · సాఫ్ట్‌వేర్ · ప్లగిన్స్ — ఇన్‌స్టంట్ డెలివరీ</p>
+  </section>
+
+  <section class="hero-banner">
+    <div class="container">
+      <h2>ప్రీమియం డిజైన్ PSD & గ్రాఫిక్ కలెక్షన్స్</h2>
+      <p>ఫోటోషాప్ ఫ్లెక్స్ డిజైన్లు, వెడ్డింగ్ ఆల్బమ్ షీట్లు, హై-రిజల్యూషన్ అసెట్స్ సులభంగా డౌన్‌లోడ్ చేసుకోండి.</p>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- Section: Latest PSD Templates -->
+    <div class="section-title">
+      <h3>⭐ LATEST PSD TEMPLATES</h3>
+      <a href="#">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="product-grid">
+      <!-- Card 1 -->
+      <article class="card">
+        <div class="card-thumb">
+          <span class="badge">Trending</span>
+          <img src="https://picsum.photos/400/250?random=1" alt="Design Preview">
+        </div>
+        <div class="card-content">
+          <span class="card-category">Wedding Flex</span>
+          <h4 class="card-title">Traditional Wedding Flex Banner PSD (High Quality Editable)</h4>
+          <p class="card-desc">పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.</p>
+          <div class="card-footer-row">
+            <span class="card-price">499</span>
+          </div>
+          <div class="card-action">
+            <button type="button" class="btn-view" onclick="openBuyModal('Traditional Wedding Flex Banner PSD', 499, 'పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.')">Buy Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card">
+        <div class="card-thumb">
+          <span class="badge">PSD</span>
+          <img src="https://picsum.photos/400/250?random=2" alt="Design Preview">
+        </div>
+        <div class="card-content">
+          <span class="card-category">Telugu Flex</span>
+          <h4 class="card-title">Festival & Devotional Flex Design Collection (Telugu Edition)</h4>
+          <p class="card-desc">వినాయక చవితి మరియు పండుగల కోసం ప్రత్యేకంగా తీర్చిదిద్దిన ఫ్లెక్స్ బ్యానర్ డిజైన్.</p>
+          <div class="card-footer-row">
+            <span class="card-price">349</span>
+          </div>
+          <div class="card-action">
+            <button type="button" class="btn-view" onclick="openBuyModal('Festival &amp; Devotional Flex Design Collection', 349, 'వినాయక చవితి మరియు పండుగల కోసం ప్రత్యేకంగా తీర్చిదిద్దిన ఫ్లెక్స్ బ్యానర్ డిజైన్.')">Buy Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card">
+        <div class="card-thumb">
+          <span class="badge">Album 12x36</span>
+          <img src="https://picsum.photos/400/250?random=3" alt="Design Preview">
+        </div>
+        <div class="card-content">
+          <span class="card-category">Album Design</span>
+          <h4 class="card-title">Wedding Album Inner Sheet Design 12x36 PSD Collection</h4>
+          <p class="card-desc">సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.</p>
+          <div class="card-footer-row">
+            <span class="card-price">799</span>
+          </div>
+          <div class="card-action">
+            <button type="button" class="btn-view" onclick="openBuyModal('Wedding Album Inner Sheet Design 12x36', 799, 'సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.')">Buy Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card">
+        <div class="card-thumb">
+          <span class="badge">Pack</span>
+          <img src="https://picsum.photos/400/250?random=4" alt="Design Preview">
+        </div>
+        <div class="card-content">
+          <span class="card-category">Birthday</span>
+          <h4 class="card-title">Birthday Flex Banner PSD Mega Bundle 2026</h4>
+          <p class="card-desc">కస్టమ్ సైజ్ ఫ్లెక్స్ ప్రింటింగ్‌కు అనుకూలంగా ఉండే బర్త్‌డే బ్యానర్ డిజైన్ ప్యాక్.</p>
+          <div class="card-footer-row">
+            <span class="card-price">599</span>
+          </div>
+          <div class="card-action">
+            <button type="button" class="btn-view" onclick="openBuyModal('Birthday Flex Banner PSD Mega Bundle 2026', 599, 'కస్టమ్ సైజ్ ఫ్లెక్స్ ప్రింటింగ్‌కు అనుకూలంగా ఉండే బర్త్‌డే బ్యానర్ డిజైన్ ప్యాక్.')">Buy Now</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Section: Mega Packs / Bundles -->
+    <div class="section-title">
+      <h3>⭐ POPULAR DESIGN BUNDLES</h3>
+      <a href="#">Explore All <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="product-grid">
+      <!-- Card 5 -->
+      <article class="card">
+        <div class="card-thumb">
+          <span class="badge">PNG Assets</span>
+          <img src="https://picsum.photos/400/250?random=5" alt="Design Preview">
+        </div>
+        <div class="card-content">
+          <span class="card-category">PNG Collections</span>
+          <h4 class="card-title">Premium Transparent Backgrounds & Light Effects PNG Pack</h4>
+          <p class="card-desc">బ్యాక్‌గ్రౌండ్ రిమూవల్ లేకుండా నేరుగా ఫోటోషాప్‌లో వాడుకోగల హై-రెస్ PNG అసెట్స్.</p>
+          <div class="card-footer-row">
+            <span class="card-price">299</span>
+          </div>
+          <div class="card-action">
+            <button type="button" class="btn-view" onclick="openBuyModal('Premium Transparent Backgrounds &amp; Light Effects PNG Pack', 299, 'బ్యాక్‌గ్రౌండ్ రిమూవల్ లేకుండా నేరుగా ఫోటోషాప్‌లో వాడుకోగల హై-రెస్ PNG అసెట్స్.')">Buy Now</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="card">
+        <div class="card-thumb">
+          <span class="badge">Social Media</span>
+          <img src="https://picsum.photos/400/250?random=6" alt="Design Preview">
+        </div>
+        <div class="card-content">
+          <span class="card-category">Instagram / Posters</span>
+          <h4 class="card-title">Wedding Teaser & Pre-Wedding Instagram Post PSD Set</h4>
+          <p class="card-desc">సోషల్ మీడియా మరియు డిజిటల్ ప్రమోషన్ల కోసం రెడీమేడ్ స్క్వేర్ & పోర్ట్రెయిట్ టెంప్లేట్లు.</p>
+          <div class="card-footer-row">
+            <span class="card-price">399</span>
+          </div>
+          <div class="card-action">
+            <button type="button" class="btn-view" onclick="openBuyModal('Wedding Teaser &amp; Pre-Wedding Instagram Post PSD Set', 399, 'సోషల్ మీడియా మరియు డిజిటల్ ప్రమోషన్ల కోసం రెడీమేడ్ స్క్వేర్ & పోర్ట్రెయిట్ టెంప్లేట్లు.')">Buy Now</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>About Store</h4>
+          <p style="font-size: 13px;">డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Flex Banners</a></li>
+            <li><a href="#">Wedding 12x36 Sheets</a></li>
+            <li><a href="#">Invitation Cards</a></li>
+            <li><a href="#">Visiting Cards</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Care</h4>
+          <ul>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Download Guide</a></li>
+            <li><a href="#">Terms & Privacy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Website & Support</h4>
+          <ul style="font-size: 13px; list-style: none;">
+            <li>🌐 www.divinepixels.in</li>
+            <li>✉️ support@divinepixels.in</li>
+            <li>🔒 అన్ని పేమెంట్లు సురక్షితం</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Divine Pixels. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <!-- Payment / Buy Modal -->
+  <div class="pay-overlay" id="payOverlay">
+    <div class="pay-modal">
+      <button type="button" class="pay-modal-close" id="payModalClose">✕</button>
+      <h3 id="payProductName">Item name</h3>
+      <p class="pay-modal-desc" id="payProductDesc"></p>
+      <div class="pay-modal-price" id="payProductPrice">0</div>
+      <label for="payerEmail">మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)</label>
+      <input type="email" id="payerEmail" placeholder="you@example.com" required>
+      <button type="button" class="pay-btn" id="payNowBtn">Pay Now</button>
+      <div class="pay-modal-msg" id="payModalMsg"></div>
+    </div>
+  </div>
+
+  <script>
+    let SELECTED_PRICE = 0;
+
+    function openBuyModal(name, price, desc) {
+      SELECTED_PRICE = price;
+      document.getElementById('payProductName').textContent = name;
+      document.getElementById('payProductDesc').textContent = desc || '';
+      document.getElementById('payProductPrice').textContent = price.toLocaleString('en-IN');
+      document.getElementById('payerEmail').value = '';
+      const msg = document.getElementById('payModalMsg');
+      msg.className = 'pay-modal-msg';
+      msg.textContent = '';
+      document.getElementById('payNowBtn').style.display = 'block';
+      document.getElementById('payNowBtn').textContent = 'Pay Now';
+      document.getElementById('payOverlay').classList.add('open');
+    }
+
+    function closePayModal() {
+      document.getElementById('payOverlay').classList.remove('open');
+    }
+
+    document.getElementById('payModalClose').addEventListener('click', closePayModal);
+    document.getElementById('payOverlay').addEventListener('click', function (e) {
+      if (e.target.id === 'payOverlay') closePayModal();
+    });
+
+    document.getElementById('payNowBtn').addEventListener('click', function () {
+      const email = document.getElementById('payerEmail').value.trim();
+      const msg = document.getElementById('payModalMsg');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.textContent = 'దయచేసి సరైన ఈమెయిల్ ఇవ్వండి.';
+        msg.style.background = 'rgba(226,59,91,.1)';
+        msg.style.color = '#e23b5b';
+        msg.className = 'pay-modal-msg show';
+        return;
+      }
+      /* NOTE: ఇక్కడ నిజమైన పేమెంట్ గేట్‌వే (Razorpay వంటివి) ఇంటిగ్రేట్ చేయాలి.
+         ఇది కేవలం UI డెమో — నిజమైన చెల్లింపు ప్రాసెసింగ్ కాదు. */
+      document.getElementById('payNowBtn').textContent = 'Processing...';
+      setTimeout(function () {
+        msg.textContent = '✅ ఆర్డర్ నమోదైంది! పేమెంట్ పూర్తయిన వెంటనే డౌన్‌లోడ్ లింక్ ' + email + 'కు పంపబడుతుంది.';
+        msg.style.background = 'rgba(14,169,107,.12)';
+        msg.style.color = '#0ea96b';
+        msg.className = 'pay-modal-msg show';
+        document.getElementById('payNowBtn').style.display = 'none';
+      }, 900);
+    });
+  </script>
+
+</body>
+</html>
