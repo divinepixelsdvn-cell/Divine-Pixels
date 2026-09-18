@@ -89,6 +89,7 @@
 
     .user-actions {
       display: flex;
+      align-items: center;
       gap: 15px;
     }
 
@@ -103,6 +104,32 @@
 
     .user-actions a:hover {
       background: #fdf1e2;
+    }
+
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #fdf1e2;
+      border: 1.5px solid #f3dcc2;
+      border-radius: 20px;
+      padding: 6px 10px;
+    }
+
+    .lang-switch i {
+      color: #a1734f;
+      font-size: 13px;
+    }
+
+    .lang-switch select {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a2c14;
+      cursor: pointer;
     }
 
     /* Navigation Menu */
@@ -364,6 +391,12 @@
       padding: 26px;
       position: relative;
       box-shadow: 0 30px 60px -20px rgba(41, 23, 8, 0.4);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .pay-modal.wide {
+      max-width: 480px;
     }
 
     .pay-modal-close {
@@ -413,7 +446,12 @@
       margin-bottom: 6px;
     }
 
-    .pay-modal input[type=email] {
+    .pay-modal input[type=email],
+    .pay-modal input[type=text],
+    .pay-modal input[type=number],
+    .pay-modal input[type=url],
+    .pay-modal input[type=password],
+    .pay-modal textarea {
       width: 100%;
       background: #fdf1e2;
       border: 1.5px solid #f3dcc2;
@@ -423,6 +461,28 @@
       font-size: 14px;
       margin-bottom: 14px;
       outline: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .pay-modal textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .pay-modal .field-hint {
+      font-size: 11px;
+      color: #a1734f;
+      margin-top: -10px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .admin-only {
+      display: none;
+    }
+
+    .admin-only.show {
+      display: inline-flex;
     }
 
     .pay-btn {
@@ -524,10 +584,19 @@
       </div>
       <div class="search-box">
         <i class="fas fa-search" style="color: #a1734f;"></i>
-        <input type="text" placeholder="సెర్చ్ చేయండి (ఉదా: Wedding Flex, Telugu PSD, Birthday)...">
+        <input type="text" id="searchInput" placeholder="Search (e.g. Wedding Flex, Telugu PSD, Birthday)...">
       </div>
       <div class="user-actions">
-        <a href="#"><i class="fas fa-user"></i> My Account</a>
+        <div class="lang-switch">
+          <i class="fas fa-globe"></i>
+          <select id="langSwitcher">
+            <option value="te">తెలుగు</option>
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+          </select>
+        </div>
+        <a href="#" id="myAccountBtn"><i class="fas fa-user"></i> <span id="myAccountLabel">My Account</span></a>
+        <a href="#" id="postProductBtn" class="admin-only"><i class="fas fa-plus"></i> <span>Post Product</span></a>
       </div>
     </div>
 
@@ -535,7 +604,7 @@
     <nav class="category-bar">
       <div class="container">
         <ul class="menu-links">
-          <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="#"><i class="fas fa-home"></i> <span>Home</span></a></li>
           <li><a href="#">Flex Design PSD</a></li>
           <li><a href="#">Wedding Albums (12x36)</a></li>
           <li><a href="#">Telugu Banners</a></li>
@@ -552,13 +621,13 @@
   <!-- Cover Logo Section -->
   <section class="cover-pic">
     <img src="divine-pixels-logo.png" alt="Divine Pixels Gallery Logo">
-    <p class="cover-tag">PSD ఫైల్స్ · సాఫ్ట్‌వేర్ · ప్లగిన్స్ — ఇన్‌స్టంట్ డెలివరీ</p>
+    <p class="cover-tag">PSD Files · Software · Plugins — Instant Delivery</p>
   </section>
 
   <section class="hero-banner">
     <div class="container">
-      <h2>ప్రీమియం డిజైన్ PSD & గ్రాఫిక్ కలెక్షన్స్</h2>
-      <p>ఫోటోషాప్ ఫ్లెక్స్ డిజైన్లు, వెడ్డింగ్ ఆల్బమ్ షీట్లు, హై-రిజల్యూషన్ అసెట్స్ సులభంగా డౌన్‌లోడ్ చేసుకోండి.</p>
+      <h2>Premium Design PSD & Graphic Collections</h2>
+      <p>Easily download Photoshop flex designs, wedding album sheets, and high-resolution assets.</p>
     </div>
   </section>
 
@@ -567,133 +636,19 @@
 
     <!-- Section: Latest PSD Templates -->
     <div class="section-title">
-      <h3>⭐ LATEST PSD TEMPLATES</h3>
-      <a href="#">View All <i class="fas fa-arrow-right"></i></a>
+      <h3 data-i18n="latestTitle">⭐ LATEST PSD TEMPLATES</h3>
+      <a href="#"><span data-i18n="viewAll">View All</span> <i class="fas fa-arrow-right"></i></a>
     </div>
 
-    <div class="product-grid">
-      <!-- Card 1 -->
-      <article class="card">
-        <div class="card-thumb">
-          <span class="badge">Trending</span>
-          <img src="https://picsum.photos/400/250?random=1" alt="Design Preview">
-        </div>
-        <div class="card-content">
-          <span class="card-category">Wedding Flex</span>
-          <h4 class="card-title">Traditional Wedding Flex Banner PSD (High Quality Editable)</h4>
-          <p class="card-desc">పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.</p>
-          <div class="card-footer-row">
-            <span class="card-price">499</span>
-          </div>
-          <div class="card-action">
-            <button type="button" class="btn-view" onclick="openBuyModal('Traditional Wedding Flex Banner PSD', 499, 'పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.')">Buy Now</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="card">
-        <div class="card-thumb">
-          <span class="badge">PSD</span>
-          <img src="https://picsum.photos/400/250?random=2" alt="Design Preview">
-        </div>
-        <div class="card-content">
-          <span class="card-category">Telugu Flex</span>
-          <h4 class="card-title">Festival & Devotional Flex Design Collection (Telugu Edition)</h4>
-          <p class="card-desc">వినాయక చవితి మరియు పండుగల కోసం ప్రత్యేకంగా తీర్చిదిద్దిన ఫ్లెక్స్ బ్యానర్ డిజైన్.</p>
-          <div class="card-footer-row">
-            <span class="card-price">349</span>
-          </div>
-          <div class="card-action">
-            <button type="button" class="btn-view" onclick="openBuyModal('Festival &amp; Devotional Flex Design Collection', 349, 'వినాయక చవితి మరియు పండుగల కోసం ప్రత్యేకంగా తీర్చిదిద్దిన ఫ్లెక్స్ బ్యానర్ డిజైన్.')">Buy Now</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="card">
-        <div class="card-thumb">
-          <span class="badge">Album 12x36</span>
-          <img src="https://picsum.photos/400/250?random=3" alt="Design Preview">
-        </div>
-        <div class="card-content">
-          <span class="card-category">Album Design</span>
-          <h4 class="card-title">Wedding Album Inner Sheet Design 12x36 PSD Collection</h4>
-          <p class="card-desc">సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.</p>
-          <div class="card-footer-row">
-            <span class="card-price">799</span>
-          </div>
-          <div class="card-action">
-            <button type="button" class="btn-view" onclick="openBuyModal('Wedding Album Inner Sheet Design 12x36', 799, 'సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.')">Buy Now</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 4 -->
-      <article class="card">
-        <div class="card-thumb">
-          <span class="badge">Pack</span>
-          <img src="https://picsum.photos/400/250?random=4" alt="Design Preview">
-        </div>
-        <div class="card-content">
-          <span class="card-category">Birthday</span>
-          <h4 class="card-title">Birthday Flex Banner PSD Mega Bundle 2026</h4>
-          <p class="card-desc">కస్టమ్ సైజ్ ఫ్లెక్స్ ప్రింటింగ్‌కు అనుకూలంగా ఉండే బర్త్‌డే బ్యానర్ డిజైన్ ప్యాక్.</p>
-          <div class="card-footer-row">
-            <span class="card-price">599</span>
-          </div>
-          <div class="card-action">
-            <button type="button" class="btn-view" onclick="openBuyModal('Birthday Flex Banner PSD Mega Bundle 2026', 599, 'కస్టమ్ సైజ్ ఫ్లెక్స్ ప్రింటింగ్‌కు అనుకూలంగా ఉండే బర్త్‌డే బ్యానర్ డిజైన్ ప్యాక్.')">Buy Now</button>
-          </div>
-        </div>
-      </article>
-    </div>
+    <div class="product-grid" id="grid-latest"></div>
 
     <!-- Section: Mega Packs / Bundles -->
     <div class="section-title">
-      <h3>⭐ POPULAR DESIGN BUNDLES</h3>
-      <a href="#">Explore All <i class="fas fa-arrow-right"></i></a>
+      <h3 data-i18n="bundlesTitle">⭐ POPULAR DESIGN BUNDLES</h3>
+      <a href="#"><span data-i18n="exploreAll">Explore All</span> <i class="fas fa-arrow-right"></i></a>
     </div>
 
-    <div class="product-grid">
-      <!-- Card 5 -->
-      <article class="card">
-        <div class="card-thumb">
-          <span class="badge">PNG Assets</span>
-          <img src="https://picsum.photos/400/250?random=5" alt="Design Preview">
-        </div>
-        <div class="card-content">
-          <span class="card-category">PNG Collections</span>
-          <h4 class="card-title">Premium Transparent Backgrounds & Light Effects PNG Pack</h4>
-          <p class="card-desc">బ్యాక్‌గ్రౌండ్ రిమూవల్ లేకుండా నేరుగా ఫోటోషాప్‌లో వాడుకోగల హై-రెస్ PNG అసెట్స్.</p>
-          <div class="card-footer-row">
-            <span class="card-price">299</span>
-          </div>
-          <div class="card-action">
-            <button type="button" class="btn-view" onclick="openBuyModal('Premium Transparent Backgrounds &amp; Light Effects PNG Pack', 299, 'బ్యాక్‌గ్రౌండ్ రిమూవల్ లేకుండా నేరుగా ఫోటోషాప్‌లో వాడుకోగల హై-రెస్ PNG అసెట్స్.')">Buy Now</button>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 6 -->
-      <article class="card">
-        <div class="card-thumb">
-          <span class="badge">Social Media</span>
-          <img src="https://picsum.photos/400/250?random=6" alt="Design Preview">
-        </div>
-        <div class="card-content">
-          <span class="card-category">Instagram / Posters</span>
-          <h4 class="card-title">Wedding Teaser & Pre-Wedding Instagram Post PSD Set</h4>
-          <p class="card-desc">సోషల్ మీడియా మరియు డిజిటల్ ప్రమోషన్ల కోసం రెడీమేడ్ స్క్వేర్ & పోర్ట్రెయిట్ టెంప్లేట్లు.</p>
-          <div class="card-footer-row">
-            <span class="card-price">399</span>
-          </div>
-          <div class="card-action">
-            <button type="button" class="btn-view" onclick="openBuyModal('Wedding Teaser &amp; Pre-Wedding Instagram Post PSD Set', 399, 'సోషల్ మీడియా మరియు డిజిటల్ ప్రమోషన్ల కోసం రెడీమేడ్ స్క్వేర్ & పోర్ట్రెయిట్ టెంప్లేట్లు.')">Buy Now</button>
-          </div>
-        </div>
-      </article>
-    </div>
+    <div class="product-grid" id="grid-bundles"></div>
 
   </main>
 
@@ -702,37 +657,37 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4>About Store</h4>
-          <p style="font-size: 13px;">డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.</p>
+          <h4 data-i18n="aboutStoreTitle">About Store</h4>
+          <p style="font-size: 13px;" data-i18n="aboutStoreDesc">డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.</p>
         </div>
         <div class="footer-col">
-          <h4>Quick Links</h4>
+          <h4 data-i18n="quickLinksTitle">Quick Links</h4>
           <ul>
-            <li><a href="#">Flex Banners</a></li>
-            <li><a href="#">Wedding 12x36 Sheets</a></li>
-            <li><a href="#">Invitation Cards</a></li>
-            <li><a href="#">Visiting Cards</a></li>
+            <li><a href="#" data-i18n="qlFlex">Flex Banners</a></li>
+            <li><a href="#" data-i18n="qlAlbums">Wedding 12x36 Sheets</a></li>
+            <li><a href="#" data-i18n="qlInvitation">Invitation Cards</a></li>
+            <li><a href="#" data-i18n="qlVisiting">Visiting Cards</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Customer Care</h4>
+          <h4 data-i18n="careTitle">Customer Care</h4>
           <ul>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Download Guide</a></li>
-            <li><a href="#">Terms & Privacy</a></li>
+            <li><a href="#" data-i18n="careContact">Contact Us</a></li>
+            <li><a href="#" data-i18n="careGuide">Download Guide</a></li>
+            <li><a href="#" data-i18n="careTerms">Terms & Privacy</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Website & Support</h4>
+          <h4 data-i18n="websiteTitle">Website & Support</h4>
           <ul style="font-size: 13px; list-style: none;">
             <li>🌐 www.divinepixels.in</li>
             <li>✉️ support@divinepixels.in</li>
-            <li>🔒 అన్ని పేమెంట్లు సురక్షితం</li>
+            <li>🔒 <span data-i18n="secure">అన్ని పేమెంట్లు సురక్షితం</span></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 Divine Pixels. All Rights Reserved.</p>
+        <p data-i18n="copyright">© 2026 Divine Pixels. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
@@ -743,27 +698,390 @@
       <h3 id="payProductName">Item name</h3>
       <p class="pay-modal-desc" id="payProductDesc"></p>
       <div class="pay-modal-price" id="payProductPrice">0</div>
-      <label for="payerEmail">మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)</label>
+      <label for="payerEmail" id="payerEmailLabel" data-i18n="emailLabel">మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)</label>
       <input type="email" id="payerEmail" placeholder="you@example.com" required>
-      <button type="button" class="pay-btn" id="payNowBtn">Pay Now</button>
+      <button type="button" class="pay-btn" id="payNowBtn" data-i18n="payNow">Pay Now</button>
       <div class="pay-modal-msg" id="payModalMsg"></div>
     </div>
   </div>
 
-  <script>
-    let SELECTED_PRICE = 0;
+  <!-- Admin Login Modal -->
+  <div class="pay-overlay" id="loginOverlay">
+    <div class="pay-modal">
+      <button type="button" class="pay-modal-close" id="loginModalClose">✕</button>
+      <h3>My Account Login</h3>
+      <p class="pay-modal-desc">ప్రొడక్ట్ పోస్ట్ చేయడానికి అడ్మిన్ లాగిన్ చేయండి.</p>
+      <label for="loginUsername">Username</label>
+      <input type="text" id="loginUsername" placeholder="Username">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button type="button" class="pay-btn" id="loginSubmitBtn">Login</button>
+      <div class="pay-modal-msg" id="loginModalMsg"></div>
+    </div>
+  </div>
 
-    function openBuyModal(name, price, desc) {
-      SELECTED_PRICE = price;
-      document.getElementById('payProductName').textContent = name;
-      document.getElementById('payProductDesc').textContent = desc || '';
-      document.getElementById('payProductPrice').textContent = price.toLocaleString('en-IN');
+  <!-- Post Product Modal -->
+  <div class="pay-overlay" id="postOverlay">
+    <div class="pay-modal wide">
+      <button type="button" class="pay-modal-close" id="postModalClose">✕</button>
+      <h3>కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి</h3>
+      <p class="pay-modal-desc">ఈ వివరాలు వెబ్‌సైట్‌లో కనిపించడంతో పాటు మీ Google Sheet లో కూడా సేవ్ అవుతాయి.</p>
+
+      <label for="postTitle">ప్రొడక్ట్ హెడ్డింగ్ (Title)</label>
+      <input type="text" id="postTitle" placeholder="ఉదా: Wedding Flex Banner PSD">
+
+      <label for="postFileLink">డిజైన్ ఫైల్ లింక్ (Google Drive / Download URL)</label>
+      <input type="url" id="postFileLink" placeholder="https://drive.google.com/...">
+
+      <label for="postPrice">ధర (₹)</label>
+      <input type="number" id="postPrice" placeholder="499">
+
+      <label for="postDesc">ప్రోడక్ట్ యొక్క పూర్తి వివరాలు</label>
+      <textarea id="postDesc" placeholder="ప్రొడక్ట్ గురించి పూర్తి వివరణ రాయండి..."></textarea>
+
+      <label for="postImage">ప్రొడక్ట్ ఇమేజ్ / ప్రివ్యూ లింక్</label>
+      <input type="url" id="postImage" placeholder="https://...jpg or .png">
+      <span class="field-hint">కార్డు మీద కనిపించే ప్రివ్యూ ఫోటో లింక్ ఇది.</span>
+
+      <label for="postPdf">ప్రొడక్ట్ PDF లింక్ (ఐచ్ఛికం)</label>
+      <input type="url" id="postPdf" placeholder="https://...pdf">
+
+      <button type="button" class="pay-btn" id="postSubmitBtn">పోస్ట్ చేయండి</button>
+      <div class="pay-modal-msg" id="postModalMsg"></div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       GOOGLE SHEET BACKEND CONFIG
+       ఈ URLని మీ డిప్లాయ్ చేసిన Google Apps Script Web App లింక్‌తో
+       మార్చండి (సెటప్ స్టెప్స్ కోసం Code.gs ఫైల్ చూడండి).
+       ========================================================= */
+    const SHEET_WEBAPP_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+    /* Basic front-end-only admin gate. NOTE: this is NOT secure server-side
+       authentication — anyone who reads this file's source can see the
+       credentials. It only prevents casual visitors from opening the post
+       form. For real security, protect posting with a server-side check
+       (e.g. verify a secret token inside the Apps Script itself). */
+    const ADMIN_USERNAME = 'admin';
+    const ADMIN_PASSWORD = 'divine@123';
+    let isAdminLoggedIn = false;
+
+  </script>
+
+  <script>
+    /* ===================== TRANSLATIONS ===================== */
+    const UI_TEXT = {
+      te: {
+        htmlLang: 'te',
+        tagline: 'హై క్వాలిటీ PSD & గ్రాఫిక్ టెంప్లేట్స్',
+        searchPlaceholder: 'సెర్చ్ చేయండి (ఉదా: Wedding Flex, Telugu PSD, Birthday)...',
+        myAccount: 'నా ఖాతా',
+        navHome: 'హోమ్',
+        navFlex: 'ఫ్లెక్స్ డిజైన్ PSD',
+        navAlbums: 'వెడ్డింగ్ ఆల్బమ్స్ (12x36)',
+        navTelugu: 'తెలుగు బ్యానర్లు',
+        navInvitation: 'ఇన్విటేషన్ కార్డులు',
+        navVisiting: 'విజిటింగ్ కార్డులు',
+        navPng: 'PNG బ్యాక్‌గ్రౌండ్స్',
+        navVideo: 'వీడియో ప్రాజెక్ట్స్',
+        coverTag: 'PSD ఫైల్స్ · సాఫ్ట్‌వేర్ · ప్లగిన్స్ — ఇన్‌స్టంట్ డెలివరీ',
+        heroTitle: 'ప్రీమియం డిజైన్ PSD & గ్రాఫిక్ కలెక్షన్స్',
+        heroDesc: 'ఫోటోషాప్ ఫ్లెక్స్ డిజైన్లు, వెడ్డింగ్ ఆల్బమ్ షీట్లు, హై-రిజల్యూషన్ అసెట్స్ సులభంగా డౌన్‌లోడ్ చేసుకోండి.',
+        latestTitle: '⭐ లేటెస్ట్ PSD టెంప్లేట్స్',
+        viewAll: 'అన్నీ చూడండి',
+        bundlesTitle: '⭐ పాపులర్ డిజైన్ బండిల్స్',
+        exploreAll: 'అన్నీ అన్వేషించండి',
+        buyNow: 'కొనుగోలు చేయండి',
+        aboutStoreTitle: 'స్టోర్ గురించి',
+        aboutStoreDesc: 'డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.',
+        quickLinksTitle: 'త్వరిత లింకులు',
+        qlFlex: 'ఫ్లెక్స్ బ్యానర్లు',
+        qlAlbums: 'వెడ్డింగ్ 12x36 షీట్లు',
+        qlInvitation: 'ఇన్విటేషన్ కార్డులు',
+        qlVisiting: 'విజిటింగ్ కార్డులు',
+        careTitle: 'కస్టమర్ కేర్',
+        careContact: 'మమ్మల్ని సంప్రదించండి',
+        careGuide: 'డౌన్‌లోడ్ గైడ్',
+        careTerms: 'నిబంధనలు & గోప్యత',
+        websiteTitle: 'వెబ్‌సైట్ & సపోర్ట్',
+        secure: 'అన్ని పేమెంట్లు సురక్షితం',
+        copyright: '© 2026 Divine Pixels. అన్ని హక్కులు కలిగివుంది.',
+        emailLabel: 'మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)',
+        payNow: 'పే చేయండి',
+        processing: 'ప్రాసెస్ అవుతోంది...',
+        invalidEmail: 'దయచేసి సరైన ఈమెయిల్ ఇవ్వండి.',
+        orderMsg: (email) => '✅ ఆర్డర్ నమోదైంది! పేమెంట్ పూర్తయిన వెంటనే డౌన్‌లోడ్ లింక్ ' + email + 'కు పంపబడుతుంది.'
+      },
+      en: {
+        htmlLang: 'en',
+        tagline: 'HIGH QUALITY PSD & GRAPHIC TEMPLATES',
+        searchPlaceholder: 'Search (e.g. Wedding Flex, Telugu PSD, Birthday)...',
+        myAccount: 'My Account',
+        navHome: 'Home',
+        navFlex: 'Flex Design PSD',
+        navAlbums: 'Wedding Albums (12x36)',
+        navTelugu: 'Telugu Banners',
+        navInvitation: 'Invitation Cards',
+        navVisiting: 'Visiting Cards',
+        navPng: 'PNG Backgrounds',
+        navVideo: 'Video Projects',
+        coverTag: 'PSD Files · Software · Plugins — Instant Delivery',
+        heroTitle: 'Premium Design PSD & Graphic Collections',
+        heroDesc: 'Easily download Photoshop flex designs, wedding album sheets, and high-resolution assets.',
+        latestTitle: '⭐ LATEST PSD TEMPLATES',
+        viewAll: 'View All',
+        bundlesTitle: '⭐ POPULAR DESIGN BUNDLES',
+        exploreAll: 'Explore All',
+        buyNow: 'Buy Now',
+        aboutStoreTitle: 'About Store',
+        aboutStoreDesc: 'A platform offering high-quality, editable PSD files and graphic resources for designers, photographers, and studios.',
+        quickLinksTitle: 'Quick Links',
+        qlFlex: 'Flex Banners',
+        qlAlbums: 'Wedding 12x36 Sheets',
+        qlInvitation: 'Invitation Cards',
+        qlVisiting: 'Visiting Cards',
+        careTitle: 'Customer Care',
+        careContact: 'Contact Us',
+        careGuide: 'Download Guide',
+        careTerms: 'Terms & Privacy',
+        websiteTitle: 'Website & Support',
+        secure: 'All payments are secure',
+        copyright: '© 2026 Divine Pixels. All Rights Reserved.',
+        emailLabel: 'Your email (the download link will be sent here)',
+        payNow: 'Pay Now',
+        processing: 'Processing...',
+        invalidEmail: 'Please enter a valid email address.',
+        orderMsg: (email) => '✅ Order placed! The download link will be sent to ' + email + ' as soon as payment is completed.'
+      },
+      hi: {
+        htmlLang: 'hi',
+        tagline: 'उच्च गुणवत्ता वाले PSD और ग्राफिक टेम्पलेट्स',
+        searchPlaceholder: 'खोजें (उदा: Wedding Flex, Telugu PSD, Birthday)...',
+        myAccount: 'मेरा खाता',
+        navHome: 'होम',
+        navFlex: 'फ्लेक्स डिज़ाइन PSD',
+        navAlbums: 'वेडिंग एल्बम (12x36)',
+        navTelugu: 'तेलुगु बैनर',
+        navInvitation: 'निमंत्रण कार्ड',
+        navVisiting: 'विजिटिंग कार्ड',
+        navPng: 'PNG बैकग्राउंड',
+        navVideo: 'वीडियो प्रोजेक्ट्स',
+        coverTag: 'PSD फ़ाइलें · सॉफ़्टवेयर · प्लगइन्स — तुरंत डिलीवरी',
+        heroTitle: 'प्रीमियम डिज़ाइन PSD और ग्राफ़िक कलेक्शन',
+        heroDesc: 'फोटोशॉप फ्लेक्स डिज़ाइन, वेडिंग एल्बम शीट और हाई-रिज़ॉल्यूशन एसेट्स आसानी से डाउनलोड करें।',
+        latestTitle: '⭐ नवीनतम PSD टेम्पलेट्स',
+        viewAll: 'सभी देखें',
+        bundlesTitle: '⭐ लोकप्रिय डिज़ाइन बंडल',
+        exploreAll: 'सभी एक्सप्लोर करें',
+        buyNow: 'अभी खरीदें',
+        aboutStoreTitle: 'स्टोर के बारे में',
+        aboutStoreDesc: 'डिज़ाइनरों, फोटोग्राफरों और स्टूडियो के लिए उच्च गुणवत्ता वाली संपादन योग्य PSD फ़ाइलें और ग्राफ़िक संसाधन प्रदान करने वाला प्लेटफ़ॉर्म।',
+        quickLinksTitle: 'त्वरित लिंक',
+        qlFlex: 'फ्लेक्स बैनर',
+        qlAlbums: 'वेडिंग 12x36 शीट',
+        qlInvitation: 'निमंत्रण कार्ड',
+        qlVisiting: 'विजिटिंग कार्ड',
+        careTitle: 'ग्राहक सेवा',
+        careContact: 'संपर्क करें',
+        careGuide: 'डाउनलोड गाइड',
+        careTerms: 'नियम और गोपनीयता',
+        websiteTitle: 'वेबसाइट और सहायता',
+        secure: 'सभी भुगतान सुरक्षित हैं',
+        copyright: '© 2026 Divine Pixels. सर्वाधिकार सुरक्षित।',
+        emailLabel: 'आपका ईमेल (डाउनलोड लिंक यहां भेजा जाएगा)',
+        payNow: 'अभी भुगतान करें',
+        processing: 'प्रोसेस हो रहा है...',
+        invalidEmail: 'कृपया एक मान्य ईमेल दर्ज करें।',
+        orderMsg: (email) => '✅ ऑर्डर दर्ज हो गया! भुगतान पूरा होते ही डाउनलोड लिंक ' + email + ' पर भेज दिया जाएगा।'
+      }
+    };
+
+    /* ===================== PRODUCT DATA ===================== */
+    const PRODUCTS = {
+      latest: [
+        {
+          id: 'p1', image: 'https://picsum.photos/400/250?random=1', price: 499,
+          badge: { te: 'ట్రెండింగ్', en: 'Trending', hi: 'ट्रेंडिंग' },
+          category: { te: 'వెడ్డింగ్ ఫ్లెక్స్', en: 'Wedding Flex', hi: 'वेडिंग फ्लेक्स' },
+          title: {
+            te: 'సంప్రదాయ వెడ్డింగ్ ఫ్లెక్స్ బ్యానర్ PSD (హై క్వాలిటీ ఎడిటబుల్)',
+            en: 'Traditional Wedding Flex Banner PSD (High Quality Editable)',
+            hi: 'पारंपरिक वेडिंग फ्लेक्स बैनर PSD (उच्च गुणवत्ता संपादन योग्य)'
+          },
+          desc: {
+            te: 'పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.',
+            en: 'A wedding flex template built with full layers and premium font support.',
+            hi: 'पूरी लेयर्स और प्रीमियम फॉन्ट सपोर्ट के साथ बनाया गया वेडिंग फ्लेक्स टेम्पलेट।'
+          }
+        },
+        {
+          id: 'p2', image: 'https://picsum.photos/400/250?random=2', price: 349,
+          badge: { te: 'PSD', en: 'PSD', hi: 'PSD' },
+          category: { te: 'తెలుగు ఫ్లెక్స్', en: 'Telugu Flex', hi: 'तेलुगु फ्लेक्स' },
+          title: {
+            te: 'పండుగ & భక్తి ఫ్లెక్స్ డిజైన్ కలెక్షన్ (తెలుగు ఎడిషన్)',
+            en: 'Festival & Devotional Flex Design Collection (Telugu Edition)',
+            hi: 'त्योहार और भक्ति फ्लेक्स डिज़ाइन कलेक्शन (तेलुगु संस्करण)'
+          },
+          desc: {
+            te: 'వినాయక చవితి మరియు పండుగల కోసం ప్రత్యేకంగా తీర్చిదిద్దిన ఫ్లెక్స్ బ్యానర్ డిజైన్.',
+            en: 'A flex banner design crafted specially for Ganesh Chaturthi and other festivals.',
+            hi: 'गणेश चतुर्थी और त्योहारों के लिए विशेष रूप से तैयार किया गया फ्लेक्स बैनर डिज़ाइन।'
+          }
+        },
+        {
+          id: 'p3', image: 'https://picsum.photos/400/250?random=3', price: 799,
+          badge: { te: 'ఆల్బమ్ 12x36', en: 'Album 12x36', hi: 'एल्बम 12x36' },
+          category: { te: 'ఆల్బమ్ డిజైన్', en: 'Album Design', hi: 'एल्बम डिज़ाइन' },
+          title: {
+            te: 'వెడ్డింగ్ ఆల్బమ్ ఇన్నర్ షీట్ డిజైన్ 12x36 PSD కలెక్షన్',
+            en: 'Wedding Album Inner Sheet Design 12x36 PSD Collection',
+            hi: 'वेडिंग एल्बम इनर शीट डिज़ाइन 12x36 PSD कलेक्शन'
+          },
+          desc: {
+            te: 'సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.',
+            en: 'Cinematic wedding album sheet layouts with clean frames and masking layers.',
+            hi: 'सिनेमैटिक वेडिंग एल्बम शीट लेआउट, क्लीन फ्रेम्स और मास्किंग लेयर्स के साथ।'
+          }
+        },
+        {
+          id: 'p4', image: 'https://picsum.photos/400/250?random=4', price: 599,
+          badge: { te: 'ప్యాక్', en: 'Pack', hi: 'पैक' },
+          category: { te: 'బర్త్‌డే', en: 'Birthday', hi: 'जन्मदिन' },
+          title: {
+            te: 'బర్త్‌డే ఫ్లెక్స్ బ్యానర్ PSD మెగా బండిల్ 2026',
+            en: 'Birthday Flex Banner PSD Mega Bundle 2026',
+            hi: 'जन्मदिन फ्लेक्स बैनर PSD मेगा बंडल 2026'
+          },
+          desc: {
+            te: 'కస్టమ్ సైజ్ ఫ్లెక్స్ ప్రింటింగ్‌కు అనుకూలంగా ఉండే బర్త్‌డే బ్యానర్ డిజైన్ ప్యాక్.',
+            en: 'A birthday banner design pack suited for custom-size flex printing.',
+            hi: 'कस्टम साइज़ फ्लेक्स प्रिंटिंग के लिए उपयुक्त जन्मदिन बैनर डिज़ाइन पैक।'
+          }
+        }
+      ],
+      bundles: [
+        {
+          id: 'p5', image: 'https://picsum.photos/400/250?random=5', price: 299,
+          badge: { te: 'PNG అసెట్స్', en: 'PNG Assets', hi: 'PNG एसेट्स' },
+          category: { te: 'PNG కలెక్షన్స్', en: 'PNG Collections', hi: 'PNG कलेक्शन' },
+          title: {
+            te: 'ప్రీమియం ట్రాన్స్‌పరెంట్ బ్యాక్‌గ్రౌండ్స్ & లైట్ ఎఫెక్ట్స్ PNG ప్యాక్',
+            en: 'Premium Transparent Backgrounds & Light Effects PNG Pack',
+            hi: 'प्रीमियम पारदर्शी बैकग्राउंड और लाइट इफेक्ट्स PNG पैक'
+          },
+          desc: {
+            te: 'బ్యాక్‌గ్రౌండ్ రిమూవల్ లేకుండా నేరుగా ఫోటోషాప్‌లో వాడుకోగల హై-రెస్ PNG అసెట్స్.',
+            en: 'High-resolution PNG assets you can use directly in Photoshop without background removal.',
+            hi: 'हाई-रेस PNG एसेट्स जिन्हें बैकग्राउंड हटाए बिना सीधे फोटोशॉप में उपयोग किया जा सकता है।'
+          }
+        },
+        {
+          id: 'p6', image: 'https://picsum.photos/400/250?random=6', price: 399,
+          badge: { te: 'సోషల్ మీడియా', en: 'Social Media', hi: 'सोशल मीडिया' },
+          category: { te: 'ఇన్‌స్టాగ్రామ్ / పోస్టర్లు', en: 'Instagram / Posters', hi: 'इंस्टाग्राम / पोस्टर' },
+          title: {
+            te: 'వెడ్డింగ్ టీజర్ & ప్రీ-వెడ్డింగ్ ఇన్‌స్టాగ్రామ్ పోస్ట్ PSD సెట్',
+            en: 'Wedding Teaser & Pre-Wedding Instagram Post PSD Set',
+            hi: 'वेडिंग टीज़र और प्री-वेडिंग इंस्टाग्राम पोस्ट PSD सेट'
+          },
+          desc: {
+            te: 'సోషల్ మీడియా మరియు డిజిటల్ ప్రమోషన్ల కోసం రెడీమేడ్ స్క్వేర్ & పోర్ట్రెయిట్ టెంప్లేట్లు.',
+            en: 'Ready-made square & portrait templates for social media and digital promotions.',
+            hi: 'सोशल मीडिया और डिजिटल प्रचार के लिए तैयार स्क्वायर और पोर्ट्रेट टेम्पलेट्स।'
+          }
+        }
+      ]
+    };
+
+    let CURRENT_LANG = 'te';
+    let SELECTED_PRICE = 0;
+    let SELECTED_PRODUCT = null;
+
+    /* ---- Render product cards for the current language ---- */
+    function renderProducts() {
+      Object.keys(PRODUCTS).forEach(function (groupKey) {
+        const mount = document.getElementById('grid-' + groupKey);
+        if (!mount) return;
+        mount.innerHTML = PRODUCTS[groupKey].map(function (p) {
+          return (
+            '<article class="card">' +
+              '<div class="card-thumb">' +
+                '<span class="badge">' + p.badge[CURRENT_LANG] + '</span>' +
+                '<img src="' + p.image + '" alt="Design Preview">' +
+              '</div>' +
+              '<div class="card-content">' +
+                '<span class="card-category">' + p.category[CURRENT_LANG] + '</span>' +
+                '<h4 class="card-title">' + p.title.en + '</h4>' +
+                '<p class="card-desc">' + p.desc[CURRENT_LANG] + '</p>' +
+                '<div class="card-footer-row">' +
+                  '<span class="card-price">' + p.price + '</span>' +
+                '</div>' +
+                '<div class="card-action">' +
+                  '<button type="button" class="btn-view" data-product-id="' + p.id + '">' + UI_TEXT[CURRENT_LANG].buyNow + '</button>' +
+                '</div>' +
+              '</div>' +
+            '</article>'
+          );
+        }).join('');
+      });
+
+      // Wire up buy buttons after re-render
+      document.querySelectorAll('.btn-view').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const id = btn.getAttribute('data-product-id');
+          const product = PRODUCTS.latest.concat(PRODUCTS.bundles).find(function (p) { return p.id === id; });
+          if (product) openBuyModal(product);
+        });
+      });
+    }
+
+    /* ---- Apply translations to all static [data-i18n] elements ---- */
+    function applyTranslations() {
+      const dict = UI_TEXT[CURRENT_LANG];
+      document.documentElement.lang = dict.htmlLang;
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+      });
+
+      // Re-render modal text if it's currently open for a selected product
+      if (SELECTED_PRODUCT) {
+        document.getElementById('payProductName').textContent = SELECTED_PRODUCT.title.en;
+        document.getElementById('payProductDesc').textContent = SELECTED_PRODUCT.desc[CURRENT_LANG];
+      }
+    }
+
+    function setLanguage(lang) {
+      if (!UI_TEXT[lang]) return;
+      CURRENT_LANG = lang;
+      document.getElementById('langSwitcher').value = lang;
+      applyTranslations();
+      renderProducts();
+    }
+
+    /* ===================== BUY MODAL ===================== */
+    function openBuyModal(product) {
+      SELECTED_PRODUCT = product;
+      SELECTED_PRICE = product.price;
+      document.getElementById('payProductName').textContent = product.title.en;
+      document.getElementById('payProductDesc').textContent = product.desc[CURRENT_LANG];
+      document.getElementById('payProductPrice').textContent = product.price.toLocaleString('en-IN');
       document.getElementById('payerEmail').value = '';
       const msg = document.getElementById('payModalMsg');
       msg.className = 'pay-modal-msg';
       msg.textContent = '';
-      document.getElementById('payNowBtn').style.display = 'block';
-      document.getElementById('payNowBtn').textContent = 'Pay Now';
+      const payBtn = document.getElementById('payNowBtn');
+      payBtn.style.display = 'block';
+      payBtn.textContent = UI_TEXT[CURRENT_LANG].payNow;
       document.getElementById('payOverlay').classList.add('open');
     }
 
@@ -779,8 +1097,9 @@
     document.getElementById('payNowBtn').addEventListener('click', function () {
       const email = document.getElementById('payerEmail').value.trim();
       const msg = document.getElementById('payModalMsg');
+      const dict = UI_TEXT[CURRENT_LANG];
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        msg.textContent = 'దయచేసి సరైన ఈమెయిల్ ఇవ్వండి.';
+        msg.textContent = dict.invalidEmail;
         msg.style.background = 'rgba(226,59,91,.1)';
         msg.style.color = '#e23b5b';
         msg.className = 'pay-modal-msg show';
@@ -788,15 +1107,214 @@
       }
       /* NOTE: ఇక్కడ నిజమైన పేమెంట్ గేట్‌వే (Razorpay వంటివి) ఇంటిగ్రేట్ చేయాలి.
          ఇది కేవలం UI డెమో — నిజమైన చెల్లింపు ప్రాసెసింగ్ కాదు. */
-      document.getElementById('payNowBtn').textContent = 'Processing...';
+      document.getElementById('payNowBtn').textContent = dict.processing;
       setTimeout(function () {
-        msg.textContent = '✅ ఆర్డర్ నమోదైంది! పేమెంట్ పూర్తయిన వెంటనే డౌన్‌లోడ్ లింక్ ' + email + 'కు పంపబడుతుంది.';
+        msg.textContent = dict.orderMsg(email);
         msg.style.background = 'rgba(14,169,107,.12)';
         msg.style.color = '#0ea96b';
         msg.className = 'pay-modal-msg show';
         document.getElementById('payNowBtn').style.display = 'none';
       }, 900);
     });
+
+    /* ===================== ADMIN LOGIN ===================== */
+    function updateAdminUI() {
+      const label = document.getElementById('myAccountLabel');
+      const postBtn = document.getElementById('postProductBtn');
+      if (isAdminLoggedIn) {
+        label.textContent = 'Logout';
+        postBtn.classList.add('show');
+      } else {
+        label.textContent = 'My Account';
+        postBtn.classList.remove('show');
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginUsername').value = '';
+      document.getElementById('loginPassword').value = '';
+      const msg = document.getElementById('loginModalMsg');
+      msg.className = 'pay-modal-msg';
+      msg.textContent = '';
+      document.getElementById('loginOverlay').classList.add('open');
+    }
+    function closeLoginModal() {
+      document.getElementById('loginOverlay').classList.remove('open');
+    }
+
+    document.getElementById('myAccountBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      if (isAdminLoggedIn) {
+        isAdminLoggedIn = false;
+        updateAdminUI();
+      } else {
+        openLoginModal();
+      }
+    });
+
+    document.getElementById('loginModalClose').addEventListener('click', closeLoginModal);
+    document.getElementById('loginOverlay').addEventListener('click', function (e) {
+      if (e.target.id === 'loginOverlay') closeLoginModal();
+    });
+
+    document.getElementById('loginSubmitBtn').addEventListener('click', function () {
+      const u = document.getElementById('loginUsername').value.trim();
+      const p = document.getElementById('loginPassword').value.trim();
+      const msg = document.getElementById('loginModalMsg');
+      if (u === ADMIN_USERNAME && p === ADMIN_PASSWORD) {
+        isAdminLoggedIn = true;
+        updateAdminUI();
+        closeLoginModal();
+        openPostModal();
+      } else {
+        msg.textContent = 'Username లేదా Password సరిగ్గా లేదు.';
+        msg.style.background = 'rgba(226,59,91,.1)';
+        msg.style.color = '#e23b5b';
+        msg.className = 'pay-modal-msg show';
+      }
+    });
+
+    /* ===================== POST PRODUCT ===================== */
+    function openPostModal() {
+      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf'].forEach(function (id) {
+        document.getElementById(id).value = '';
+      });
+      const msg = document.getElementById('postModalMsg');
+      msg.className = 'pay-modal-msg';
+      msg.textContent = '';
+      document.getElementById('postSubmitBtn').style.display = 'block';
+      document.getElementById('postSubmitBtn').textContent = 'పోస్ట్ చేయండి';
+      document.getElementById('postOverlay').classList.add('open');
+    }
+    function closePostModal() {
+      document.getElementById('postOverlay').classList.remove('open');
+    }
+
+    document.getElementById('postProductBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      openPostModal();
+    });
+    document.getElementById('postModalClose').addEventListener('click', closePostModal);
+    document.getElementById('postOverlay').addEventListener('click', function (e) {
+      if (e.target.id === 'postOverlay') closePostModal();
+    });
+
+    function addPostedProductToPage(p) {
+      // New posted products are shown with the same text in all 3 languages,
+      // since the admin form only collects one language of input.
+      PRODUCTS.latest.unshift({
+        id: p.id,
+        image: p.image || 'https://picsum.photos/400/250?random=' + Math.floor(Math.random() * 1000),
+        price: p.price,
+        badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
+        category: { te: 'కొత్త పోస్ట్', en: 'New Post', hi: 'नई पोस्ट' },
+        title: { te: p.title, en: p.title, hi: p.title },
+        desc: { te: p.description, en: p.description, hi: p.description },
+        fileLink: p.fileLink,
+        pdfLink: p.pdfLink
+      });
+      renderProducts();
+    }
+
+    document.getElementById('postSubmitBtn').addEventListener('click', function () {
+      const title = document.getElementById('postTitle').value.trim();
+      const fileLink = document.getElementById('postFileLink').value.trim();
+      const price = document.getElementById('postPrice').value.trim();
+      const description = document.getElementById('postDesc').value.trim();
+      const image = document.getElementById('postImage').value.trim();
+      const pdfLink = document.getElementById('postPdf').value.trim();
+      const msg = document.getElementById('postModalMsg');
+
+      if (!title || !fileLink || !price || !description) {
+        msg.textContent = 'దయచేసి హెడ్డింగ్, ఫైల్ లింక్, ధర, పూర్తి వివరాలు నింపండి.';
+        msg.style.background = 'rgba(226,59,91,.1)';
+        msg.style.color = '#e23b5b';
+        msg.className = 'pay-modal-msg show';
+        return;
+      }
+
+      const productPayload = {
+        id: 'user-' + Date.now(),
+        title: title,
+        fileLink: fileLink,
+        price: Number(price) || 0,
+        description: description,
+        image: image,
+        pdfLink: pdfLink,
+        timestamp: new Date().toISOString()
+      };
+
+      const submitBtn = document.getElementById('postSubmitBtn');
+      submitBtn.textContent = 'సేవ్ అవుతోంది...';
+
+      saveProductToSheet(productPayload)
+        .then(function () {
+          addPostedProductToPage(productPayload);
+          msg.textContent = '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది మరియు Google Sheet లో సేవ్ అయ్యింది!';
+          msg.style.background = 'rgba(14,169,107,.12)';
+          msg.style.color = '#0ea96b';
+          msg.className = 'pay-modal-msg show';
+          submitBtn.style.display = 'none';
+        })
+        .catch(function (err) {
+          console.error(err);
+          msg.textContent = '⚠️ Google Sheet కి సేవ్ చేయడంలో సమస్య వచ్చింది. SHEET_WEBAPP_URL సరిగ్గా సెట్ చేశారో చూడండి.';
+          msg.style.background = 'rgba(226,59,91,.1)';
+          msg.style.color = '#e23b5b';
+          msg.className = 'pay-modal-msg show';
+          submitBtn.textContent = 'పోస్ట్ చేయండి';
+        });
+    });
+
+    /* ===================== GOOGLE SHEET INTEGRATION ===================== */
+    function saveProductToSheet(payload) {
+      if (!SHEET_WEBAPP_URL || SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') === 0) {
+        return Promise.reject(new Error('SHEET_WEBAPP_URL not configured'));
+      }
+      // text/plain avoids a CORS preflight against Apps Script Web Apps.
+      return fetch(SHEET_WEBAPP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'create', product: payload })
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Sheet save failed: ' + res.status);
+        return res.json().catch(function () { return {}; });
+      });
+    }
+
+    function loadPostedProductsFromSheet() {
+      if (!SHEET_WEBAPP_URL || SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') === 0) return;
+      fetch(SHEET_WEBAPP_URL + '?action=list')
+        .then(function (res) { return res.json(); })
+        .then(function (rows) {
+          if (!Array.isArray(rows)) return;
+          rows.forEach(function (row) {
+            PRODUCTS.latest.unshift({
+              id: row.id || ('sheet-' + Math.random()),
+              image: row.image || 'https://picsum.photos/400/250?random=' + Math.floor(Math.random() * 1000),
+              price: Number(row.price) || 0,
+              badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
+              category: { te: 'కొత్త పోస్ట్', en: 'New Post', hi: 'नई पोस्ट' },
+              title: { te: row.title, en: row.title, hi: row.title },
+              desc: { te: row.description, en: row.description, hi: row.description },
+              fileLink: row.fileLink,
+              pdfLink: row.pdfLink
+            });
+          });
+          renderProducts();
+        })
+        .catch(function (err) { console.warn('Could not load posted products from sheet:', err); });
+    }
+
+    /* ===================== LANGUAGE SWITCHER ===================== */
+    document.getElementById('langSwitcher').addEventListener('change', function (e) {
+      setLanguage(e.target.value);
+    });
+
+    /* ===================== INIT ===================== */
+    updateAdminUI();
+    setLanguage('te');
+    loadPostedProductsFromSheet();
   </script>
 
 </body>
