@@ -162,6 +162,27 @@
       color: #ffb454;
     }
 
+    /* Category dropdowns (auto-built from Google Sheet) */
+    .menu-links li.has-sub > a { cursor: pointer; }
+    .menu-links .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 230px;
+      background: #291708;
+      list-style: none;
+      z-index: 1100;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      border-top: 2px solid #ffb454;
+    }
+    .menu-links li.has-sub:hover > .dropdown,
+    .menu-links li.has-sub.open > .dropdown { display: block; }
+    .menu-links .dropdown a { padding: 10px 16px; font-size: 13px; white-space: nowrap; }
+    .menu-links .dropdown li.dd-all a { color: #ffb454; font-weight: 600; border-bottom: 1px solid #4a2c14; }
+    .menu-links > li:nth-last-child(-n+2) > .dropdown { left: auto; right: 0; }
+    .no-results { grid-column: 1 / -1; text-align: center; color: #a1734f; padding: 30px 0; font-size: 14px; }
+
     .cover-pic {
       background: #0f1c30;
       text-align: center;
@@ -464,6 +485,21 @@
       font-family: 'Poppins', sans-serif;
     }
 
+    .pay-modal select {
+      width: 100%;
+      background: #fdf1e2;
+      border: 1.5px solid #f3dcc2;
+      color: #3d2b1f;
+      padding: 11px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 14px;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+    }
+    .pay-modal select:disabled { opacity: 0.6; cursor: not-allowed; }
+    .pay-btn:disabled { opacity: 0.7; cursor: wait; }
+
     .pay-modal textarea {
       resize: vertical;
       min-height: 80px;
@@ -603,16 +639,7 @@
     <!-- Category Bar -->
     <nav class="category-bar">
       <div class="container">
-        <ul class="menu-links">
-          <li><a href="#"><i class="fas fa-home"></i> <span>Home</span></a></li>
-          <li><a href="#">Flex Design PSD</a></li>
-          <li><a href="#">Wedding Albums (12x36)</a></li>
-          <li><a href="#">Telugu Banners</a></li>
-          <li><a href="#">Invitation Cards</a></li>
-          <li><a href="#">Visiting Cards</a></li>
-          <li><a href="#">PNG Backgrounds</a></li>
-          <li><a href="#">Video Projects</a></li>
-        </ul>
+        <ul class="menu-links" id="menuLinks"><!-- JS builds this from the "products list" sheet --></ul>
       </div>
     </nav>
   </header>
@@ -635,7 +662,7 @@
   <main class="container">
 
     <!-- Section: Latest PSD Templates -->
-    <div class="section-title">
+    <div class="section-title" id="sec-latest">
       <h3 data-i18n="latestTitle">⭐ LATEST PSD TEMPLATES</h3>
       <a href="#"><span data-i18n="viewAll">View All</span> <i class="fas fa-arrow-right"></i></a>
     </div>
@@ -643,7 +670,7 @@
     <div class="product-grid" id="grid-latest"></div>
 
     <!-- Section: Mega Packs / Bundles -->
-    <div class="section-title">
+    <div class="section-title" id="sec-bundles">
       <h3 data-i18n="bundlesTitle">⭐ POPULAR DESIGN BUNDLES</h3>
       <a href="#"><span data-i18n="exploreAll">Explore All</span> <i class="fas fa-arrow-right"></i></a>
     </div>
@@ -727,6 +754,12 @@
       <h3>కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి</h3>
       <p class="pay-modal-desc">ఈ వివరాలు వెబ్‌సైట్‌లో కనిపించడంతో పాటు మీ Google Sheet లో కూడా సేవ్ అవుతాయి.</p>
 
+      <label for="postMain">కేటగిరీ (Main Category)</label>
+      <select id="postMain"></select>
+
+      <label for="postSub">సబ్ కేటగిరీ (Sub Category)</label>
+      <select id="postSub" disabled></select>
+
       <label for="postTitle">ప్రొడక్ట్ హెడ్డింగ్ (Title)</label>
       <input type="text" id="postTitle" placeholder="ఉదా: Wedding Flex Banner PSD">
 
@@ -757,13 +790,28 @@
        ఈ URLని మీ డిప్లాయ్ చేసిన Google Apps Script Web App లింక్‌తో
        మార్చండి (సెటప్ స్టెప్స్ కోసం Code.gs ఫైల్ చూడండి).
        ========================================================= */
-    const SHEET_WEBAPP_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+    const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyftPqeRj7VnR-pD9FysRn6LQ0tKBhN7p0Lkm-GVpgnBDii4fgAHNzhmTJbQ3pKp1MQnw/exec';
 
     /* Basic front-end-only admin gate. NOTE: this is NOT secure server-side
        authentication — anyone who reads this file's source can see the
        credentials. It only prevents casual visitors from opening the post
        form. For real security, protect posting with a server-side check
        (e.g. verify a secret token inside the Apps Script itself). */
+    /* Code.gs లో SECRET_KEY పెడితే అదే పదం ఇక్కడ కూడా పెట్టండి (లేకపోతే ఖాళీగా వదలండి). */
+    const SHEET_SECRET_KEY = '';
+
+    /* షీట్ ఇంకా కనెక్ట్ కాకముందు నావిగేషన్ చూపించడానికి డిఫాల్ట్ కేటగిరీలు.
+       షీట్ కనెక్ట్ అయ్యాక "products list" షీట్ నుంచి ఇవి ఆటోమేటిక్ గా మారతాయి. */
+    const DEFAULT_CATEGORIES = [
+      { name: 'Album PSD', subs: ['Birthday Album PSD', 'Wedding Album PSD', 'Half Saree Function PSD', 'Other PSD'] },
+      { name: 'Flex & Banners', subs: ['Birthday Flex PSD', 'Wedding Flex PSD', 'Half Saree Flex PSD', 'Festival Flex PSD', 'Political Flex PSD', 'Movie Flex PSD', 'housewarming Flex PSD', 'Srandhanjali Flex PSD'] },
+      { name: 'Photo Frames', subs: ['Birthday Frame PSD', 'Wedding Frame PSD', 'Half Saree Frame PSD', 'Festival Frame PSD', 'Political Frame PSD', 'Srandhanjali Frame PSD'] },
+      { name: 'Invitation Card', subs: ['Birthday Invitation Card PSD', 'Wedding Invitation Card PSD', 'Half Saree Invitation Card PSD', 'Other PSD'] },
+      { name: 'Visiting cards', subs: [] },
+      { name: 'PNG & Backgrounds', subs: [] },
+      { name: 'Video Projects', subs: ['Birthday Invitations', 'Wedding Invitations', 'Half Saree Invitations', 'Other PSD'] }
+    ];
+
     const ADMIN_USERNAME = 'admin';
     const ADMIN_PASSWORD = 'divine@123';
     let isAdminLoggedIn = false;
@@ -1000,27 +1048,152 @@
     let SELECTED_PRICE = 0;
     let SELECTED_PRODUCT = null;
 
-    /* ---- Render product cards for the current language ---- */
+    /* ===================== STATE + HELPERS ===================== */
+    let CATEGORIES = DEFAULT_CATEGORIES.map(function (c) { return { name: c.name, subs: c.subs.slice() }; });
+    let SHEET_PRODUCTS = [];     // Google Sheet ("Product Catalog") నుంచి వచ్చినవి
+    let SHEET_LOADED = false;
+    let FILTER = { main: '', sub: '' };
+
+    function esc(v) {
+      return String(v === undefined || v === null ? '' : v).replace(/[&<>"']/g, function (ch) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+      });
+    }
+    function sheetConfigured() {
+      return SHEET_WEBAPP_URL && SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') !== 0;
+    }
+    function hashNum(str) {
+      let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+      return Math.abs(h) % 1000;
+    }
+    /* Drive share లింక్ ని <img> లో కనిపించే లింక్ గా మారుస్తుంది; లేకపోతే placeholder */
+    function fixImage(url, seed) {
+      url = (url || '').trim();
+      const m = url.match(/drive\.google\.com\/file\/d\/([^\/?#]+)/) ||
+                (/drive\.google\.com/.test(url) && url.match(/[?&]id=([^&#]+)/));
+      if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w800';
+      if (/^https?:\/\//i.test(url)) return url;
+      return 'https://picsum.photos/400/250?random=' + hashNum(seed || 'x');
+    }
+    function toProduct(row) {
+      const label = row.sub || row.main || 'New';
+      return {
+        id: row.id, main: row.main || '', sub: row.sub || '',
+        image: fixImage(row.image, row.id),
+        price: Number(row.price) || 0,
+        badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
+        category: { te: label, en: label, hi: label },
+        title: { te: row.title, en: row.title, hi: row.title },
+        desc: { te: row.description || '', en: row.description || '', hi: row.description || '' },
+        pdfLink: row.pdfLink || ''
+      };
+    }
+    function allProducts() {
+      return SHEET_LOADED ? SHEET_PRODUCTS : PRODUCTS.latest.concat(PRODUCTS.bundles);
+    }
+
+    /* ===================== CATEGORY NAV (dropdowns) ===================== */
+    function buildNav() {
+      const ul = document.getElementById('menuLinks');
+      let html = '<li><a href="#" data-home="1"><i class="fas fa-home"></i> <span>' + esc(UI_TEXT[CURRENT_LANG].navHome) + '</span></a></li>';
+      CATEGORIES.forEach(function (c, i) {
+        const has = c.subs.length > 0;
+        html += '<li class="' + (has ? 'has-sub' : '') + '"><a href="#" data-c="' + i + '">' + esc(c.name) +
+                (has ? ' <i class="fas fa-caret-down"></i>' : '') + '</a>';
+        if (has) {
+          html += '<ul class="dropdown"><li class="dd-all"><a href="#" data-c="' + i + '" data-all="1">All ' + esc(c.name) + '</a></li>';
+          c.subs.forEach(function (sname, j) {
+            html += '<li><a href="#" data-c="' + i + '" data-s="' + j + '">' + esc(sname) + '</a></li>';
+          });
+          html += '</ul>';
+        }
+        html += '</li>';
+      });
+      ul.innerHTML = html;
+    }
+    function closeMenus() {
+      document.querySelectorAll('.menu-links li.open').forEach(function (li) { li.classList.remove('open'); });
+    }
+    document.getElementById('menuLinks').addEventListener('click', function (e) {
+      const a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      if (a.dataset.home) {
+        FILTER = { main: '', sub: '' };
+        closeMenus();
+      } else {
+        const c = CATEGORIES[Number(a.dataset.c)];
+        if (!c) return;
+        if (a.dataset.s !== undefined) {
+          FILTER = { main: c.name, sub: c.subs[Number(a.dataset.s)] };
+          closeMenus();
+        } else {
+          FILTER = { main: c.name, sub: '' };
+          const li = a.parentElement;
+          if (li.classList.contains('has-sub') && !a.dataset.all) {
+            const wasOpen = li.classList.contains('open');
+            closeMenus();
+            if (!wasOpen) li.classList.add('open');   // మొబైల్ లో టచ్ కి డ్రాప్‌డౌన్ తెరవడానికి
+          } else {
+            closeMenus();
+          }
+        }
+      }
+      renderProducts();
+      const main = document.querySelector('main');
+      window.scrollTo({ top: main.getBoundingClientRect().top + window.scrollY - 130, behavior: 'smooth' });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.menu-links')) closeMenus();
+    });
+
+    /* ===================== RENDER PRODUCT CARDS ===================== */
     function renderProducts() {
-      Object.keys(PRODUCTS).forEach(function (groupKey) {
+      const all = allProducts();
+      let groups, filtered = !!FILTER.main;
+      if (filtered) {
+        groups = { latest: all.filter(function (p) {
+          return p.main === FILTER.main && (!FILTER.sub || p.sub === FILTER.sub);
+        }), bundles: [] };
+      } else if (SHEET_LOADED) {
+        groups = { latest: all.slice(0, 8), bundles: all.slice(8) };
+      } else {
+        groups = PRODUCTS;
+      }
+
+      // Section headings
+      const dict = UI_TEXT[CURRENT_LANG];
+      const latestHead = document.querySelector('#sec-latest h3');
+      latestHead.textContent = filtered ? '⭐ ' + FILTER.main + (FILTER.sub ? ' › ' + FILTER.sub : '') : dict.latestTitle;
+      document.querySelector('#sec-latest a').style.display = filtered ? 'none' : '';
+      document.getElementById('sec-bundles').style.display = (!filtered && groups.bundles.length) ? '' : 'none';
+      document.getElementById('grid-bundles').style.display = (!filtered && groups.bundles.length) ? '' : 'none';
+
+      ['latest', 'bundles'].forEach(function (groupKey) {
         const mount = document.getElementById('grid-' + groupKey);
-        if (!mount) return;
-        mount.innerHTML = PRODUCTS[groupKey].map(function (p) {
+        const list = groups[groupKey] || [];
+        if (!list.length) {
+          mount.innerHTML = (groupKey === 'latest')
+            ? '<p class="no-results">' + (filtered ? 'ఈ కేటగిరీలో ఇంకా ప్రొడక్ట్స్ లేవు. / No products in this category yet.' : '') + '</p>'
+            : '';
+          return;
+        }
+        mount.innerHTML = list.map(function (p) {
           return (
             '<article class="card">' +
               '<div class="card-thumb">' +
-                '<span class="badge">' + p.badge[CURRENT_LANG] + '</span>' +
-                '<img src="' + p.image + '" alt="Design Preview">' +
+                '<span class="badge">' + esc(p.badge[CURRENT_LANG]) + '</span>' +
+                '<img src="' + esc(p.image) + '" alt="Design Preview" loading="lazy">' +
               '</div>' +
               '<div class="card-content">' +
-                '<span class="card-category">' + p.category[CURRENT_LANG] + '</span>' +
-                '<h4 class="card-title">' + p.title.en + '</h4>' +
-                '<p class="card-desc">' + p.desc[CURRENT_LANG] + '</p>' +
+                '<span class="card-category">' + esc(p.category[CURRENT_LANG]) + '</span>' +
+                '<h4 class="card-title">' + esc(p.title.en) + '</h4>' +
+                '<p class="card-desc">' + esc(p.desc[CURRENT_LANG]) + '</p>' +
                 '<div class="card-footer-row">' +
-                  '<span class="card-price">' + p.price + '</span>' +
+                  '<span class="card-price">' + esc(p.price) + '</span>' +
                 '</div>' +
                 '<div class="card-action">' +
-                  '<button type="button" class="btn-view" data-product-id="' + p.id + '">' + UI_TEXT[CURRENT_LANG].buyNow + '</button>' +
+                  '<button type="button" class="btn-view" data-product-id="' + esc(p.id) + '">' + esc(dict.buyNow) + '</button>' +
                 '</div>' +
               '</div>' +
             '</article>'
@@ -1032,7 +1205,7 @@
       document.querySelectorAll('.btn-view').forEach(function (btn) {
         btn.addEventListener('click', function () {
           const id = btn.getAttribute('data-product-id');
-          const product = PRODUCTS.latest.concat(PRODUCTS.bundles).find(function (p) { return p.id === id; });
+          const product = allProducts().find(function (p) { return p.id === id; });
           if (product) openBuyModal(product);
         });
       });
@@ -1065,6 +1238,7 @@
       CURRENT_LANG = lang;
       document.getElementById('langSwitcher').value = lang;
       applyTranslations();
+      buildNav();
       renderProducts();
     }
 
@@ -1094,27 +1268,44 @@
       if (e.target.id === 'payOverlay') closePayModal();
     });
 
+    const ORDER_FAIL = {
+      te: '⚠️ ఆర్డర్ సేవ్ చేయడంలో సమస్య వచ్చింది. కాసేపటి తర్వాత మళ్ళీ ప్రయత్నించండి.',
+      en: '⚠️ Could not save your order. Please try again in a moment.',
+      hi: '⚠️ ऑर्डर सेव नहीं हो सका। कृपया थोड़ी देर बाद पुनः प्रयास करें।'
+    };
+
+    function showMsg(el, text, ok) {
+      el.textContent = text;
+      el.style.background = ok ? 'rgba(14,169,107,.12)' : 'rgba(226,59,91,.1)';
+      el.style.color = ok ? '#0ea96b' : '#e23b5b';
+      el.className = 'pay-modal-msg show';
+    }
+
     document.getElementById('payNowBtn').addEventListener('click', function () {
       const email = document.getElementById('payerEmail').value.trim();
       const msg = document.getElementById('payModalMsg');
+      const btn = document.getElementById('payNowBtn');
       const dict = UI_TEXT[CURRENT_LANG];
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        msg.textContent = dict.invalidEmail;
-        msg.style.background = 'rgba(226,59,91,.1)';
-        msg.style.color = '#e23b5b';
-        msg.className = 'pay-modal-msg show';
+        showMsg(msg, dict.invalidEmail, false);
         return;
       }
-      /* NOTE: ఇక్కడ నిజమైన పేమెంట్ గేట్‌వే (Razorpay వంటివి) ఇంటిగ్రేట్ చేయాలి.
-         ఇది కేవలం UI డెమో — నిజమైన చెల్లింపు ప్రాసెసింగ్ కాదు. */
-      document.getElementById('payNowBtn').textContent = dict.processing;
-      setTimeout(function () {
-        msg.textContent = dict.orderMsg(email);
-        msg.style.background = 'rgba(14,169,107,.12)';
-        msg.style.color = '#0ea96b';
-        msg.className = 'pay-modal-msg show';
-        document.getElementById('payNowBtn').style.display = 'none';
-      }, 900);
+      /* NOTE: నిజమైన పేమెంట్ గేట్‌వే (Razorpay వంటివి) ఇంకా ఇంటిగ్రేట్ చేయలేదు.
+         ప్రస్తుతం కొనుగోలు వివరాలు "orders" షీట్ లో Status = Pending గా సేవ్ అవుతాయి. */
+      btn.textContent = dict.processing;
+      btn.disabled = true;
+      saveOrderToSheet({ productId: SELECTED_PRODUCT.id, email: email })
+        .then(function () {
+          showMsg(msg, dict.orderMsg(email), true);
+          btn.style.display = 'none';
+          btn.disabled = false;
+        })
+        .catch(function (err) {
+          console.error(err);
+          showMsg(msg, ORDER_FAIL[CURRENT_LANG], false);
+          btn.textContent = dict.payNow;
+          btn.disabled = false;
+        });
     });
 
     /* ===================== ADMIN LOGIN ===================== */
@@ -1175,15 +1366,44 @@
     });
 
     /* ===================== POST PRODUCT ===================== */
+    function fillPostCategories() {
+      const m = document.getElementById('postMain');
+      m.innerHTML = '<option value="">— కేటగిరీ ఎంచుకోండి —</option>' +
+        CATEGORIES.map(function (c, i) { return '<option value="' + i + '">' + esc(c.name) + '</option>'; }).join('');
+      fillPostSubs();
+    }
+    function fillPostSubs() {
+      const s = document.getElementById('postSub');
+      const idx = document.getElementById('postMain').value;
+      if (idx === '') {
+        s.innerHTML = '<option value="">— ముందు కేటగిరీ ఎంచుకోండి —</option>';
+        s.disabled = true;
+        return;
+      }
+      const c = CATEGORIES[Number(idx)];
+      if (!c.subs.length) {
+        s.innerHTML = '<option value="">— ఈ కేటగిరీకి సబ్ కేటగిరీ లేదు —</option>';
+        s.disabled = true;
+        return;
+      }
+      s.disabled = false;
+      s.innerHTML = '<option value="">— సబ్ కేటగిరీ ఎంచుకోండి —</option>' +
+        c.subs.map(function (x, j) { return '<option value="' + j + '">' + esc(x) + '</option>'; }).join('');
+    }
+    document.getElementById('postMain').addEventListener('change', fillPostSubs);
+
     function openPostModal() {
       ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf'].forEach(function (id) {
         document.getElementById(id).value = '';
       });
+      fillPostCategories();
       const msg = document.getElementById('postModalMsg');
       msg.className = 'pay-modal-msg';
       msg.textContent = '';
-      document.getElementById('postSubmitBtn').style.display = 'block';
-      document.getElementById('postSubmitBtn').textContent = 'పోస్ట్ చేయండి';
+      const btn = document.getElementById('postSubmitBtn');
+      btn.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'పోస్ట్ చేయండి';
       document.getElementById('postOverlay').classList.add('open');
     }
     function closePostModal() {
@@ -1199,24 +1419,9 @@
       if (e.target.id === 'postOverlay') closePostModal();
     });
 
-    function addPostedProductToPage(p) {
-      // New posted products are shown with the same text in all 3 languages,
-      // since the admin form only collects one language of input.
-      PRODUCTS.latest.unshift({
-        id: p.id,
-        image: p.image || 'https://picsum.photos/400/250?random=' + Math.floor(Math.random() * 1000),
-        price: p.price,
-        badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
-        category: { te: 'కొత్త పోస్ట్', en: 'New Post', hi: 'नई पोस्ट' },
-        title: { te: p.title, en: p.title, hi: p.title },
-        desc: { te: p.description, en: p.description, hi: p.description },
-        fileLink: p.fileLink,
-        pdfLink: p.pdfLink
-      });
-      renderProducts();
-    }
-
     document.getElementById('postSubmitBtn').addEventListener('click', function () {
+      const mainIdx = document.getElementById('postMain').value;
+      const subIdx = document.getElementById('postSub').value;
       const title = document.getElementById('postTitle').value.trim();
       const fileLink = document.getElementById('postFileLink').value.trim();
       const price = document.getElementById('postPrice').value.trim();
@@ -1224,86 +1429,86 @@
       const image = document.getElementById('postImage').value.trim();
       const pdfLink = document.getElementById('postPdf').value.trim();
       const msg = document.getElementById('postModalMsg');
+      const submitBtn = document.getElementById('postSubmitBtn');
 
+      if (mainIdx === '') {
+        showMsg(msg, 'దయచేసి ముందు కేటగిరీ ఎంచుకోండి.', false);
+        return;
+      }
+      const cat = CATEGORIES[Number(mainIdx)];
+      if (cat.subs.length && subIdx === '') {
+        showMsg(msg, 'దయచేసి సబ్ కేటగిరీ ఎంచుకోండి.', false);
+        return;
+      }
       if (!title || !fileLink || !price || !description) {
-        msg.textContent = 'దయచేసి హెడ్డింగ్, ఫైల్ లింక్, ధర, పూర్తి వివరాలు నింపండి.';
-        msg.style.background = 'rgba(226,59,91,.1)';
-        msg.style.color = '#e23b5b';
-        msg.className = 'pay-modal-msg show';
+        showMsg(msg, 'దయచేసి హెడ్డింగ్, ఫైల్ లింక్, ధర, పూర్తి వివరాలు నింపండి.', false);
         return;
       }
 
       const productPayload = {
-        id: 'user-' + Date.now(),
         title: title,
+        main: cat.name,
+        sub: cat.subs.length ? cat.subs[Number(subIdx)] : '',
         fileLink: fileLink,
         price: Number(price) || 0,
         description: description,
         image: image,
-        pdfLink: pdfLink,
-        timestamp: new Date().toISOString()
+        pdfLink: pdfLink
       };
 
-      const submitBtn = document.getElementById('postSubmitBtn');
       submitBtn.textContent = 'సేవ్ అవుతోంది...';
+      submitBtn.disabled = true;
 
-      saveProductToSheet(productPayload)
-        .then(function () {
-          addPostedProductToPage(productPayload);
-          msg.textContent = '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది మరియు Google Sheet లో సేవ్ అయ్యింది!';
-          msg.style.background = 'rgba(14,169,107,.12)';
-          msg.style.color = '#0ea96b';
-          msg.className = 'pay-modal-msg show';
+      postToSheet({ action: 'create', key: SHEET_SECRET_KEY, product: productPayload })
+        .then(function (res) {
+          showMsg(msg, '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది (ID: ' + (res.id || '') + ') మరియు Google Sheet లో సేవ్ అయ్యింది!', true);
           submitBtn.style.display = 'none';
+          loadFromSheet();   // షీట్ నుంచి తాజా లిస్ట్ మళ్ళీ తెచ్చుకుంటాం → వెబ్ + షీట్ ఎప్పుడూ ఒకేలా ఉంటాయి
         })
         .catch(function (err) {
           console.error(err);
-          msg.textContent = '⚠️ Google Sheet కి సేవ్ చేయడంలో సమస్య వచ్చింది. SHEET_WEBAPP_URL సరిగ్గా సెట్ చేశారో చూడండి.';
-          msg.style.background = 'rgba(226,59,91,.1)';
-          msg.style.color = '#e23b5b';
-          msg.className = 'pay-modal-msg show';
+          showMsg(msg, '⚠️ Google Sheet కి సేవ్ చేయడంలో సమస్య వచ్చింది. SHEET_WEBAPP_URL / కేటగిరీ సరిగ్గా ఉన్నాయో చూడండి.', false);
           submitBtn.textContent = 'పోస్ట్ చేయండి';
+          submitBtn.disabled = false;
         });
     });
 
     /* ===================== GOOGLE SHEET INTEGRATION ===================== */
-    function saveProductToSheet(payload) {
-      if (!SHEET_WEBAPP_URL || SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') === 0) {
-        return Promise.reject(new Error('SHEET_WEBAPP_URL not configured'));
-      }
+    function postToSheet(body) {
+      if (!sheetConfigured()) return Promise.reject(new Error('SHEET_WEBAPP_URL not configured'));
       // text/plain avoids a CORS preflight against Apps Script Web Apps.
       return fetch(SHEET_WEBAPP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'create', product: payload })
+        body: JSON.stringify(body)
       }).then(function (res) {
-        if (!res.ok) throw new Error('Sheet save failed: ' + res.status);
-        return res.json().catch(function () { return {}; });
+        if (!res.ok) throw new Error('Sheet request failed: ' + res.status);
+        return res.json();
+      }).then(function (data) {
+        if (!data || data.status !== 'ok') throw new Error((data && data.message) || 'Sheet error');
+        return data;
       });
     }
+    function saveOrderToSheet(order) {
+      return postToSheet({ action: 'order', productId: order.productId, email: order.email });
+    }
 
-    function loadPostedProductsFromSheet() {
-      if (!SHEET_WEBAPP_URL || SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') === 0) return;
-      fetch(SHEET_WEBAPP_URL + '?action=list')
+    /* "products list" (కేటగిరీలు) + "Product Catalog" (ప్రొడక్ట్స్) రెండూ షీట్ నుంచి లోడ్ అవుతాయి */
+    function loadFromSheet() {
+      if (!sheetConfigured()) return Promise.resolve();
+      return fetch(SHEET_WEBAPP_URL + '?action=list')
         .then(function (res) { return res.json(); })
-        .then(function (rows) {
-          if (!Array.isArray(rows)) return;
-          rows.forEach(function (row) {
-            PRODUCTS.latest.unshift({
-              id: row.id || ('sheet-' + Math.random()),
-              image: row.image || 'https://picsum.photos/400/250?random=' + Math.floor(Math.random() * 1000),
-              price: Number(row.price) || 0,
-              badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
-              category: { te: 'కొత్త పోస్ట్', en: 'New Post', hi: 'नई पोस्ट' },
-              title: { te: row.title, en: row.title, hi: row.title },
-              desc: { te: row.description, en: row.description, hi: row.description },
-              fileLink: row.fileLink,
-              pdfLink: row.pdfLink
-            });
-          });
+        .then(function (data) {
+          if (!data || data.status !== 'ok') throw new Error((data && data.message) || 'Bad response');
+          if (Array.isArray(data.categories) && data.categories.length) CATEGORIES = data.categories;
+          if (Array.isArray(data.products)) {
+            SHEET_PRODUCTS = data.products.map(toProduct);
+            SHEET_LOADED = true;
+          }
+          buildNav();
           renderProducts();
         })
-        .catch(function (err) { console.warn('Could not load posted products from sheet:', err); });
+        .catch(function (err) { console.warn('Could not load data from sheet:', err); });
     }
 
     /* ===================== LANGUAGE SWITCHER ===================== */
@@ -1314,7 +1519,7 @@
     /* ===================== INIT ===================== */
     updateAdminUI();
     setLanguage('te');
-    loadPostedProductsFromSheet();
+    loadFromSheet();
   </script>
 
 </body>
