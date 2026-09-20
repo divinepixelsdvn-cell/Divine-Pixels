@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="te">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -585,6 +585,7 @@
       color: #ffffff;
     }
 
+    .footer-bottom .lang-switch { display: inline-flex; margin-bottom: 14px; }
     .footer-bottom {
       text-align: center;
       padding-top: 20px;
@@ -605,7 +606,26 @@
         font-size: 22px;
       }
     }
-  </style>
+  
+    /* ===== డౌన్‌లోడ్ పోర్టల్ (ఈమెయిల్ లింక్ ?d=TOKEN) ===== */
+    .dl-portal { position: fixed; inset: 0; z-index: 99999; overflow: auto; background: #fdf6ec; padding: 24px 12px; }
+    .dl-card { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #e6d5c0; border-radius: 10px; overflow: hidden; }
+    .dl-head { display: flex; align-items: center; gap: 18px; padding: 14px 22px; background: #fff7ec; border-bottom: 1px solid #e6d5c0; }
+    .dl-head h1 { font-size: 22px; margin: 0; color: #3d2b1f; }
+    .dl-head h1 span { color: #ff8a00; }
+    .dl-head strong { font-size: 17px; }
+    .dl-body { padding: 22px; }
+    .dl-title { text-align: center; font-size: 21px; margin-bottom: 18px; }
+    .dl-table { width: 100%; border-collapse: collapse; }
+    .dl-table th, .dl-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 15px; word-break: break-word; }
+    .dl-table th { background: #fdf6ec; }
+    .dl-btn { display: inline-block; padding: 8px 16px; background: #ff8a00; color: #fff !important; border-radius: 6px; font-size: 14px; white-space: nowrap; }
+    .dl-social { text-align: center; margin-top: 22px; }
+    .dl-social a { display: inline-block; margin: 4px; padding: 10px 18px; border-radius: 6px; color: #fff; font-size: 14px; }
+    .dl-foot { text-align: center; padding: 14px; font-size: 13px; color: #777; }
+    .dl-msg { text-align: center; padding: 30px 10px; font-size: 16px; }
+    @media (max-width: 600px) { .dl-table th:nth-child(2), .dl-table td:nth-child(2) { display: none; } }
+</style>
 </head>
 <body>
 
@@ -623,15 +643,7 @@
         <input type="text" id="searchInput" placeholder="Search (e.g. Wedding Flex, Telugu PSD, Birthday)...">
       </div>
       <div class="user-actions">
-        <div class="lang-switch">
-          <i class="fas fa-globe"></i>
-          <select id="langSwitcher">
-            <option value="te">తెలుగు</option>
-            <option value="en">English</option>
-            <option value="hi">हिंदी</option>
-          </select>
-        </div>
-        <a href="#" id="myAccountBtn"><i class="fas fa-user"></i> <span id="myAccountLabel">My Account</span></a>
+        <a href="#" id="myAccountBtn" style="display:none"><i class="fas fa-user"></i> <span id="myAccountLabel">My Account</span></a>
         <a href="#" id="postProductBtn" class="admin-only"><i class="fas fa-plus"></i> <span>Post Product</span></a>
       </div>
     </div>
@@ -714,10 +726,30 @@
         </div>
       </div>
       <div class="footer-bottom">
+        <div class="lang-switch" title="Product description language">
+          <i class="fas fa-globe"></i>
+          <select id="langSwitcher">
+            <option value="en">English</option>
+            <option value="te">తెలుగు</option>
+            <option value="hi">हिंदी</option>
+          </select>
+        </div>
         <p data-i18n="copyright">© 2026 Divine Pixels. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
+  <!-- Download Portal (ఈమెయిల్ లింక్ నుంచి) -->
+  <div id="dlPortal" class="dl-portal" style="display:none">
+    <div class="dl-card">
+      <div class="dl-head">
+        <a href="./"><h1>DIVINE<span>PIXELS</span></h1></a>
+        <strong>Divine Pixels Download Portal</strong>
+      </div>
+      <div class="dl-body" id="dlBody"><div class="dl-msg">Loading…</div></div>
+      <div class="dl-foot">All Rights Reserved © <a href="./" style="color:#ff8a00;">divinepixels.in</a></div>
+    </div>
+  </div>
+
   <!-- Payment / Buy Modal -->
   <div class="pay-overlay" id="payOverlay">
     <div class="pay-modal">
@@ -793,13 +825,7 @@
        ========================================================= */
     const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxc2sU8mz54jVPM01hlZAjBA_Hg5kgA3zFTNxLEeXcpevVPcjtxYwOh2B8hH0eGMEOe/exec';
 
-    /* Basic front-end-only admin gate. NOTE: this is NOT secure server-side
-       authentication — anyone who reads this file's source can see the
-       credentials. It only prevents casual visitors from opening the post
-       form. For real security, protect posting with a server-side check
-       (e.g. verify a secret token inside the Apps Script itself). */
-    /* Code.gs లో SECRET_KEY పెడితే అదే పదం ఇక్కడ కూడా పెట్టండి (లేకపోతే ఖాళీగా వదలండి). */
-    const SHEET_SECRET_KEY = '';
+    /* అడ్మిన్ పాస్‌వర్డ్ ఇక్కడ ఉండదు — Apps Script లోని Script Property 'ADMIN_KEY' లో సర్వర్ వైపు చెక్ అవుతుంది. */
 
     /* షీట్ ఇంకా కనెక్ట్ కాకముందు నావిగేషన్ చూపించడానికి డిఫాల్ట్ కేటగిరీలు.
        షీట్ కనెక్ట్ అయ్యాక "products list" షీట్ నుంచి ఇవి ఆటోమేటిక్ గా మారతాయి. */
@@ -813,9 +839,8 @@
       { name: 'Video Projects', subs: ['Birthday Invitations', 'Wedding Invitations', 'Half Saree Invitations', 'Other PSD'] }
     ];
 
-    const ADMIN_USERNAME = 'admin';
-    const ADMIN_PASSWORD = 'divine@123';
     let isAdminLoggedIn = false;
+    let ADMIN_KEY = '';   // లాగిన్ అయ్యాక మెమరీలో మాత్రమే ఉంటుంది
 
   </script>
 
@@ -1085,7 +1110,7 @@
         badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
         category: { te: label, en: label, hi: label },
         title: { te: row.title, en: row.title, hi: row.title },
-        desc: { te: row.description || '', en: row.description || '', hi: row.description || '' },
+        desc: { te: row.descTe || row.description || '', en: row.description || '', hi: row.descHi || row.description || '' },
         pdfLink: row.pdfLink || ''
       };
     }
@@ -1096,7 +1121,7 @@
     /* ===================== CATEGORY NAV (dropdowns) ===================== */
     function buildNav() {
       const ul = document.getElementById('menuLinks');
-      let html = '<li><a href="#" data-home="1"><i class="fas fa-home"></i> <span>' + esc(UI_TEXT[CURRENT_LANG].navHome) + '</span></a></li>';
+      let html = '<li><a href="#" data-home="1"><i class="fas fa-home"></i> <span>' + esc(UI_TEXT.en.navHome) + '</span></a></li>';
       CATEGORIES.forEach(function (c, i) {
         const has = c.subs.length > 0;
         html += '<li class="' + (has ? 'has-sub' : '') + '"><a href="#" data-c="' + i + '">' + esc(c.name) +
@@ -1163,7 +1188,7 @@
       }
 
       // Section headings
-      const dict = UI_TEXT[CURRENT_LANG];
+      const dict = UI_TEXT.en;
       const latestHead = document.querySelector('#sec-latest h3');
       latestHead.textContent = filtered ? '⭐ ' + FILTER.main + (FILTER.sub ? ' › ' + FILTER.sub : '') : dict.latestTitle;
       document.querySelector('#sec-latest a').style.display = filtered ? 'none' : '';
@@ -1183,11 +1208,11 @@
           return (
             '<article class="card">' +
               '<div class="card-thumb">' +
-                '<span class="badge">' + esc(p.badge[CURRENT_LANG]) + '</span>' +
+                '<span class="badge">' + esc(p.badge.en) + '</span>' +
                 '<img src="' + esc(p.image) + '" alt="Design Preview" loading="lazy">' +
               '</div>' +
               '<div class="card-content">' +
-                '<span class="card-category">' + esc(p.category[CURRENT_LANG]) + '</span>' +
+                '<span class="card-category">' + esc(p.category.en) + '</span>' +
                 '<h4 class="card-title">' + esc(p.title.en) + '</h4>' +
                 '<p class="card-desc">' + esc(p.desc[CURRENT_LANG]) + '</p>' +
                 '<div class="card-footer-row">' +
@@ -1214,7 +1239,7 @@
 
     /* ---- Apply translations to all static [data-i18n] elements ---- */
     function applyTranslations() {
-      const dict = UI_TEXT[CURRENT_LANG];
+      const dict = UI_TEXT.en;
       document.documentElement.lang = dict.htmlLang;
 
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
@@ -1256,7 +1281,7 @@
       msg.textContent = '';
       const payBtn = document.getElementById('payNowBtn');
       payBtn.style.display = 'block';
-      payBtn.textContent = UI_TEXT[CURRENT_LANG].payNow;
+      payBtn.textContent = UI_TEXT.en.payNow;
       document.getElementById('payOverlay').classList.add('open');
     }
 
@@ -1286,7 +1311,7 @@
       const email = document.getElementById('payerEmail').value.trim();
       const msg = document.getElementById('payModalMsg');
       const btn = document.getElementById('payNowBtn');
-      const dict = UI_TEXT[CURRENT_LANG];
+      const dict = UI_TEXT.en;
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showMsg(msg, dict.invalidEmail, false);
         return;
@@ -1307,32 +1332,32 @@
             prefill: { email: email },
             theme: { color: '#ff8a00' },
             handler: function (r) {
-              showMsg(msg, 'Payment verify అవుతోంది…', true);
+              showMsg(msg, 'Verifying your payment…', true);
               postToSheet({
                 action: 'verify',
                 razorpay_order_id: r.razorpay_order_id,
                 razorpay_payment_id: r.razorpay_payment_id,
                 razorpay_signature: r.razorpay_signature
               }).then(function () {
-                showMsg(msg, '✅ పేమెంట్ విజయవంతం! డౌన్‌లోడ్ లింక్ ' + email + ' కి పంపాము (Spam ఫోల్డర్ కూడా చూడండి).', true);
+                showMsg(msg, '✅ Payment successful! The download link has been sent to ' + email + ' (please check your Spam folder too).', true);
                 btn.style.display = 'none';
                 btn.disabled = false;
               }).catch(function (err) {
                 console.error(err);
-                showMsg(msg, '⚠️ పేమెంట్ అయింది కానీ verify లో సమస్య. Payment ID: ' + r.razorpay_payment_id + ' తో మమ్మల్ని సంప్రదించండి.', false);
+                showMsg(msg, '⚠️ Payment received but verification failed. Please contact support@divinepixels.in with Payment ID: ' + r.razorpay_payment_id, false);
               });
             },
             modal: { ondismiss: reset }
           });
           rzp.on('payment.failed', function () {
-            showMsg(msg, '❌ పేమెంట్ విఫలమైంది. మళ్ళీ ప్రయత్నించండి.', false);
+            showMsg(msg, '❌ Payment failed. Please try again.', false);
             reset();
           });
           rzp.open();
         })
         .catch(function (err) {
           console.error(err);
-          showMsg(msg, ORDER_FAIL[CURRENT_LANG], false);
+          showMsg(msg, ORDER_FAIL.en, false);
           reset();
         });
     });
@@ -1365,7 +1390,7 @@
     document.getElementById('myAccountBtn').addEventListener('click', function (e) {
       e.preventDefault();
       if (isAdminLoggedIn) {
-        isAdminLoggedIn = false;
+        isAdminLoggedIn = false; ADMIN_KEY = "";
         updateAdminUI();
       } else {
         openLoginModal();
@@ -1378,20 +1403,25 @@
     });
 
     document.getElementById('loginSubmitBtn').addEventListener('click', function () {
-      const u = document.getElementById('loginUsername').value.trim();
       const p = document.getElementById('loginPassword').value.trim();
       const msg = document.getElementById('loginModalMsg');
-      if (u === ADMIN_USERNAME && p === ADMIN_PASSWORD) {
-        isAdminLoggedIn = true;
-        updateAdminUI();
-        closeLoginModal();
-        openPostModal();
-      } else {
-        msg.textContent = 'Username లేదా Password సరిగ్గా లేదు.';
-        msg.style.background = 'rgba(226,59,91,.1)';
-        msg.style.color = '#e23b5b';
-        msg.className = 'pay-modal-msg show';
-      }
+      const btn = document.getElementById('loginSubmitBtn');
+      btn.disabled = true;
+      postToSheet({ action: 'login', key: p })
+        .then(function () {
+          ADMIN_KEY = p;
+          isAdminLoggedIn = true;
+          updateAdminUI();
+          closeLoginModal();
+          openPostModal();
+        })
+        .catch(function () {
+          msg.textContent = 'Password సరిగ్గా లేదు.';
+          msg.style.background = 'rgba(226,59,91,.1)';
+          msg.style.color = '#e23b5b';
+          msg.className = 'pay-modal-msg show';
+        })
+        .then(function () { btn.disabled = false; });
     });
 
     /* ===================== POST PRODUCT ===================== */
@@ -1488,7 +1518,7 @@
       submitBtn.textContent = 'సేవ్ అవుతోంది...';
       submitBtn.disabled = true;
 
-      postToSheet({ action: 'create', key: SHEET_SECRET_KEY, product: productPayload })
+      postToSheet({ action: 'create', key: ADMIN_KEY, product: productPayload })
         .then(function (res) {
           showMsg(msg, '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది (ID: ' + (res.id || '') + ') మరియు Google Sheet లో సేవ్ అయ్యింది!', true);
           submitBtn.style.display = 'none';
@@ -1543,12 +1573,60 @@
     /* ===================== LANGUAGE SWITCHER ===================== */
     document.getElementById('langSwitcher').addEventListener('change', function (e) {
       setLanguage(e.target.value);
+      try { localStorage.setItem('dp_lang', e.target.value); } catch (x) {}
     });
 
     /* ===================== INIT ===================== */
     updateAdminUI();
-    setLanguage('te');
+    (function () {
+      // My Account (అడ్మిన్ లాగిన్) కస్టమర్లకు కనిపించదు. మీ బ్రౌజర్ లో ఒకసారి  ?admin  తో సైట్ తెరిస్తే ఇక్కడ కనిపిస్తుంది.
+      try {
+        const q = new URLSearchParams(location.search);
+        if (q.get('admin') === 'off') localStorage.removeItem('dp_owner');
+        else if (q.has('admin')) localStorage.setItem('dp_owner', '1');
+        if (localStorage.getItem('dp_owner') === '1') document.getElementById('myAccountBtn').style.display = '';
+      } catch (x) {
+        if (location.search.indexOf('admin') >= 0) document.getElementById('myAccountBtn').style.display = '';
+      }
+    })();
+    let savedLang = 'en';
+    try { savedLang = localStorage.getItem('dp_lang') || 'en'; } catch (x) {}
+    setLanguage(UI_TEXT[savedLang] ? savedLang : 'en');
     loadFromSheet();
+
+    /* ===================== DOWNLOAD PORTAL (?d=TOKEN) ===================== */
+    const WHATSAPP_URL = '';   // ఉదా: 'https://whatsapp.com/channel/xxxx' (ఖాళీగా వదిలితే బటన్ రాదు)
+    const TELEGRAM_URL = '';   // ఉదా: 'https://t.me/xxxx'
+    (function () {
+      const token = new URLSearchParams(location.search).get('d');
+      if (!token) return;
+      const box = document.getElementById('dlPortal');
+      const body = document.getElementById('dlBody');
+      box.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      function fail(t) { body.innerHTML = '<div class="dl-msg">' + esc(t) + '</div>'; }
+      if (!sheetConfigured()) { fail('Server is not connected.'); return; }
+      fetch(SHEET_WEBAPP_URL + '?action=download&t=' + encodeURIComponent(token))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (!d || d.status !== 'ok') { fail('This download link is invalid or the payment is not completed. Please contact support@divinepixels.in for help.'); return; }
+          let h = '<div class="dl-title">' + esc(d.title) + '</div>' +
+            '<table class="dl-table"><tr><th>File</th><th>Size</th><th>Action</th></tr>';
+          d.files.forEach(function (f) {
+            h += '<tr><td>' + esc(f.name) + '</td><td>' + esc(f.size) + '</td>' +
+                 '<td><a class="dl-btn" href="' + esc(f.url) + '">Download</a></td></tr>';
+          });
+          h += '</table>';
+          if (WHATSAPP_URL || TELEGRAM_URL) {
+            h += '<div class="dl-social">' +
+              (WHATSAPP_URL ? '<a style="background:#1a8f5c" href="' + esc(WHATSAPP_URL) + '" target="_blank" rel="noopener">Follow WhatsApp Channel</a>' : '') +
+              (TELEGRAM_URL ? '<a style="background:#0dcaf0" href="' + esc(TELEGRAM_URL) + '" target="_blank" rel="noopener">Join Telegram</a>' : '') +
+              '</div>';
+          }
+          body.innerHTML = h;
+        })
+        .catch(function () { fail('Could not load. Please try again.'); });
+    })();
   </script>
 
 </body>
