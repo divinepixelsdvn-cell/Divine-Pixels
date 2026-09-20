@@ -784,13 +784,14 @@
     </div>
   </div>
 
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
     /* =========================================================
        GOOGLE SHEET BACKEND CONFIG
        ఈ URLని మీ డిప్లాయ్ చేసిన Google Apps Script Web App లింక్‌తో
        మార్చండి (సెటప్ స్టెప్స్ కోసం Code.gs ఫైల్ చూడండి).
        ========================================================= */
-    const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyftPqeRj7VnR-pD9FysRn6LQ0tKBhN7p0Lkm-GVpgnBDii4fgAHNzhmTJbQ3pKp1MQnw/exec';
+    const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxc2sU8mz54jVPM01hlZAjBA_Hg5kgA3zFTNxLEeXcpevVPcjtxYwOh2B8hH0eGMEOe/exec';
 
     /* Basic front-end-only admin gate. NOTE: this is NOT secure server-side
        authentication — anyone who reads this file's source can see the
@@ -1290,21 +1291,49 @@
         showMsg(msg, dict.invalidEmail, false);
         return;
       }
-      /* NOTE: నిజమైన పేమెంట్ గేట్‌వే (Razorpay వంటివి) ఇంకా ఇంటిగ్రేట్ చేయలేదు.
-         ప్రస్తుతం కొనుగోలు వివరాలు "orders" షీట్ లో Status = Pending గా సేవ్ అవుతాయి. */
       btn.textContent = dict.processing;
       btn.disabled = true;
-      saveOrderToSheet({ productId: SELECTED_PRODUCT.id, email: email })
-        .then(function () {
-          showMsg(msg, dict.orderMsg(email), true);
-          btn.style.display = 'none';
-          btn.disabled = false;
+      function reset() { btn.textContent = dict.payNow; btn.disabled = false; }
+
+      postToSheet({ action: 'createOrder', productId: SELECTED_PRODUCT.id, email: email })
+        .then(function (o) {
+          const rzp = new Razorpay({
+            key: o.keyId,
+            amount: o.amount,
+            currency: 'INR',
+            order_id: o.orderId,
+            name: 'Divine Pixels',
+            description: o.name,
+            prefill: { email: email },
+            theme: { color: '#ff8a00' },
+            handler: function (r) {
+              showMsg(msg, 'Payment verify అవుతోంది…', true);
+              postToSheet({
+                action: 'verify',
+                razorpay_order_id: r.razorpay_order_id,
+                razorpay_payment_id: r.razorpay_payment_id,
+                razorpay_signature: r.razorpay_signature
+              }).then(function () {
+                showMsg(msg, '✅ పేమెంట్ విజయవంతం! డౌన్‌లోడ్ లింక్ ' + email + ' కి పంపాము (Spam ఫోల్డర్ కూడా చూడండి).', true);
+                btn.style.display = 'none';
+                btn.disabled = false;
+              }).catch(function (err) {
+                console.error(err);
+                showMsg(msg, '⚠️ పేమెంట్ అయింది కానీ verify లో సమస్య. Payment ID: ' + r.razorpay_payment_id + ' తో మమ్మల్ని సంప్రదించండి.', false);
+              });
+            },
+            modal: { ondismiss: reset }
+          });
+          rzp.on('payment.failed', function () {
+            showMsg(msg, '❌ పేమెంట్ విఫలమైంది. మళ్ళీ ప్రయత్నించండి.', false);
+            reset();
+          });
+          rzp.open();
         })
         .catch(function (err) {
           console.error(err);
           showMsg(msg, ORDER_FAIL[CURRENT_LANG], false);
-          btn.textContent = dict.payNow;
-          btn.disabled = false;
+          reset();
         });
     });
 
