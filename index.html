@@ -1405,11 +1405,12 @@
     });
 
     document.getElementById('loginSubmitBtn').addEventListener('click', function () {
+      const u = document.getElementById('loginUsername').value.trim();
       const p = document.getElementById('loginPassword').value.trim();
       const msg = document.getElementById('loginModalMsg');
       const btn = document.getElementById('loginSubmitBtn');
       btn.disabled = true;
-      postToSheet({ action: 'login', key: p })
+      postToSheet({ action: 'login', user: u, key: p })
         .then(function () {
           ADMIN_KEY = p;
           isAdminLoggedIn = true;
@@ -1418,7 +1419,7 @@
           openPostModal();
         })
         .catch(function () {
-          msg.textContent = 'Password సరిగ్గా లేదు.';
+          msg.textContent = 'Username లేదా Password సరిగ్గా లేదు.';
           msg.style.background = 'rgba(226,59,91,.1)';
           msg.style.color = '#e23b5b';
           msg.className = 'pay-modal-msg show';
