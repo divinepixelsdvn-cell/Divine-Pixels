@@ -425,6 +425,12 @@
       display: flex;
     }
 
+    /* Buy popup (#payOverlay) ఎప్పుడూ అన్నింటికన్నా పైన కనిపించాలి,
+       అది Product Detail Page (#productOverlay) పైన తెరుచుకున్నా కూడా. */
+    #payOverlay {
+      z-index: 2100;
+    }
+
     .pay-modal {
       background: #fff;
       border-radius: 14px;
