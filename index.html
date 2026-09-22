@@ -570,6 +570,50 @@
       display: block;
     }
 
+    /* Post/Edit Product — పాప్‌అప్ కాదు, పూర్తి పేజీలా */
+    #postOverlay {
+      background: #fdf6ec;
+      padding: 0;
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto;
+    }
+    #postOverlay .pay-modal {
+      width: 100%;
+      max-width: 720px;
+      border-radius: 0;
+      box-shadow: none;
+      max-height: none;
+      min-height: 100vh;
+      padding: 0 0 60px;
+      background: #fdf6ec;
+    }
+    #postOverlay .pay-modal-close { display: none; }
+    .post-page-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: #fff;
+      border-bottom: 1px solid #f0dfc6;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .post-back-btn {
+      background: #fdf1e2;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: #a1734f;
+      font-size: 16px;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+    .post-page-head h3 { margin: 0; }
+    #postOverlay .pay-modal-body { padding: 22px 20px 0; max-width: 640px; margin: 0 auto; }
+
     /* Footer */
     footer {
       background: #291708;
@@ -808,11 +852,14 @@
     </div>
   </div>
 
-  <!-- Post Product Modal -->
+  <!-- Post Product Page (పూర్తి పేజీ, పాప్‌అప్ కాదు) -->
   <div class="pay-overlay" id="postOverlay">
     <div class="pay-modal wide">
-      <button type="button" class="pay-modal-close" id="postModalClose">✕</button>
-      <h3>కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి</h3>
+      <div class="post-page-head">
+        <button type="button" class="post-back-btn" id="postModalClose" title="వెనక్కి">←</button>
+        <h3 style="margin:0;">కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి</h3>
+      </div>
+      <div class="pay-modal-body">
       <p class="pay-modal-desc">ఈ వివరాలు వెబ్‌సైట్‌లో కనిపించడంతో పాటు మీ Google Sheet లో కూడా సేవ్ అవుతాయి.</p>
 
       <label for="postMain">కేటగిరీ (Main Category)</label>
@@ -852,6 +899,7 @@
 
       <button type="button" class="pay-btn" id="postSubmitBtn">పోస్ట్ చేయండి</button>
       <div class="pay-modal-msg" id="postModalMsg"></div>
+      </div>
     </div>
   </div>
 
@@ -1577,9 +1625,12 @@
       }
       renderGalleryPreview();
       document.getElementById('postOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
     }
     function closePostModal() {
       document.getElementById('postOverlay').classList.remove('open');
+      document.body.style.overflow = '';
       EDIT_PRODUCT = null;
       POST_EXISTING_GALLERY = [];
     }
