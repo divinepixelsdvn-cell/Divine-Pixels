@@ -369,7 +369,24 @@
 
     .card-action {
       margin-top: auto;
+      display: flex;
+      gap: 6px;
     }
+
+    .card-action .btn-view { flex: 1; }
+
+    .btn-edit, .btn-delete {
+      flex: 0 0 auto;
+      width: 38px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .btn-edit { background: #2563eb; }
+    .btn-delete { background: #dc2626; }
 
     .btn-view {
       display: block;
@@ -1075,6 +1092,7 @@
     let CURRENT_LANG = 'te';
     let SELECTED_PRICE = 0;
     let SELECTED_PRODUCT = null;
+    let EDIT_PRODUCT = null;   // ఎడిట్ చేస్తున్న ప్రొడక్ట్ (కొత్తది పోస్ట్ చేస్తుంటే null)
 
     /* ===================== STATE + HELPERS ===================== */
     let CATEGORIES = DEFAULT_CATEGORIES.map(function (c) { return { name: c.name, subs: c.subs.slice() }; });
@@ -1222,6 +1240,10 @@
                 '</div>' +
                 '<div class="card-action">' +
                   '<button type="button" class="btn-view" data-product-id="' + esc(p.id) + '">' + esc(dict.buyNow) + '</button>' +
+                  (isAdminLoggedIn ?
+                    '<button type="button" class="btn-edit admin-only show" data-edit-id="' + esc(p.id) + '" title="Edit"><i class="fas fa-pen"></i></button>' +
+                    '<button type="button" class="btn-delete admin-only show" data-delete-id="' + esc(p.id) + '" title="Delete"><i class="fas fa-trash"></i></button>'
+                    : '') +
                 '</div>' +
               '</div>' +
             '</article>'
@@ -1235,6 +1257,26 @@
           const id = btn.getAttribute('data-product-id');
           const product = allProducts().find(function (p) { return p.id === id; });
           if (product) openBuyModal(product);
+        });
+      });
+      document.querySelectorAll('.btn-edit').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const id = btn.getAttribute('data-edit-id');
+          btn.disabled = true;
+          postToSheet({ action: 'admin_get', key: ADMIN_KEY, id: id })
+            .then(function (res) { openPostModal(res.product); })
+            .catch(function (err) {
+              console.error(err);
+              window.alert('ప్రొడక్ట్ వివరాలు తేవడంలో సమస్య వచ్చింది.');
+            })
+            .then(function () { btn.disabled = false; });
+        });
+      });
+      document.querySelectorAll('.btn-delete').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const id = btn.getAttribute('data-delete-id');
+          const product = allProducts().find(function (p) { return p.id === id; });
+          if (product) confirmDeleteProduct(product);
         });
       });
     }
@@ -1375,6 +1417,7 @@
         label.textContent = 'My Account';
         postBtn.classList.remove('show');
       }
+      renderProducts();
     }
 
     function openLoginModal() {
@@ -1454,22 +1497,55 @@
     }
     document.getElementById('postMain').addEventListener('change', fillPostSubs);
 
-    function openPostModal() {
+    function openPostModal(productToEdit) {
+      EDIT_PRODUCT = productToEdit || null;
       ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf'].forEach(function (id) {
         document.getElementById(id).value = '';
       });
       fillPostCategories();
+      const heading = document.querySelector('#postOverlay h3');
       const msg = document.getElementById('postModalMsg');
       msg.className = 'pay-modal-msg';
       msg.textContent = '';
       const btn = document.getElementById('postSubmitBtn');
       btn.style.display = 'block';
       btn.disabled = false;
-      btn.textContent = 'పోస్ట్ చేయండి';
+
+      if (EDIT_PRODUCT) {
+        heading.textContent = 'ప్రొడక్ట్ ఎడిట్ చేయండి';
+        btn.textContent = 'అప్‌డేట్ చేయండి';
+        document.getElementById('postTitle').value = EDIT_PRODUCT.title || '';
+        document.getElementById('postFileLink').value = EDIT_PRODUCT.fileLink || '';
+        document.getElementById('postPrice').value = EDIT_PRODUCT.price || '';
+        document.getElementById('postDesc').value = EDIT_PRODUCT.description || '';
+        document.getElementById('postImage').value = EDIT_PRODUCT.image || '';
+        document.getElementById('postPdf').value = EDIT_PRODUCT.pdfLink || '';
+        const mIdx = CATEGORIES.findIndex(function (c) { return c.name === EDIT_PRODUCT.main; });
+        if (mIdx >= 0) {
+          document.getElementById('postMain').value = mIdx;
+          fillPostSubs();
+          const sIdx = CATEGORIES[mIdx].subs.indexOf(EDIT_PRODUCT.sub);
+          if (sIdx >= 0) document.getElementById('postSub').value = sIdx;
+        }
+      } else {
+        heading.textContent = 'కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి';
+        btn.textContent = 'పోస్ట్ చేయండి';
+      }
       document.getElementById('postOverlay').classList.add('open');
     }
     function closePostModal() {
       document.getElementById('postOverlay').classList.remove('open');
+      EDIT_PRODUCT = null;
+    }
+
+    function confirmDeleteProduct(product) {
+      if (!window.confirm('"' + product.title.en + '" ని తొలగించాలా? ఈ చర్యను వెనక్కి తీసుకోలేరు.')) return;
+      postToSheet({ action: 'delete', key: ADMIN_KEY, id: product.id })
+        .then(function () { loadFromSheet(); })
+        .catch(function (err) {
+          console.error(err);
+          window.alert('తొలగించడంలో సమస్య వచ్చింది. మళ్ళీ ప్రయత్నించండి.');
+        });
     }
 
     document.getElementById('postProductBtn').addEventListener('click', function (e) {
@@ -1518,19 +1594,25 @@
         pdfLink: pdfLink
       };
 
-      submitBtn.textContent = 'సేవ్ అవుతోంది...';
+      const isEdit = !!EDIT_PRODUCT;
+      submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
       submitBtn.disabled = true;
 
-      postToSheet({ action: 'create', key: ADMIN_KEY, product: productPayload })
-        .then(function (res) {
-          showMsg(msg, '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది (ID: ' + (res.id || '') + ') మరియు Google Sheet లో సేవ్ అయ్యింది!', true);
+      const req = isEdit
+        ? postToSheet({ action: 'update', key: ADMIN_KEY, id: EDIT_PRODUCT.id, product: productPayload })
+        : postToSheet({ action: 'create', key: ADMIN_KEY, product: productPayload });
+
+      req.then(function (res) {
+          showMsg(msg, isEdit
+            ? '✅ ప్రొడక్ట్ అప్‌డేట్ అయ్యింది మరియు Google Sheet లో సేవ్ అయ్యింది!'
+            : '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది (ID: ' + (res.id || '') + ') మరియు Google Sheet లో సేవ్ అయ్యింది!', true);
           submitBtn.style.display = 'none';
           loadFromSheet();   // షీట్ నుంచి తాజా లిస్ట్ మళ్ళీ తెచ్చుకుంటాం → వెబ్ + షీట్ ఎప్పుడూ ఒకేలా ఉంటాయి
         })
         .catch(function (err) {
           console.error(err);
           showMsg(msg, '⚠️ Google Sheet కి సేవ్ చేయడంలో సమస్య వచ్చింది. SHEET_WEBAPP_URL / కేటగిరీ సరిగ్గా ఉన్నాయో చూడండి.', false);
-          submitBtn.textContent = 'పోస్ట్ చేయండి';
+          submitBtn.textContent = isEdit ? 'అప్‌డేట్ చేయండి' : 'పోస్ట్ చేయండి';
           submitBtn.disabled = false;
         });
     });
