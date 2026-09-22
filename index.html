@@ -644,6 +644,15 @@
     .dl-foot { text-align: center; padding: 14px; font-size: 13px; color: #777; }
     .dl-msg { text-align: center; padding: 30px 10px; font-size: 16px; }
     @media (max-width: 600px) { .dl-table th:nth-child(2), .dl-table td:nth-child(2) { display: none; } }
+
+    .gallery-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .gallery-preview .g-thumb { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; background: #f2f2f2; border: 1px solid #e5d5c0; }
+    .gallery-preview .g-thumb img, .gallery-preview .g-thumb video { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-preview .g-remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,.6); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; line-height: 18px; cursor: pointer; }
+
+    .pay-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 10px 0 4px; }
+    .pay-gallery .pg-item { flex: 0 0 auto; width: 72px; height: 72px; border-radius: 8px; overflow: hidden; border: 1px solid #eee; background: #f7f7f7; }
+    .pay-gallery .pg-item img, .pay-gallery .pg-item video { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -774,6 +783,7 @@
     <div class="pay-modal">
       <button type="button" class="pay-modal-close" id="payModalClose">✕</button>
       <h3 id="payProductName">Item name</h3>
+      <div id="payGallery" class="pay-gallery" style="display:none"></div>
       <p class="pay-modal-desc" id="payProductDesc"></p>
       <div class="pay-modal-price" id="payProductPrice">0</div>
       <label for="payerEmail" id="payerEmailLabel" data-i18n="emailLabel">మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)</label>
@@ -826,6 +836,16 @@
       <label for="postImage">ప్రొడక్ట్ ఇమేజ్ / ప్రివ్యూ లింక్</label>
       <input type="url" id="postImage" placeholder="https://...jpg or .png">
       <span class="field-hint">కార్డు మీద కనిపించే ప్రివ్యూ ఫోటో లింక్ ఇది.</span>
+
+      <label for="postMediaFiles">ఫోటోలు / వీడియో అప్‌లోడ్ చేయండి (ఐచ్ఛికం, ఒకటి కన్నా ఎక్కువ ఎంచుకోవచ్చు)</label>
+      <input type="file" id="postMediaFiles" accept="image/*,video/*" multiple>
+      <span class="field-hint">ఇక్కడ ఎంచుకున్న ఫోటోలు/వీడియోలు ప్రొడక్ట్ పేజీలో గ్యాలరీగా కనిపిస్తాయి.</span>
+
+      <label for="postGalleryLink">లేదా Google Drive ఫోల్డర్ లింక్ (ఫోటోలు కోసం)</label>
+      <input type="url" id="postGalleryLink" placeholder="https://drive.google.com/drive/folders/...">
+      <span class="field-hint">ఈ ఫోల్డర్ "Anyone with the link — Viewer" గా షేర్ చేసి ఉండాలి. అందులోని ఫోటోలు/వీడియోలు ఆటోమేటిక్ గా గ్యాలరీలో వస్తాయి.</span>
+
+      <div id="postGalleryPreview" class="gallery-preview"></div>
 
       <label for="postPdf">ప్రొడక్ట్ PDF లింక్ (ఐచ్ఛికం)</label>
       <input type="url" id="postPdf" placeholder="https://...pdf">
@@ -1093,6 +1113,7 @@
     let SELECTED_PRICE = 0;
     let SELECTED_PRODUCT = null;
     let EDIT_PRODUCT = null;   // ఎడిట్ చేస్తున్న ప్రొడక్ట్ (కొత్తది పోస్ట్ చేస్తుంటే null)
+    let POST_EXISTING_GALLERY = [];   // ఎడిట్ లో ఇప్పటికే ఉన్న గ్యాలరీ URLs (ఉంచేవి)
 
     /* ===================== STATE + HELPERS ===================== */
     let CATEGORIES = DEFAULT_CATEGORIES.map(function (c) { return { name: c.name, subs: c.subs.slice() }; });
@@ -1123,9 +1144,11 @@
     }
     function toProduct(row) {
       const label = row.sub || row.main || 'New';
+      const gallery = (row.gallery || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
       return {
         id: row.id, main: row.main || '', sub: row.sub || '',
-        image: fixImage(row.image, row.id),
+        image: gallery[0] || fixImage(row.image, row.id),
+        gallery: gallery,
         price: Number(row.price) || 0,
         badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
         category: { te: label, en: label, hi: label },
@@ -1312,6 +1335,14 @@
       renderProducts();
     }
 
+    function mediaEl(url, cssClass) {
+      const isVideo = url.indexOf('#video') >= 0;
+      const src = url.replace('#video', '');
+      return isVideo
+        ? '<video class="' + cssClass + '" src="' + esc(src) + '" muted playsinline></video>'
+        : '<img class="' + cssClass + '" src="' + esc(src) + '" loading="lazy">';
+    }
+
     /* ===================== BUY MODAL ===================== */
     function openBuyModal(product) {
       SELECTED_PRODUCT = product;
@@ -1320,6 +1351,16 @@
       document.getElementById('payProductDesc').textContent = product.desc[CURRENT_LANG];
       document.getElementById('payProductPrice').textContent = product.price.toLocaleString('en-IN');
       document.getElementById('payerEmail').value = '';
+      const gal = document.getElementById('payGallery');
+      if (product.gallery && product.gallery.length) {
+        gal.innerHTML = product.gallery.map(function (u) {
+          return '<div class="pg-item" onclick="window.open(\'' + esc(u.replace('#video', '')) + '\',\'_blank\')">' + mediaEl(u, '') + '</div>';
+        }).join('');
+        gal.style.display = 'flex';
+      } else {
+        gal.innerHTML = '';
+        gal.style.display = 'none';
+      }
       const msg = document.getElementById('payModalMsg');
       msg.className = 'pay-modal-msg';
       msg.textContent = '';
@@ -1499,9 +1540,10 @@
 
     function openPostModal(productToEdit) {
       EDIT_PRODUCT = productToEdit || null;
-      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf'].forEach(function (id) {
+      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink'].forEach(function (id) {
         document.getElementById(id).value = '';
       });
+      document.getElementById('postMediaFiles').value = '';
       fillPostCategories();
       const heading = document.querySelector('#postOverlay h3');
       const msg = document.getElementById('postModalMsg');
@@ -1527,15 +1569,61 @@
           const sIdx = CATEGORIES[mIdx].subs.indexOf(EDIT_PRODUCT.sub);
           if (sIdx >= 0) document.getElementById('postSub').value = sIdx;
         }
+        POST_EXISTING_GALLERY = (EDIT_PRODUCT.gallery || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
       } else {
         heading.textContent = 'కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి';
         btn.textContent = 'పోస్ట్ చేయండి';
+        POST_EXISTING_GALLERY = [];
       }
+      renderGalleryPreview();
       document.getElementById('postOverlay').classList.add('open');
     }
     function closePostModal() {
       document.getElementById('postOverlay').classList.remove('open');
       EDIT_PRODUCT = null;
+      POST_EXISTING_GALLERY = [];
+    }
+
+    /* ---- Post form: gallery preview (existing + newly-picked files) ---- */
+    function renderGalleryPreview() {
+      const mount = document.getElementById('postGalleryPreview');
+      const files = document.getElementById('postMediaFiles').files;
+      let html = POST_EXISTING_GALLERY.map(function (u, i) {
+        return '<div class="g-thumb">' + mediaEl(u, '') +
+          '<button type="button" class="g-remove" data-remove-existing="' + i + '">✕</button></div>';
+      }).join('');
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i], url = URL.createObjectURL(f);
+        html += '<div class="g-thumb">' + (f.type.indexOf('video/') === 0
+          ? '<video src="' + url + '" muted></video>' : '<img src="' + url + '">') + '</div>';
+      }
+      mount.innerHTML = html;
+      mount.querySelectorAll('[data-remove-existing]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          POST_EXISTING_GALLERY.splice(Number(btn.getAttribute('data-remove-existing')), 1);
+          renderGalleryPreview();
+        });
+      });
+    }
+    document.getElementById('postMediaFiles').addEventListener('change', renderGalleryPreview);
+
+    // File లను base64 గా మార్చి, Apps Script కి పంపి, Drive URLs తెచ్చుకుంటుంది
+    function fileToBase64(file) {
+      return new Promise(function (resolve, reject) {
+        const r = new FileReader();
+        r.onload = function () { resolve(String(r.result).split(',')[1]); };
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+    }
+    function uploadPickedFiles() {
+      const files = Array.from(document.getElementById('postMediaFiles').files);
+      if (!files.length) return Promise.resolve([]);
+      return Promise.all(files.map(function (f) {
+        return fileToBase64(f).then(function (data) { return { name: f.name, mimeType: f.type, data: data }; });
+      })).then(function (payload) {
+        return postToSheet({ action: 'uploadMedia', key: ADMIN_KEY, files: payload });
+      }).then(function (res) { return res.urls || []; });
     }
 
     function confirmDeleteProduct(product) {
@@ -1566,6 +1654,7 @@
       const description = document.getElementById('postDesc').value.trim();
       const image = document.getElementById('postImage').value.trim();
       const pdfLink = document.getElementById('postPdf').value.trim();
+      const galleryLink = document.getElementById('postGalleryLink').value.trim();
       const msg = document.getElementById('postModalMsg');
       const submitBtn = document.getElementById('postSubmitBtn');
 
@@ -1583,26 +1672,31 @@
         return;
       }
 
-      const productPayload = {
-        title: title,
-        main: cat.name,
-        sub: cat.subs.length ? cat.subs[Number(subIdx)] : '',
-        fileLink: fileLink,
-        price: Number(price) || 0,
-        description: description,
-        image: image,
-        pdfLink: pdfLink
-      };
-
       const isEdit = !!EDIT_PRODUCT;
-      submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
+      submitBtn.textContent = 'ఫోటోలు అప్‌లోడ్ అవుతున్నాయి...';
       submitBtn.disabled = true;
 
-      const req = isEdit
-        ? postToSheet({ action: 'update', key: ADMIN_KEY, id: EDIT_PRODUCT.id, product: productPayload })
-        : postToSheet({ action: 'create', key: ADMIN_KEY, product: productPayload });
+      uploadPickedFiles().then(function (uploadedUrls) {
+        const productPayload = {
+          title: title,
+          main: cat.name,
+          sub: cat.subs.length ? cat.subs[Number(subIdx)] : '',
+          fileLink: fileLink,
+          price: Number(price) || 0,
+          description: description,
+          image: image,
+          pdfLink: pdfLink,
+          gallery: POST_EXISTING_GALLERY.concat(uploadedUrls),
+          driveGalleryLink: galleryLink
+        };
 
-      req.then(function (res) {
+        submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
+
+        return isEdit
+          ? postToSheet({ action: 'update', key: ADMIN_KEY, id: EDIT_PRODUCT.id, product: productPayload })
+          : postToSheet({ action: 'create', key: ADMIN_KEY, product: productPayload });
+      })
+        .then(function (res) {
           showMsg(msg, isEdit
             ? '✅ ప్రొడక్ట్ అప్‌డేట్ అయ్యింది మరియు Google Sheet లో సేవ్ అయ్యింది!'
             : '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది (ID: ' + (res.id || '') + ') మరియు Google Sheet లో సేవ్ అయ్యింది!', true);
