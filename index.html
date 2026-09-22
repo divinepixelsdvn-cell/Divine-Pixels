@@ -282,6 +282,8 @@
       box-shadow: 0 10px 15px rgba(154, 82, 0, 0.12);
     }
 
+    .card-thumb, .card-title { cursor: pointer; }
+
     .card-thumb {
       position: relative;
       width: 100%;
@@ -614,6 +616,115 @@
     .post-page-head h3 { margin: 0; }
     #postOverlay .pay-modal-body { padding: 22px 20px 0; max-width: 640px; margin: 0 auto; }
 
+    /* Product Detail Page — ప్రొడక్ట్ మీద క్లిక్ చేస్తే వచ్చే పూర్తి పేజీ (popup కాదు) */
+    #productOverlay {
+      background: #fdf6ec;
+      padding: 0;
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto;
+    }
+    #productOverlay .pay-modal {
+      width: 100%;
+      max-width: 900px;
+      border-radius: 0;
+      box-shadow: none;
+      max-height: none;
+      min-height: 100vh;
+      padding: 0 0 60px;
+      background: #fdf6ec;
+    }
+    #productOverlay .pay-modal-close { display: none; }
+    #productOverlay .pay-modal-body { padding: 24px 20px 0; max-width: 860px; margin: 0 auto; }
+
+    .pd-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .pd-media { flex: 1 1 360px; min-width: 280px; }
+    .pd-main-wrap {
+      background: #ffffff;
+      border: 1px solid #f3dcc2;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pd-main-wrap img, .pd-main-wrap video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      cursor: zoom-in;
+    }
+    .pd-thumbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pd-thumbs img, .pd-thumbs video {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid #f3dcc2;
+      background: #fff;
+    }
+    .pd-thumbs .active { border-color: #ea580c; }
+    .pd-info { flex: 1 1 340px; min-width: 280px; }
+    .pd-category {
+      display: inline-block;
+      background: #fdf1e2;
+      color: #c2410c;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .pd-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #3d2b1f;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+    .pd-price {
+      font-size: 26px;
+      font-weight: 700;
+      color: #c2410c;
+      margin-bottom: 18px;
+    }
+    .pd-price::before { content: '\20b9'; font-size: 19px; }
+    .pd-buy-btn { max-width: 280px; margin-bottom: 22px; }
+    .pd-desc-title { font-size: 14px; font-weight: 700; color: #6b5040; margin-bottom: 8px; }
+    .pd-desc {
+      font-size: 14.5px;
+      color: #5a4632;
+      line-height: 1.8;
+      white-space: pre-line;
+      margin-bottom: 18px;
+    }
+    .pd-pdf-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #c2410c;
+      border: 1.5px solid #f3dcc2;
+      background: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+    }
+    @media (max-width: 640px) {
+      .pd-main-wrap { height: 280px; }
+    }
+
     /* Footer */
     footer {
       background: #291708;
@@ -899,6 +1010,35 @@
 
       <button type="button" class="pay-btn" id="postSubmitBtn">పోస్ట్ చేయండి</button>
       <div class="pay-modal-msg" id="postModalMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail Page (ప్రొడక్ట్ మీద క్లిక్ చేస్తే వచ్చే పూర్తి 2వ పేజీ, పాప్‌అప్ కాదు) -->
+  <div class="pay-overlay" id="productOverlay">
+    <div class="pay-modal wide">
+      <div class="post-page-head">
+        <button type="button" class="post-back-btn" id="pdBackBtn" title="వెనక్కి">←</button>
+        <h3 style="margin:0;">ప్రొడక్ట్ వివరాలు</h3>
+      </div>
+      <div class="pay-modal-body">
+        <div class="pd-wrap">
+          <div class="pd-media">
+            <div class="pd-main-wrap" id="pdMainWrap"></div>
+            <div class="pd-thumbs" id="pdThumbs"></div>
+          </div>
+          <div class="pd-info">
+            <span class="pd-category" id="pdCategory"></span>
+            <h1 class="pd-title" id="pdTitle"></h1>
+            <div class="pd-price" id="pdPrice">0</div>
+            <button type="button" class="pay-btn pd-buy-btn" id="pdBuyBtn">Buy Now</button>
+            <div class="pd-desc-title">వివరాలు / Description</div>
+            <p class="pd-desc" id="pdDesc"></p>
+            <a href="#" id="pdPdfLink" class="pd-pdf-link" target="_blank" rel="noopener" style="display:none">
+              <i class="fas fa-file-pdf"></i> Preview PDF చూడండి
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1297,7 +1437,7 @@
         }
         mount.innerHTML = list.map(function (p) {
           return (
-            '<article class="card">' +
+            '<article class="card" data-open-id="' + esc(p.id) + '">' +
               '<div class="card-thumb">' +
                 '<span class="badge">' + esc(p.badge.en) + '</span>' +
                 '<img src="' + esc(p.image) + '" alt="Design Preview" loading="lazy">' +
@@ -1320,6 +1460,16 @@
             '</article>'
           );
         }).join('');
+      });
+
+      // ప్రొడక్ట్ కార్డ్ మీద ఎక్కడ క్లిక్ చేసినా (Buy/Edit/Delete బటన్లు తప్ప) పూర్తి వివరాల 2వ పేజీ తెరుచుకుంటుంది
+      document.querySelectorAll('.card[data-open-id]').forEach(function (card) {
+        card.addEventListener('click', function (e) {
+          if (e.target.closest('.card-action')) return;
+          const id = card.getAttribute('data-open-id');
+          const product = allProducts().find(function (p) { return p.id === id; });
+          if (product) openProductPage(product);
+        });
       });
 
       // Wire up buy buttons after re-render
@@ -1389,6 +1539,85 @@
       return isVideo
         ? '<video class="' + cssClass + '" src="' + esc(src) + '" muted playsinline></video>'
         : '<img class="' + cssClass + '" src="' + esc(src) + '" loading="lazy">';
+    }
+
+    /* ===================== PRODUCT DETAIL PAGE (2వ పేజీ) ===================== */
+    let PRODUCT_PAGE_OPEN = false;
+
+    function openProductPage(product, skipPush) {
+      PRODUCT_PAGE_OPEN = true;
+      const gallery = (product.gallery && product.gallery.length) ? product.gallery : [product.image];
+
+      document.getElementById('pdCategory').textContent = product.category[CURRENT_LANG] || product.category.en;
+      document.getElementById('pdTitle').textContent = product.title[CURRENT_LANG] || product.title.en;
+      document.getElementById('pdPrice').textContent = product.price.toLocaleString('en-IN');
+      document.getElementById('pdDesc').textContent = product.desc[CURRENT_LANG] || product.desc.en;
+
+      function setMain(u) {
+        document.getElementById('pdMainWrap').innerHTML = mediaEl(u, '');
+        document.querySelectorAll('#pdThumbs [data-thumb]').forEach(function (t) {
+          t.classList.toggle('active', t.getAttribute('data-thumb') === u);
+        });
+      }
+      setMain(gallery[0]);
+
+      const thumbs = document.getElementById('pdThumbs');
+      if (gallery.length > 1) {
+        thumbs.innerHTML = gallery.map(function (u) {
+          return '<div data-thumb="' + esc(u) + '" class="' + (u === gallery[0] ? 'active' : '') + '">' + mediaEl(u, '') + '</div>';
+        }).join('');
+        thumbs.querySelectorAll('[data-thumb]').forEach(function (t) {
+          t.addEventListener('click', function () { setMain(t.getAttribute('data-thumb')); });
+        });
+      } else {
+        thumbs.innerHTML = '';
+      }
+
+      const pdfLink = document.getElementById('pdPdfLink');
+      if (product.pdfLink) {
+        pdfLink.href = product.pdfLink;
+        pdfLink.style.display = 'inline-flex';
+      } else {
+        pdfLink.style.display = 'none';
+      }
+
+      document.getElementById('pdBuyBtn').onclick = function () { openBuyModal(product); };
+
+      document.getElementById('productOverlay').classList.add('open');
+      window.scrollTo(0, 0);
+      document.title = (product.title.en || 'Product') + ' - Divine Pixels';
+
+      if (!skipPush) {
+        history.pushState({ pd: product.id }, '', '?p=' + encodeURIComponent(product.id));
+      }
+    }
+
+    function closeProductPage(skipHistory) {
+      PRODUCT_PAGE_OPEN = false;
+      document.getElementById('productOverlay').classList.remove('open');
+      document.title = 'డిజిటల్ డిజైన్ స్టోర్ - PSD & గ్రాఫిక్ టెంప్లేట్స్';
+      if (!skipHistory && new URLSearchParams(location.search).has('p')) {
+        history.back();
+      }
+    }
+
+    document.getElementById('pdBackBtn').addEventListener('click', function () { closeProductPage(); });
+
+    // బ్రౌజర్ Back/Forward బటన్ నొక్కినప్పుడు కూడా సరిగ్గా పని చేయడానికి
+    window.addEventListener('popstate', function () {
+      const id = new URLSearchParams(location.search).get('p');
+      if (!id) { closeProductPage(true); return; }
+      const product = allProducts().find(function (p) { return p.id === id; });
+      if (product) openProductPage(product, true);
+      else closeProductPage(true);
+    });
+
+    // పేజీ మొదట లోడ్ అయినప్పుడు URL లో ?p=ID ఉంటే ఆ ప్రొడక్ట్ పేజీ నేరుగా తెరవడం
+    function openProductPageFromUrlIfPresent() {
+      const id = new URLSearchParams(location.search).get('p');
+      if (!id) return;
+      const product = allProducts().find(function (p) { return p.id === id; });
+      if (product) openProductPage(product, true);
     }
 
     /* ===================== BUY MODAL ===================== */
@@ -1796,6 +2025,7 @@
           }
           buildNav();
           renderProducts();
+          openProductPageFromUrlIfPresent();
         })
         .catch(function (err) { console.warn('Could not load data from sheet:', err); });
     }
@@ -1822,6 +2052,7 @@
     let savedLang = 'en';
     try { savedLang = localStorage.getItem('dp_lang') || 'en'; } catch (x) {}
     setLanguage(UI_TEXT[savedLang] ? savedLang : 'en');
+    openProductPageFromUrlIfPresent();
     loadFromSheet();
 
     /* ===================== DOWNLOAD PORTAL (?d=TOKEN) ===================== */
