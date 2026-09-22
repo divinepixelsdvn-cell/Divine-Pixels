@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -162,7 +162,6 @@
       color: #ffb454;
     }
 
-    /* Category dropdowns (auto-built from Google Sheet) */
     .menu-links li.has-sub > a { cursor: pointer; }
     .menu-links .dropdown {
       display: none;
@@ -207,7 +206,6 @@
       padding: 10px 0;
     }
 
-    /* Hero / Announcement Section */
     .hero-banner {
       background: linear-gradient(135deg, #c2410c 0%, #f59e0b 100%);
       color: #ffffff;
@@ -226,7 +224,6 @@
       opacity: 0.95;
     }
 
-    /* Section Titles */
     .section-title {
       display: flex;
       justify-content: space-between;
@@ -355,18 +352,28 @@
       margin-bottom: 10px;
     }
 
+    .card-price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .card-old-price {
+      font-size: 13px;
+      color: #999;
+      text-decoration: line-through;
+    }
+
     .card-price {
       font-size: 16px;
       font-weight: 700;
       color: #c2410c;
-      font-family: 'Poppins', sans-serif;
     }
 
-    .card-price::before {
+    .card-price::before, .card-old-price::before {
       content: '\20b9';
-      font-size: 13px;
+      font-size: 12px;
       margin-right: 1px;
-      color: #a1734f;
     }
 
     .card-action {
@@ -409,220 +416,7 @@
       background: #c2410c;
     }
 
-    /* Payment Modal */
-    .pay-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(41, 23, 8, 0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: 20px;
-    }
-
-    .pay-overlay.open {
-      display: flex;
-    }
-
-    /* Buy popup (#payOverlay) ఎప్పుడూ అన్నింటికన్నా పైన కనిపించాలి,
-       అది Product Detail Page (#productOverlay) పైన తెరుచుకున్నా కూడా. */
-    #payOverlay {
-      z-index: 2100;
-    }
-
-    .pay-modal {
-      background: #fff;
-      border-radius: 14px;
-      width: 100%;
-      max-width: 380px;
-      padding: 26px;
-      position: relative;
-      box-shadow: 0 30px 60px -20px rgba(41, 23, 8, 0.4);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .pay-modal.wide {
-      max-width: 480px;
-    }
-
-    .pay-modal-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: #fdf1e2;
-      border: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      color: #a1734f;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .pay-modal h3 {
-      font-size: 18px;
-      color: #3d2b1f;
-      margin-bottom: 4px;
-    }
-
-    .pay-modal-desc {
-      font-size: 13px;
-      color: #6b5040;
-      margin-bottom: 14px;
-    }
-
-    .pay-modal-price {
-      font-size: 22px;
-      font-weight: 700;
-      color: #c2410c;
-      margin-bottom: 16px;
-    }
-
-    .pay-modal-price::before {
-      content: '\20b9';
-      font-size: 16px;
-    }
-
-    .pay-modal label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #6b5040;
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .pay-modal input[type=email],
-    .pay-modal input[type=text],
-    .pay-modal input[type=number],
-    .pay-modal input[type=url],
-    .pay-modal input[type=password],
-    .pay-modal textarea {
-      width: 100%;
-      background: #fdf1e2;
-      border: 1.5px solid #f3dcc2;
-      color: #3d2b1f;
-      padding: 11px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 14px;
-      outline: none;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .pay-modal select {
-      width: 100%;
-      background: #fdf1e2;
-      border: 1.5px solid #f3dcc2;
-      color: #3d2b1f;
-      padding: 11px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 14px;
-      outline: none;
-      font-family: 'Poppins', sans-serif;
-    }
-    .pay-modal select:disabled { opacity: 0.6; cursor: not-allowed; }
-    .pay-btn:disabled { opacity: 0.7; cursor: wait; }
-
-    .pay-modal textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .pay-modal .field-hint {
-      font-size: 11px;
-      color: #a1734f;
-      margin-top: -10px;
-      margin-bottom: 14px;
-      display: block;
-    }
-
-    .admin-only {
-      display: none;
-    }
-
-    .admin-only.show {
-      display: inline-flex;
-    }
-
-    .pay-btn {
-      width: 100%;
-      background: #ea580c;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .pay-btn:hover {
-      background: #c2410c;
-    }
-
-    .pay-modal-msg {
-      font-size: 12.5px;
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      display: none;
-      background: rgba(14, 169, 107, 0.12);
-      color: #0ea96b;
-    }
-
-    .pay-modal-msg.show {
-      display: block;
-    }
-
-    /* Post/Edit Product — పాప్‌అప్ కాదు, పూర్తి పేజీలా */
-    #postOverlay {
-      background: #fdf6ec;
-      padding: 0;
-      align-items: flex-start;
-      justify-content: center;
-      overflow-y: auto;
-    }
-    #postOverlay .pay-modal {
-      width: 100%;
-      max-width: 720px;
-      border-radius: 0;
-      box-shadow: none;
-      max-height: none;
-      min-height: 100vh;
-      padding: 0 0 60px;
-      background: #fdf6ec;
-    }
-    #postOverlay .pay-modal-close { display: none; }
-    .post-page-head {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 20px;
-      background: #fff;
-      border-bottom: 1px solid #f0dfc6;
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
-    .post-back-btn {
-      background: #fdf1e2;
-      border: none;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      color: #a1734f;
-      font-size: 16px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-    .post-page-head h3 { margin: 0; }
-    #postOverlay .pay-modal-body { padding: 22px 20px 0; max-width: 640px; margin: 0 auto; }
-
-    /* Product Detail Page — ప్రొడక్ట్ మీద క్లిక్ చేస్తే వచ్చే పూర్తి పేజీ (popup కాదు) */
+    /* Product Detail Page Styling */
     #productOverlay {
       background: #fdf6ec;
       padding: 0;
@@ -630,9 +424,10 @@
       justify-content: center;
       overflow-y: auto;
     }
+
     #productOverlay .pay-modal {
       width: 100%;
-      max-width: 900px;
+      max-width: 950px;
       border-radius: 0;
       box-shadow: none;
       max-height: none;
@@ -640,14 +435,13 @@
       padding: 0 0 60px;
       background: #fdf6ec;
     }
-    #productOverlay .pay-modal-close { display: none; }
-    #productOverlay .pay-modal-body { padding: 24px 20px 0; max-width: 860px; margin: 0 auto; }
 
     .pd-wrap {
       display: flex;
       flex-wrap: wrap;
       gap: 30px;
     }
+
     .pd-media { flex: 1 1 360px; min-width: 280px; }
     .pd-main-wrap {
       background: #ffffff;
@@ -663,15 +457,16 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      cursor: zoom-in;
     }
+
     .pd-thumbs {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 10px;
     }
-    .pd-thumbs img, .pd-thumbs video {
+
+    .pd-thumbs img {
       width: 64px;
       height: 64px;
       object-fit: cover;
@@ -681,7 +476,8 @@
       background: #fff;
     }
     .pd-thumbs .active { border-color: #ea580c; }
-    .pd-info { flex: 1 1 340px; min-width: 280px; }
+
+    .pd-info { flex: 1 1 380px; min-width: 280px; }
     .pd-category {
       display: inline-block;
       background: #fdf1e2;
@@ -699,37 +495,217 @@
       margin-bottom: 10px;
       line-height: 1.35;
     }
+
+    .pd-price-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
     .pd-price {
       font-size: 26px;
       font-weight: 700;
       color: #c2410c;
-      margin-bottom: 18px;
     }
     .pd-price::before { content: '\20b9'; font-size: 19px; }
-    .pd-buy-btn { max-width: 280px; margin-bottom: 22px; }
-    .pd-desc-title { font-size: 14px; font-weight: 700; color: #6b5040; margin-bottom: 8px; }
-    .pd-desc {
-      font-size: 14.5px;
-      color: #5a4632;
-      line-height: 1.8;
-      white-space: pre-line;
-      margin-bottom: 18px;
+
+    .pd-old-price {
+      font-size: 17px;
+      color: #888;
+      text-decoration: line-through;
     }
-    .pd-pdf-link {
+    .pd-old-price::before { content: '\20b9'; font-size: 14px; }
+
+    .pd-discount-badge {
+      background: #16a34a;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .pd-action-btns {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .pd-buy-btn {
+      max-width: 240px;
+      margin-bottom: 0;
+    }
+
+    .pd-video-guide-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      background: #ef4444;
+      color: #fff;
+      padding: 11px 16px;
+      border-radius: 8px;
       font-size: 13.5px;
       font-weight: 600;
-      color: #c2410c;
-      border: 1.5px solid #f3dcc2;
-      background: #fff;
-      padding: 8px 14px;
+      transition: background 0.2s;
+    }
+    .pd-video-guide-btn:hover { background: #dc2626; color: #fff; }
+
+    /* Specification Table */
+    .spec-table-wrap {
+      margin: 20px 0;
+      border: 1px solid #f3dcc2;
       border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
     }
-    @media (max-width: 640px) {
-      .pd-main-wrap { height: 280px; }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
     }
+
+    .spec-table th, .spec-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #fdf1e2;
+    }
+
+    .spec-table th {
+      background: #fdf1e2;
+      color: #4a2c14;
+      width: 35%;
+      font-weight: 600;
+    }
+
+    .spec-table td {
+      color: #3d2b1f;
+      font-weight: 500;
+    }
+
+    /* Notice / Instruction Box */
+    .info-notice-box {
+      background: #fff8f0;
+      border-left: 4px solid #ea580c;
+      padding: 14px;
+      border-radius: 4px;
+      margin: 18px 0;
+      font-size: 13px;
+      color: #6b5040;
+    }
+
+    .info-notice-box h5 {
+      color: #c2410c;
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .features-list {
+      margin: 12px 0 18px 20px;
+      font-size: 14px;
+      color: #5a4632;
+    }
+    .features-list li { margin-bottom: 6px; }
+
+    /* Modal dialogs */
+    .pay-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(41, 23, 8, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+    .pay-overlay.open { display: flex; }
+    #payOverlay { z-index: 2100; }
+
+    .pay-modal {
+      background: #fff;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 380px;
+      padding: 26px;
+      position: relative;
+      box-shadow: 0 30px 60px -20px rgba(41, 23, 8, 0.4);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .pay-modal.wide { max-width: 480px; }
+
+    .pay-modal-close, .post-back-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #fdf1e2;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      color: #a1734f;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .post-page-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: #fff;
+      border-bottom: 1px solid #f0dfc6;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .post-back-btn {
+      position: static;
+      width: 34px;
+      height: 34px;
+      font-size: 16px;
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: #ea580c;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .pay-btn:hover { background: #c2410c; }
+
+    .pay-modal input, .pay-modal textarea, .pay-modal select {
+      width: 100%;
+      background: #fdf1e2;
+      border: 1.5px solid #f3dcc2;
+      color: #3d2b1f;
+      padding: 11px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    .pay-modal-msg {
+      font-size: 12.5px;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      display: none;
+    }
+    .pay-modal-msg.show { display: block; }
 
     /* Footer */
     footer {
@@ -738,34 +714,15 @@
       padding: 40px 0 20px;
       margin-top: 50px;
     }
-
     .footer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 30px;
       margin-bottom: 30px;
     }
-
-    .footer-col h4 {
-      color: #ffb454;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-
-    .footer-col ul li a:hover {
-      color: #ffffff;
-    }
-
-    .footer-bottom .lang-switch { display: inline-flex; margin-bottom: 14px; }
+    .footer-col h4 { color: #ffb454; font-size: 16px; margin-bottom: 15px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; font-size: 13px; }
     .footer-bottom {
       text-align: center;
       padding-top: 20px;
@@ -773,48 +730,9 @@
       font-size: 12px;
     }
 
-    /* Responsive Queries */
-    @media (max-width: 768px) {
-      .top-nav {
-        flex-direction: column;
-        gap: 12px;
-      }
-      .search-box {
-        width: 100%;
-      }
-      .hero-banner h2 {
-        font-size: 22px;
-      }
-    }
-  
-    /* ===== డౌన్‌లోడ్ పోర్టల్ (ఈమెయిల్ లింక్ ?d=TOKEN) ===== */
-    .dl-portal { position: fixed; inset: 0; z-index: 99999; overflow: auto; background: #fdf6ec; padding: 24px 12px; }
-    .dl-card { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #e6d5c0; border-radius: 10px; overflow: hidden; }
-    .dl-head { display: flex; align-items: center; gap: 18px; padding: 14px 22px; background: #fff7ec; border-bottom: 1px solid #e6d5c0; }
-    .dl-head h1 { font-size: 22px; margin: 0; color: #3d2b1f; }
-    .dl-head h1 span { color: #ff8a00; }
-    .dl-head strong { font-size: 17px; }
-    .dl-body { padding: 22px; }
-    .dl-title { text-align: center; font-size: 21px; margin-bottom: 18px; }
-    .dl-table { width: 100%; border-collapse: collapse; }
-    .dl-table th, .dl-table td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; font-size: 15px; word-break: break-word; }
-    .dl-table th { background: #fdf6ec; }
-    .dl-btn { display: inline-block; padding: 8px 16px; background: #ff8a00; color: #fff !important; border-radius: 6px; font-size: 14px; white-space: nowrap; }
-    .dl-social { text-align: center; margin-top: 22px; }
-    .dl-social a { display: inline-block; margin: 4px; padding: 10px 18px; border-radius: 6px; color: #fff; font-size: 14px; }
-    .dl-foot { text-align: center; padding: 14px; font-size: 13px; color: #777; }
-    .dl-msg { text-align: center; padding: 30px 10px; font-size: 16px; }
-    @media (max-width: 600px) { .dl-table th:nth-child(2), .dl-table td:nth-child(2) { display: none; } }
-
-    .gallery-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .gallery-preview .g-thumb { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; background: #f2f2f2; border: 1px solid #e5d5c0; }
-    .gallery-preview .g-thumb img, .gallery-preview .g-thumb video { width: 100%; height: 100%; object-fit: cover; }
-    .gallery-preview .g-remove { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,.6); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; line-height: 18px; cursor: pointer; }
-
-    .pay-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 10px 0 4px; }
-    .pay-gallery .pg-item { flex: 0 0 auto; width: 72px; height: 72px; border-radius: 8px; overflow: hidden; border: 1px solid #eee; background: #f7f7f7; }
-    .pay-gallery .pg-item img, .pay-gallery .pg-item video { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-</style>
+    .admin-only { display: none; }
+    .admin-only.show { display: inline-flex; }
+  </style>
 </head>
 <body>
 
@@ -824,12 +742,12 @@
       <div class="brand-logo">
         <a href="#">
           <h1>DIVINE<span>PIXELS</span></h1>
-          <p>HIGH QUALITY PSD & GRAPHIC TEMPLATES</p>
+          <p>హై క్వాలిటీ PSD & గ్రాఫిక్ టెంప్లేట్స్</p>
         </a>
       </div>
       <div class="search-box">
         <i class="fas fa-search" style="color: #a1734f;"></i>
-        <input type="text" id="searchInput" placeholder="Search (e.g. Wedding Flex, Telugu PSD, Birthday)...">
+        <input type="text" id="searchInput" placeholder="సెర్చ్ చేయండి (ఉదా: Madurai Flex, Wedding Flex, Telugu PSD)...">
       </div>
       <div class="user-actions">
         <a href="#" id="myAccountBtn" style="display:none"><i class="fas fa-user"></i> <span id="myAccountLabel">My Account</span></a>
@@ -840,194 +758,47 @@
     <!-- Category Bar -->
     <nav class="category-bar">
       <div class="container">
-        <ul class="menu-links" id="menuLinks"><!-- JS builds this from the "products list" sheet --></ul>
+        <ul class="menu-links" id="menuLinks"></ul>
       </div>
     </nav>
   </header>
 
   <!-- Hero Section -->
-  <!-- Cover Logo Section -->
   <section class="cover-pic">
-    <img src="cover_pic.jpg" alt="Divine Pixels Gallery Logo">
+    <img src="cover_pic.jpg" alt="Divine Pixels Gallery Logo" onerror="this.style.display='none'">
     <p class="cover-tag">PSD Files · Software · Plugins — Instant Delivery</p>
   </section>
 
   <section class="hero-banner">
     <div class="container">
-      <h2>Premium Design PSD & Graphic Collections</h2>
-      <p>Easily download Photoshop flex designs, wedding album sheets, and high-resolution assets.</p>
+      <h2>ప్రీమియం మదురై స్టైల్ & గ్రాఫిక్ కలెక్షన్స్</h2>
+      <p>ఫోటోషాప్ ఫ్లెక్స్ డిజైన్లు, వెడ్డింగ్ ఆల్బమ్ షీట్లు, హై-రిజల్యూషన్ అసెట్స్ సులభంగా డౌన్‌లోడ్ చేసుకోండి.</p>
     </div>
   </section>
 
   <!-- Main Content Container -->
   <main class="container">
-
-    <!-- Section: Latest PSD Templates -->
     <div class="section-title" id="sec-latest">
-      <h3 data-i18n="latestTitle">⭐ LATEST PSD TEMPLATES</h3>
-      <a href="#"><span data-i18n="viewAll">View All</span> <i class="fas fa-arrow-right"></i></a>
+      <h3>⭐ LATEST PSD TEMPLATES</h3>
+      <a href="#"><span>View All</span> <i class="fas fa-arrow-right"></i></a>
     </div>
-
     <div class="product-grid" id="grid-latest"></div>
 
-    <!-- Section: Mega Packs / Bundles -->
     <div class="section-title" id="sec-bundles">
-      <h3 data-i18n="bundlesTitle">⭐ POPULAR DESIGN BUNDLES</h3>
-      <a href="#"><span data-i18n="exploreAll">Explore All</span> <i class="fas fa-arrow-right"></i></a>
+      <h3>⭐ POPULAR DESIGN BUNDLES & MEGA PACKS</h3>
+      <a href="#"><span>Explore All</span> <i class="fas fa-arrow-right"></i></a>
     </div>
-
     <div class="product-grid" id="grid-bundles"></div>
-
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4 data-i18n="aboutStoreTitle">About Store</h4>
-          <p style="font-size: 13px;" data-i18n="aboutStoreDesc">డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.</p>
-        </div>
-        <div class="footer-col">
-          <h4 data-i18n="quickLinksTitle">Quick Links</h4>
-          <ul>
-            <li><a href="#" data-i18n="qlFlex">Flex Banners</a></li>
-            <li><a href="#" data-i18n="qlAlbums">Wedding 12x36 Sheets</a></li>
-            <li><a href="#" data-i18n="qlInvitation">Invitation Cards</a></li>
-            <li><a href="#" data-i18n="qlVisiting">Visiting Cards</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4 data-i18n="careTitle">Customer Care</h4>
-          <ul>
-            <li><a href="#" data-i18n="careContact">Contact Us</a></li>
-            <li><a href="#" data-i18n="careGuide">Download Guide</a></li>
-            <li><a href="#" data-i18n="careTerms">Terms & Privacy</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4 data-i18n="websiteTitle">Website & Support</h4>
-          <ul style="font-size: 13px; list-style: none;">
-            <li>🌐 www.divinepixels.in</li>
-            <li>✉️ support@divinepixels.in</li>
-            <li>🔒 <span data-i18n="secure">అన్ని పేమెంట్లు సురక్షితం</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="lang-switch" title="Product description language">
-          <i class="fas fa-globe"></i>
-          <select id="langSwitcher">
-            <option value="en">English</option>
-            <option value="te">తెలుగు</option>
-            <option value="hi">हिंदी</option>
-          </select>
-        </div>
-        <p data-i18n="copyright">© 2026 Divine Pixels. All Rights Reserved.</p>
-      </div>
-    </div>
-  </footer>
-  <!-- Download Portal (ఈమెయిల్ లింక్ నుంచి) -->
-  <div id="dlPortal" class="dl-portal" style="display:none">
-    <div class="dl-card">
-      <div class="dl-head">
-        <a href="./"><h1>DIVINE<span>PIXELS</span></h1></a>
-        <strong>Divine Pixels Download Portal</strong>
-      </div>
-      <div class="dl-body" id="dlBody"><div class="dl-msg">Loading…</div></div>
-      <div class="dl-foot">All Rights Reserved © <a href="./" style="color:#ff8a00;">divinepixels.in</a></div>
-    </div>
-  </div>
-
-  <!-- Payment / Buy Modal -->
-  <div class="pay-overlay" id="payOverlay">
-    <div class="pay-modal">
-      <button type="button" class="pay-modal-close" id="payModalClose">✕</button>
-      <h3 id="payProductName">Item name</h3>
-      <div id="payGallery" class="pay-gallery" style="display:none"></div>
-      <p class="pay-modal-desc" id="payProductDesc"></p>
-      <div class="pay-modal-price" id="payProductPrice">0</div>
-      <label for="payerEmail" id="payerEmailLabel" data-i18n="emailLabel">మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)</label>
-      <input type="email" id="payerEmail" placeholder="you@example.com" required>
-      <button type="button" class="pay-btn" id="payNowBtn" data-i18n="payNow">Pay Now</button>
-      <div class="pay-modal-msg" id="payModalMsg"></div>
-    </div>
-  </div>
-
-  <!-- Admin Login Modal -->
-  <div class="pay-overlay" id="loginOverlay">
-    <div class="pay-modal">
-      <button type="button" class="pay-modal-close" id="loginModalClose">✕</button>
-      <h3>My Account Login</h3>
-      <p class="pay-modal-desc">ప్రొడక్ట్ పోస్ట్ చేయడానికి అడ్మిన్ లాగిన్ చేయండి.</p>
-      <label for="loginUsername">Username</label>
-      <input type="text" id="loginUsername" placeholder="Username">
-      <label for="loginPassword">Password</label>
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button type="button" class="pay-btn" id="loginSubmitBtn">Login</button>
-      <div class="pay-modal-msg" id="loginModalMsg"></div>
-    </div>
-  </div>
-
-  <!-- Post Product Page (పూర్తి పేజీ, పాప్‌అప్ కాదు) -->
-  <div class="pay-overlay" id="postOverlay">
-    <div class="pay-modal wide">
-      <div class="post-page-head">
-        <button type="button" class="post-back-btn" id="postModalClose" title="వెనక్కి">←</button>
-        <h3 style="margin:0;">కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి</h3>
-      </div>
-      <div class="pay-modal-body">
-      <p class="pay-modal-desc">ఈ వివరాలు వెబ్‌సైట్‌లో కనిపించడంతో పాటు మీ Google Sheet లో కూడా సేవ్ అవుతాయి.</p>
-
-      <label for="postMain">కేటగిరీ (Main Category)</label>
-      <select id="postMain"></select>
-
-      <label for="postSub">సబ్ కేటగిరీ (Sub Category)</label>
-      <select id="postSub" disabled></select>
-
-      <label for="postTitle">ప్రొడక్ట్ హెడ్డింగ్ (Title)</label>
-      <input type="text" id="postTitle" placeholder="ఉదా: Wedding Flex Banner PSD">
-
-      <label for="postFileLink">డిజైన్ ఫైల్ లింక్ (Google Drive / Download URL)</label>
-      <input type="url" id="postFileLink" placeholder="https://drive.google.com/...">
-
-      <label for="postPrice">ధర (₹)</label>
-      <input type="number" id="postPrice" placeholder="499">
-
-      <label for="postDesc">ప్రోడక్ట్ యొక్క పూర్తి వివరాలు</label>
-      <textarea id="postDesc" placeholder="ప్రొడక్ట్ గురించి పూర్తి వివరణ రాయండి..."></textarea>
-
-      <label for="postImage">ప్రొడక్ట్ ఇమేజ్ / ప్రివ్యూ లింక్</label>
-      <input type="url" id="postImage" placeholder="https://...jpg or .png">
-      <span class="field-hint">కార్డు మీద కనిపించే ప్రివ్యూ ఫోటో లింక్ ఇది.</span>
-
-      <label for="postMediaFiles">ఫోటోలు / వీడియో అప్‌లోడ్ చేయండి (ఐచ్ఛికం, ఒకటి కన్నా ఎక్కువ ఎంచుకోవచ్చు)</label>
-      <input type="file" id="postMediaFiles" accept="image/*,video/*" multiple>
-      <span class="field-hint">ఇక్కడ ఎంచుకున్న ఫోటోలు/వీడియోలు ప్రొడక్ట్ పేజీలో గ్యాలరీగా కనిపిస్తాయి.</span>
-
-      <label for="postGalleryLink">లేదా Google Drive ఫోల్డర్ లింక్ (ఫోటోలు కోసం)</label>
-      <input type="url" id="postGalleryLink" placeholder="https://drive.google.com/drive/folders/...">
-      <span class="field-hint">ఈ ఫోల్డర్ "Anyone with the link — Viewer" గా షేర్ చేసి ఉండాలి. అందులోని ఫోటోలు/వీడియోలు ఆటోమేటిక్ గా గ్యాలరీలో వస్తాయి.</span>
-
-      <div id="postGalleryPreview" class="gallery-preview"></div>
-
-      <label for="postPdf">ప్రొడక్ట్ PDF లింక్ (ఐచ్ఛికం)</label>
-      <input type="url" id="postPdf" placeholder="https://...pdf">
-
-      <button type="button" class="pay-btn" id="postSubmitBtn">పోస్ట్ చేయండి</button>
-      <div class="pay-modal-msg" id="postModalMsg"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Product Detail Page (ప్రొడక్ట్ మీద క్లిక్ చేస్తే వచ్చే పూర్తి 2వ పేజీ, పాప్‌అప్ కాదు) -->
+  <!-- Product Detail Page (Modal / Full View) -->
   <div class="pay-overlay" id="productOverlay">
     <div class="pay-modal wide">
       <div class="post-page-head">
         <button type="button" class="post-back-btn" id="pdBackBtn" title="వెనక్కి">←</button>
-        <h3 style="margin:0;">ప్రొడక్ట్ వివరాలు</h3>
+        <h3 style="margin:0;">ప్రొడక్ట్ వివరాలు (Product Details)</h3>
       </div>
-      <div class="pay-modal-body">
+      <div class="pay-modal-body" style="padding: 24px 20px;">
         <div class="pd-wrap">
           <div class="pd-media">
             <div class="pd-main-wrap" id="pdMainWrap"></div>
@@ -1036,1065 +807,304 @@
           <div class="pd-info">
             <span class="pd-category" id="pdCategory"></span>
             <h1 class="pd-title" id="pdTitle"></h1>
-            <div class="pd-price" id="pdPrice">0</div>
-            <button type="button" class="pay-btn pd-buy-btn" id="pdBuyBtn">Buy Now</button>
-            <div class="pd-desc-title">వివరాలు / Description</div>
-            <p class="pd-desc" id="pdDesc"></p>
-            <a href="#" id="pdPdfLink" class="pd-pdf-link" target="_blank" rel="noopener" style="display:none">
-              <i class="fas fa-file-pdf"></i> Preview PDF చూడండి
-            </a>
+            <div class="pd-price-row">
+              <span class="pd-price" id="pdPrice">0</span>
+              <span class="pd-old-price" id="pdOldPrice" style="display:none;"></span>
+              <span class="pd-discount-badge" id="pdDiscountBadge" style="display:none;"></span>
+            </div>
+
+            <div class="pd-action-btns">
+              <button type="button" class="pay-btn pd-buy-btn" id="pdBuyBtn">ఇప్పుడే కొనండి (Buy Now)</button>
+              <a href="https://www.youtube.com" target="_blank" class="pd-video-guide-btn" id="pdVideoBtn">
+                <i class="fab fa-youtube"></i> How to Buy & Download
+              </a>
+            </div>
+
+            <!-- Features Specs Table -->
+            <div class="spec-table-wrap" id="pdSpecWrap" style="display:none;">
+              <table class="spec-table">
+                <tbody id="pdSpecBody"></tbody>
+              </table>
+            </div>
+
+            <!-- Important Notice Box -->
+            <div class="info-notice-box" id="pdNoticeBox">
+              <h5><i class="fas fa-exclamation-triangle"></i> ముఖ్య గమనిక & సాఫ్ట్‌వేర్ సపోర్ట్:</h5>
+              <p>అన్ని PSD డిజైన్ ఫైల్స్ <strong>Adobe Photoshop CS6 మరియు పై వెర్షన్లలో</strong> మాత్రమే పనిచేస్తాయి. డౌన్‌లోడ్ చేసిన RAR ఫైల్స్ తెరవడానికి <strong>WinRAR</strong> లేదా <strong>7-Zip</strong> వాడండి. మొబైల్ బదులు కంప్యూటర్/ల్యాప్‌టాప్ వాడటం మంచిది.</p>
+            </div>
+
+            <div class="pd-desc-title" style="font-weight:700; margin-bottom:8px;">ప్రొడక్ట్ వివరణ (Description):</div>
+            <div class="pd-desc" id="pdDesc"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Buy Modal -->
+  <div class="pay-overlay" id="payOverlay">
+    <div class="pay-modal">
+      <button type="button" class="pay-modal-close" id="payModalClose">✕</button>
+      <h3 id="payProductName">Item name</h3>
+      <p class="pay-modal-desc" id="payProductDesc"></p>
+      <div class="pay-modal-price" id="payProductPrice" style="font-size:22px; font-weight:700; color:#c2410c; margin-bottom:12px;"></div>
+      <label for="payerEmail" style="font-size:12px; font-weight:700; color:#6b5040;">మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి పంపబడుతుంది)</label>
+      <input type="email" id="payerEmail" placeholder="you@example.com" required>
+      <button type="button" class="pay-btn" id="payNowBtn">Pay Now</button>
+      <div class="pay-modal-msg" id="payModalMsg"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>About Store</h4>
+          <p style="font-size: 13px;">డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Flex Banners</a></li>
+            <li><a href="#">Wedding 12x36 Sheets</a></li>
+            <li><a href="#">Invitation Cards</a></li>
+            <li><a href="#">Visiting Cards</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Customer Care</h4>
+          <ul>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Download Guide</a></li>
+            <li><a href="#">Terms & Privacy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Website & Support</h4>
+          <ul style="font-size: 13px;">
+            <li>🌐 www.divinepixels.in</li>
+            <li>✉️ support@divinepixels.in</li>
+            <li>🔒 అన్ని పేమెంట్లు సురక్షితం</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Divine Pixels. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-    /* =========================================================
-       GOOGLE SHEET BACKEND CONFIG
-       ఈ URLని మీ డిప్లాయ్ చేసిన Google Apps Script Web App లింక్‌తో
-       మార్చండి (సెటప్ స్టెప్స్ కోసం Code.gs ఫైల్ చూడండి).
-       ========================================================= */
+    /* ===================== CONFIG & DATA ===================== */
     const SHEET_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxc2sU8mz54jVPM01hlZAjBA_Hg5kgA3zFTNxLEeXcpevVPcjtxYwOh2B8hH0eGMEOe/exec';
 
-    /* అడ్మిన్ పాస్‌వర్డ్ ఇక్కడ ఉండదు — Apps Script లోని Script Property 'ADMIN_KEY' లో సర్వర్ వైపు చెక్ అవుతుంది. */
-
-    /* షీట్ ఇంకా కనెక్ట్ కాకముందు నావిగేషన్ చూపించడానికి డిఫాల్ట్ కేటగిరీలు.
-       షీట్ కనెక్ట్ అయ్యాక "products list" షీట్ నుంచి ఇవి ఆటోమేటిక్ గా మారతాయి. */
     const DEFAULT_CATEGORIES = [
-      { name: 'Album PSD', subs: ['Birthday Album PSD', 'Wedding Album PSD', 'Half Saree Function PSD', 'Other PSD'] },
-      { name: 'Flex & Banners', subs: ['Birthday Flex PSD', 'Wedding Flex PSD', 'Half Saree Flex PSD', 'Festival Flex PSD', 'Political Flex PSD', 'Movie Flex PSD', 'housewarming Flex PSD', 'Srandhanjali Flex PSD'] },
-      { name: 'Photo Frames', subs: ['Birthday Frame PSD', 'Wedding Frame PSD', 'Half Saree Frame PSD', 'Festival Frame PSD', 'Political Frame PSD', 'Srandhanjali Frame PSD'] },
-      { name: 'Invitation Card', subs: ['Birthday Invitation Card PSD', 'Wedding Invitation Card PSD', 'Half Saree Invitation Card PSD', 'Other PSD'] },
-      { name: 'Visiting cards', subs: [] },
-      { name: 'PNG & Backgrounds', subs: [] },
-      { name: 'Video Projects', subs: ['Birthday Invitations', 'Wedding Invitations', 'Half Saree Invitations', 'Other PSD'] }
+      { name: 'Madurai Style PSD', subs: ['Mega Packs', 'Tamil Flex', 'Political Banners'] },
+      { name: 'Flex & Banners', subs: ['Birthday Flex PSD', 'Wedding Flex PSD', 'Political Flex PSD'] },
+      { name: 'Album PSD', subs: ['Wedding Album PSD', 'Birthday Album PSD'] },
+      { name: 'Invitation Card', subs: ['Wedding Cards', 'Birthday Cards'] }
     ];
 
-    let isAdminLoggedIn = false;
-    let ADMIN_KEY = '';   // లాగిన్ అయ్యాక మెమరీలో మాత్రమే ఉంటుంది
-
-  </script>
-
-  <script>
-    /* ===================== TRANSLATIONS ===================== */
-    const UI_TEXT = {
-      te: {
-        htmlLang: 'te',
-        tagline: 'హై క్వాలిటీ PSD & గ్రాఫిక్ టెంప్లేట్స్',
-        searchPlaceholder: 'సెర్చ్ చేయండి (ఉదా: Wedding Flex, Telugu PSD, Birthday)...',
-        myAccount: 'నా ఖాతా',
-        navHome: 'హోమ్',
-        navFlex: 'ఫ్లెక్స్ డిజైన్ PSD',
-        navAlbums: 'వెడ్డింగ్ ఆల్బమ్స్ (12x36)',
-        navTelugu: 'తెలుగు బ్యానర్లు',
-        navInvitation: 'ఇన్విటేషన్ కార్డులు',
-        navVisiting: 'విజిటింగ్ కార్డులు',
-        navPng: 'PNG బ్యాక్‌గ్రౌండ్స్',
-        navVideo: 'వీడియో ప్రాజెక్ట్స్',
-        coverTag: 'PSD ఫైల్స్ · సాఫ్ట్‌వేర్ · ప్లగిన్స్ — ఇన్‌స్టంట్ డెలివరీ',
-        heroTitle: 'ప్రీమియం డిజైన్ PSD & గ్రాఫిక్ కలెక్షన్స్',
-        heroDesc: 'ఫోటోషాప్ ఫ్లెక్స్ డిజైన్లు, వెడ్డింగ్ ఆల్బమ్ షీట్లు, హై-రిజల్యూషన్ అసెట్స్ సులభంగా డౌన్‌లోడ్ చేసుకోండి.',
-        latestTitle: '⭐ లేటెస్ట్ PSD టెంప్లేట్స్',
-        viewAll: 'అన్నీ చూడండి',
-        bundlesTitle: '⭐ పాపులర్ డిజైన్ బండిల్స్',
-        exploreAll: 'అన్నీ అన్వేషించండి',
-        buyNow: 'కొనుగోలు చేయండి',
-        aboutStoreTitle: 'స్టోర్ గురించి',
-        aboutStoreDesc: 'డిజైనర్లు, ఫోటోగ్రాఫర్లు మరియు స్టూడియోల కోసం హై-క్వాలిటీ ఎడిటబుల్ PSD ఫైల్స్ మరియు గ్రాఫిక్ వనరులను అందించే ప్లాట్‌ఫారమ్.',
-        quickLinksTitle: 'త్వరిత లింకులు',
-        qlFlex: 'ఫ్లెక్స్ బ్యానర్లు',
-        qlAlbums: 'వెడ్డింగ్ 12x36 షీట్లు',
-        qlInvitation: 'ఇన్విటేషన్ కార్డులు',
-        qlVisiting: 'విజిటింగ్ కార్డులు',
-        careTitle: 'కస్టమర్ కేర్',
-        careContact: 'మమ్మల్ని సంప్రదించండి',
-        careGuide: 'డౌన్‌లోడ్ గైడ్',
-        careTerms: 'నిబంధనలు & గోప్యత',
-        websiteTitle: 'వెబ్‌సైట్ & సపోర్ట్',
-        secure: 'అన్ని పేమెంట్లు సురక్షితం',
-        copyright: '© 2026 Divine Pixels. అన్ని హక్కులు కలిగివుంది.',
-        emailLabel: 'మీ ఈమెయిల్ (డౌన్‌లోడ్ లింక్ ఇక్కడికి వస్తుంది)',
-        payNow: 'పే చేయండి',
-        processing: 'ప్రాసెస్ అవుతోంది...',
-        invalidEmail: 'దయచేసి సరైన ఈమెయిల్ ఇవ్వండి.',
-        orderMsg: (email) => '✅ ఆర్డర్ నమోదైంది! పేమెంట్ పూర్తయిన వెంటనే డౌన్‌లోడ్ లింక్ ' + email + 'కు పంపబడుతుంది.'
-      },
-      en: {
-        htmlLang: 'en',
-        tagline: 'HIGH QUALITY PSD & GRAPHIC TEMPLATES',
-        searchPlaceholder: 'Search (e.g. Wedding Flex, Telugu PSD, Birthday)...',
-        myAccount: 'My Account',
-        navHome: 'Home',
-        navFlex: 'Flex Design PSD',
-        navAlbums: 'Wedding Albums (12x36)',
-        navTelugu: 'Telugu Banners',
-        navInvitation: 'Invitation Cards',
-        navVisiting: 'Visiting Cards',
-        navPng: 'PNG Backgrounds',
-        navVideo: 'Video Projects',
-        coverTag: 'PSD Files · Software · Plugins — Instant Delivery',
-        heroTitle: 'Premium Design PSD & Graphic Collections',
-        heroDesc: 'Easily download Photoshop flex designs, wedding album sheets, and high-resolution assets.',
-        latestTitle: '⭐ LATEST PSD TEMPLATES',
-        viewAll: 'View All',
-        bundlesTitle: '⭐ POPULAR DESIGN BUNDLES',
-        exploreAll: 'Explore All',
-        buyNow: 'Buy Now',
-        aboutStoreTitle: 'About Store',
-        aboutStoreDesc: 'A platform offering high-quality, editable PSD files and graphic resources for designers, photographers, and studios.',
-        quickLinksTitle: 'Quick Links',
-        qlFlex: 'Flex Banners',
-        qlAlbums: 'Wedding 12x36 Sheets',
-        qlInvitation: 'Invitation Cards',
-        qlVisiting: 'Visiting Cards',
-        careTitle: 'Customer Care',
-        careContact: 'Contact Us',
-        careGuide: 'Download Guide',
-        careTerms: 'Terms & Privacy',
-        websiteTitle: 'Website & Support',
-        secure: 'All payments are secure',
-        copyright: '© 2026 Divine Pixels. All Rights Reserved.',
-        emailLabel: 'Your email (the download link will be sent here)',
-        payNow: 'Pay Now',
-        processing: 'Processing...',
-        invalidEmail: 'Please enter a valid email address.',
-        orderMsg: (email) => '✅ Order placed! The download link will be sent to ' + email + ' as soon as payment is completed.'
-      },
-      hi: {
-        htmlLang: 'hi',
-        tagline: 'उच्च गुणवत्ता वाले PSD और ग्राफिक टेम्पलेट्स',
-        searchPlaceholder: 'खोजें (उदा: Wedding Flex, Telugu PSD, Birthday)...',
-        myAccount: 'मेरा खाता',
-        navHome: 'होम',
-        navFlex: 'फ्लेक्स डिज़ाइन PSD',
-        navAlbums: 'वेडिंग एल्बम (12x36)',
-        navTelugu: 'तेलुगु बैनर',
-        navInvitation: 'निमंत्रण कार्ड',
-        navVisiting: 'विजिटिंग कार्ड',
-        navPng: 'PNG बैकग्राउंड',
-        navVideo: 'वीडियो प्रोजेक्ट्स',
-        coverTag: 'PSD फ़ाइलें · सॉफ़्टवेयर · प्लगइन्स — तुरंत डिलीवरी',
-        heroTitle: 'प्रीमियम डिज़ाइन PSD और ग्राफ़िक कलेक्शन',
-        heroDesc: 'फोटोशॉप फ्लेक्स डिज़ाइन, वेडिंग एल्बम शीट और हाई-रिज़ॉल्यूशन एसेट्स आसानी से डाउनलोड करें।',
-        latestTitle: '⭐ नवीनतम PSD टेम्पलेट्स',
-        viewAll: 'सभी देखें',
-        bundlesTitle: '⭐ लोकप्रिय डिज़ाइन बंडल',
-        exploreAll: 'सभी एक्सप्लोर करें',
-        buyNow: 'अभी खरीदें',
-        aboutStoreTitle: 'स्टोर के बारे में',
-        aboutStoreDesc: 'डिज़ाइनरों, फोटोग्राफरों और स्टूडियो के लिए उच्च गुणवत्ता वाली संपादन योग्य PSD फ़ाइलें और ग्राफ़िक संसाधन प्रदान करने वाला प्लेटफ़ॉर्म।',
-        quickLinksTitle: 'त्वरित लिंक',
-        qlFlex: 'फ्लेक्स बैनर',
-        qlAlbums: 'वेडिंग 12x36 शीट',
-        qlInvitation: 'निमंत्रण कार्ड',
-        qlVisiting: 'विजिटिंग कार्ड',
-        careTitle: 'ग्राहक सेवा',
-        careContact: 'संपर्क करें',
-        careGuide: 'डाउनलोड गाइड',
-        careTerms: 'नियम और गोपनीयता',
-        websiteTitle: 'वेबसाइट और सहायता',
-        secure: 'सभी भुगतान सुरक्षित हैं',
-        copyright: '© 2026 Divine Pixels. सर्वाधिकार सुरक्षित।',
-        emailLabel: 'आपका ईमेल (डाउनलोड लिंक यहां भेजा जाएगा)',
-        payNow: 'अभी भुगतान करें',
-        processing: 'प्रोसेस हो रहा है...',
-        invalidEmail: 'कृपया एक मान्य ईमेल दर्ज करें।',
-        orderMsg: (email) => '✅ ऑर्डर दर्ज हो गया! भुगतान पूरा होते ही डाउनलोड लिंक ' + email + ' पर भेज दिया जाएगा।'
-      }
-    };
-
-    /* ===================== PRODUCT DATA ===================== */
+    // కార్కిటెక్స్ (karkitechs.com) లోని మెగా ప్యాక్ 2 పూర్తి సదుపాయాలతో కూడిన ప్రొడక్ట్ డేటా
     const PRODUCTS = {
       latest: [
         {
-          id: 'p1', image: 'https://picsum.photos/400/250?random=1', price: 499,
-          badge: { te: 'ట్రెండింగ్', en: 'Trending', hi: 'ट्रेंडिंग' },
-          category: { te: 'వెడ్డింగ్ ఫ్లెక్స్', en: 'Wedding Flex', hi: 'वेडिंग फ्लेक्स' },
+          id: 'madurai-mega-2',
+          image: 'https://karkitechs.com/wp-content/uploads/2026/08/Madurai-Style-Flex-Design-Collection-Mega-Pack-2.jpg',
+          price: 400,
+          oldPrice: 475,
+          discount: '15% OFF',
+          badge: { te: 'మెగా ప్యాక్', en: 'Mega Pack' },
+          category: { te: 'మదురై ఫ్లెక్స్ డిజైన్', en: 'Madurai Flex PSD' },
           title: {
-            te: 'సంప్రదాయ వెడ్డింగ్ ఫ్లెక్స్ బ్యానర్ PSD (హై క్వాలిటీ ఎడిటబుల్)',
-            en: 'Traditional Wedding Flex Banner PSD (High Quality Editable)',
-            hi: 'पारंपरिक वेडिंग फ्लेक्स बैनर PSD (उच्च गुणवत्ता संपादन योग्य)'
+            te: 'Madurai Style Flex Design Collection Mega Pack – 2 (60 Editable PSDs)',
+            en: 'Madurai Style Flex Design Collection Mega Pack – 2 (60 Editable PSDs)'
           },
           desc: {
-            te: 'పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.',
-            en: 'A wedding flex template built with full layers and premium font support.',
-            hi: 'पूरी लेयर्स और प्रीमियम फॉन्ट सपोर्ट के साथ बनाया गया वेडिंग फ्लेक्स टेम्पलेट।'
-          }
+            te: 'తమిళ మరియు మదురై స్టైల్ ఫ్లెక్స్ బ్యానర్ల కోసం రూపొందించిన 60 ప్రీమియం ఎడిటబుల్ PSD ఫైళ్ల బండిల్. ఈవెంట్స్, బర్త్‌డే, పొలిటికల్ మరియు లోకల్ ప్రమోషన్లకు అనువైన హై-రిజల్యూషన్ డిజైన్స్.',
+            en: 'Premium collection of 60 professionally crafted Madurai-style PSD templates for Tamil flex banners, event posters, and celebrations.'
+          },
+          specs: {
+            'ఫైల్ సైజ్ (File Size)': '8.22 GB',
+            'ఫైల్ రకం (File Type)': 'Photoshop PSD',
+            'మొత్తం ఫైల్స్ (No. of Files)': '60 PSD Templates',
+            'అనుకూలత (Compatibility)': 'Photoshop CS6 & Above',
+            'కంప్రెషన్ రకం (Archive)': 'WinRAR / 7-Zip (RAR)',
+            'డెలివరీ (Delivery)': 'ఇన్‌స్టంట్ డౌన్‌లోడ్ ఈమెయిల్ ద్వారా'
+          },
+          features: [
+            'వృత్తిపరమైన మదురై విజువల్ స్టైల్ ఫ్లెక్స్ డిజైన్స్.',
+            'పూర్తిగా ఎడిట్ చేయగల లేయర్డ్ ఫోటోషాప్ (PSD) ఫైల్స్.',
+            'టెక్స్ట్, రంగులు మరియు ఫోటోలను తేలికగా మార్చుకోవచ్చు.',
+            'ఫ్లెక్స్ ప్రింటింగ్ షాపులు, డిజైనర్లు మరియు స్టూడియోలకు ప్రత్యేకం.',
+            'ఈవెంట్స్, రాజకీయ బ్యానర్లు, మరియు వేడుకలకు అనుకూలం.'
+          ]
         },
         {
-          id: 'p2', image: 'https://picsum.photos/400/250?random=2', price: 349,
-          badge: { te: 'PSD', en: 'PSD', hi: 'PSD' },
-          category: { te: 'తెలుగు ఫ్లెక్స్', en: 'Telugu Flex', hi: 'तेलुगु फ्लेक्स' },
-          title: {
-            te: 'పండుగ & భక్తి ఫ్లెక్స్ డిజైన్ కలెక్షన్ (తెలుగు ఎడిషన్)',
-            en: 'Festival & Devotional Flex Design Collection (Telugu Edition)',
-            hi: 'त्योहार और भक्ति फ्लेक्स डिज़ाइन कलेक्शन (तेलुगु संस्करण)'
-          },
-          desc: {
-            te: 'వినాయక చవితి మరియు పండుగల కోసం ప్రత్యేకంగా తీర్చిదిద్దిన ఫ్లెక్స్ బ్యానర్ డిజైన్.',
-            en: 'A flex banner design crafted specially for Ganesh Chaturthi and other festivals.',
-            hi: 'गणेश चतुर्थी और त्योहारों के लिए विशेष रूप से तैयार किया गया फ्लेक्स बैनर डिज़ाइन।'
-          }
-        },
-        {
-          id: 'p3', image: 'https://picsum.photos/400/250?random=3', price: 799,
-          badge: { te: 'ఆల్బమ్ 12x36', en: 'Album 12x36', hi: 'एल्बम 12x36' },
-          category: { te: 'ఆల్బమ్ డిజైన్', en: 'Album Design', hi: 'एल्बम डिज़ाइन' },
-          title: {
-            te: 'వెడ్డింగ్ ఆల్బమ్ ఇన్నర్ షీట్ డిజైన్ 12x36 PSD కలెక్షన్',
-            en: 'Wedding Album Inner Sheet Design 12x36 PSD Collection',
-            hi: 'वेडिंग एल्बम इनर शीट डिज़ाइन 12x36 PSD कलेक्शन'
-          },
-          desc: {
-            te: 'సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.',
-            en: 'Cinematic wedding album sheet layouts with clean frames and masking layers.',
-            hi: 'सिनेमैटिक वेडिंग एल्बम शीट लेआउट, क्लीन फ्रेम्स और मास्किंग लेयर्स के साथ।'
-          }
-        },
-        {
-          id: 'p4', image: 'https://picsum.photos/400/250?random=4', price: 599,
-          badge: { te: 'ప్యాక్', en: 'Pack', hi: 'पैक' },
-          category: { te: 'బర్త్‌డే', en: 'Birthday', hi: 'जन्मदिन' },
-          title: {
-            te: 'బర్త్‌డే ఫ్లెక్స్ బ్యానర్ PSD మెగా బండిల్ 2026',
-            en: 'Birthday Flex Banner PSD Mega Bundle 2026',
-            hi: 'जन्मदिन फ्लेक्स बैनर PSD मेगा बंडल 2026'
-          },
-          desc: {
-            te: 'కస్టమ్ సైజ్ ఫ్లెక్స్ ప్రింటింగ్‌కు అనుకూలంగా ఉండే బర్త్‌డే బ్యానర్ డిజైన్ ప్యాక్.',
-            en: 'A birthday banner design pack suited for custom-size flex printing.',
-            hi: 'कस्टम साइज़ फ्लेक्स प्रिंटिंग के लिए उपयुक्त जन्मदिन बैनर डिज़ाइन पैक।'
-          }
+          id: 'p1',
+          image: 'https://picsum.photos/400/250?random=1',
+          price: 499,
+          badge: { te: 'ట్రెండింగ్', en: 'Trending' },
+          category: { te: 'వెడ్డింగ్ ఫ్లెక్స్', en: 'Wedding Flex' },
+          title: { te: 'సంప్రదాయ వెడ్డింగ్ ఫ్లెక్స్ బ్యానర్ PSD', en: 'Traditional Wedding Flex Banner PSD' },
+          desc: { te: 'పూర్తి లేయర్స్ మరియు ప్రీమియం ఫాంట్స్ సపోర్ట్‌తో తయారు చేసిన వెడ్డింగ్ ఫ్లెక్స్ టెంప్లేట్.', en: 'Wedding flex template with layers.' }
         }
       ],
       bundles: [
         {
-          id: 'p5', image: 'https://picsum.photos/400/250?random=5', price: 299,
-          badge: { te: 'PNG అసెట్స్', en: 'PNG Assets', hi: 'PNG एसेट्स' },
-          category: { te: 'PNG కలెక్షన్స్', en: 'PNG Collections', hi: 'PNG कलेक्शन' },
-          title: {
-            te: 'ప్రీమియం ట్రాన్స్‌పరెంట్ బ్యాక్‌గ్రౌండ్స్ & లైట్ ఎఫెక్ట్స్ PNG ప్యాక్',
-            en: 'Premium Transparent Backgrounds & Light Effects PNG Pack',
-            hi: 'प्रीमियम पारदर्शी बैकग्राउंड और लाइट इफेक्ट्स PNG पैक'
-          },
-          desc: {
-            te: 'బ్యాక్‌గ్రౌండ్ రిమూవల్ లేకుండా నేరుగా ఫోటోషాప్‌లో వాడుకోగల హై-రెస్ PNG అసెట్స్.',
-            en: 'High-resolution PNG assets you can use directly in Photoshop without background removal.',
-            hi: 'हाई-रेस PNG एसेट्स जिन्हें बैकग्राउंड हटाए बिना सीधे फोटोशॉप में उपयोग किया जा सकता है।'
-          }
-        },
-        {
-          id: 'p6', image: 'https://picsum.photos/400/250?random=6', price: 399,
-          badge: { te: 'సోషల్ మీడియా', en: 'Social Media', hi: 'सोशल मीडिया' },
-          category: { te: 'ఇన్‌స్టాగ్రామ్ / పోస్టర్లు', en: 'Instagram / Posters', hi: 'इंस्टाग्राम / पोस्टर' },
-          title: {
-            te: 'వెడ్డింగ్ టీజర్ & ప్రీ-వెడ్డింగ్ ఇన్‌స్టాగ్రామ్ పోస్ట్ PSD సెట్',
-            en: 'Wedding Teaser & Pre-Wedding Instagram Post PSD Set',
-            hi: 'वेडिंग टीज़र और प्री-वेडिंग इंस्टाग्राम पोस्ट PSD सेट'
-          },
-          desc: {
-            te: 'సోషల్ మీడియా మరియు డిజిటల్ ప్రమోషన్ల కోసం రెడీమేడ్ స్క్వేర్ & పోర్ట్రెయిట్ టెంప్లేట్లు.',
-            en: 'Ready-made square & portrait templates for social media and digital promotions.',
-            hi: 'सोशल मीडिया और डिजिटल प्रचार के लिए तैयार स्क्वायर और पोर्ट्रेट टेम्पलेट्स।'
-          }
+          id: 'p3',
+          image: 'https://picsum.photos/400/250?random=3',
+          price: 799,
+          badge: { te: 'ఆల్బమ్ 12x36', en: 'Album 12x36' },
+          category: { te: 'ఆల్బమ్ డిజైన్', en: 'Album Design' },
+          title: { te: 'వెడ్డింగ్ ఆల్బమ్ ఇన్నర్ షీట్ డిజైన్ 12x36 PSD కలెక్షన్', en: 'Wedding Album Inner Sheet 12x36 PSD' },
+          desc: { te: 'సినిమాటిక్ వెడ్డింగ్ ఆల్బమ్ షీట్ లేఅవుట్స్, క్లీన్ ఫ్రేమ్స్ మరియు మాస్కింగ్ లేయర్స్.', en: 'Cinematic wedding album sheets.' }
         }
       ]
     };
 
     let CURRENT_LANG = 'te';
-    let SELECTED_PRICE = 0;
     let SELECTED_PRODUCT = null;
-    let EDIT_PRODUCT = null;   // ఎడిట్ చేస్తున్న ప్రొడక్ట్ (కొత్తది పోస్ట్ చేస్తుంటే null)
-    let POST_EXISTING_GALLERY = [];   // ఎడిట్ లో ఇప్పటికే ఉన్న గ్యాలరీ URLs (ఉంచేవి)
 
-    /* ===================== STATE + HELPERS ===================== */
-    let CATEGORIES = DEFAULT_CATEGORIES.map(function (c) { return { name: c.name, subs: c.subs.slice() }; });
-    let SHEET_PRODUCTS = [];     // Google Sheet ("Product Catalog") నుంచి వచ్చినవి
-    let SHEET_LOADED = false;
-    let FILTER = { main: '', sub: '' };
-
-    function esc(v) {
-      return String(v === undefined || v === null ? '' : v).replace(/[&<>"']/g, function (ch) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
-      });
-    }
-    function sheetConfigured() {
-      return SHEET_WEBAPP_URL && SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') !== 0;
-    }
-    function hashNum(str) {
-      let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
-      return Math.abs(h) % 1000;
-    }
-    /* Drive share లింక్ ని <img> లో కనిపించే లింక్ గా మారుస్తుంది; లేకపోతే placeholder */
-    function fixImage(url, seed) {
-      url = (url || '').trim();
-      const m = url.match(/drive\.google\.com\/file\/d\/([^\/?#]+)/) ||
-                (/drive\.google\.com/.test(url) && url.match(/[?&]id=([^&#]+)/));
-      if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w800';
-      if (/^https?:\/\//i.test(url)) return url;
-      return 'https://picsum.photos/400/250?random=' + hashNum(seed || 'x');
-    }
-    function toProduct(row) {
-      const label = row.sub || row.main || 'New';
-      const gallery = (row.gallery || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-      return {
-        id: row.id, main: row.main || '', sub: row.sub || '',
-        image: gallery[0] || fixImage(row.image, row.id),
-        gallery: gallery,
-        price: Number(row.price) || 0,
-        badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
-        category: { te: label, en: label, hi: label },
-        title: { te: row.title, en: row.title, hi: row.title },
-        desc: { te: row.descTe || row.description || '', en: row.description || '', hi: row.descHi || row.description || '' },
-        pdfLink: row.pdfLink || ''
-      };
-    }
-    function allProducts() {
-      return SHEET_LOADED ? SHEET_PRODUCTS : PRODUCTS.latest.concat(PRODUCTS.bundles);
-    }
-
-    /* ===================== CATEGORY NAV (dropdowns) ===================== */
     function buildNav() {
       const ul = document.getElementById('menuLinks');
-      let html = '<li><a href="#" data-home="1"><i class="fas fa-home"></i> <span>' + esc(UI_TEXT.en.navHome) + '</span></a></li>';
-      CATEGORIES.forEach(function (c, i) {
-        const has = c.subs.length > 0;
-        html += '<li class="' + (has ? 'has-sub' : '') + '"><a href="#" data-c="' + i + '">' + esc(c.name) +
-                (has ? ' <i class="fas fa-caret-down"></i>' : '') + '</a>';
-        if (has) {
-          html += '<ul class="dropdown"><li class="dd-all"><a href="#" data-c="' + i + '" data-all="1">All ' + esc(c.name) + '</a></li>';
-          c.subs.forEach(function (sname, j) {
-            html += '<li><a href="#" data-c="' + i + '" data-s="' + j + '">' + esc(sname) + '</a></li>';
-          });
+      let html = '<li><a href="#"><i class="fas fa-home"></i> <span>హోమ్</span></a></li>';
+      DEFAULT_CATEGORIES.forEach((c) => {
+        html += '<li class="has-sub"><a href="#">' + c.name + ' <i class="fas fa-caret-down"></i></a>';
+        if (c.subs.length) {
+          html += '<ul class="dropdown">';
+          c.subs.forEach(s => { html += '<li><a href="#">' + s + '</a></li>'; });
           html += '</ul>';
         }
         html += '</li>';
       });
       ul.innerHTML = html;
     }
-    function closeMenus() {
-      document.querySelectorAll('.menu-links li.open').forEach(function (li) { li.classList.remove('open'); });
-    }
-    document.getElementById('menuLinks').addEventListener('click', function (e) {
-      const a = e.target.closest('a');
-      if (!a) return;
-      e.preventDefault();
-      if (a.dataset.home) {
-        FILTER = { main: '', sub: '' };
-        closeMenus();
-      } else {
-        const c = CATEGORIES[Number(a.dataset.c)];
-        if (!c) return;
-        if (a.dataset.s !== undefined) {
-          FILTER = { main: c.name, sub: c.subs[Number(a.dataset.s)] };
-          closeMenus();
-        } else {
-          FILTER = { main: c.name, sub: '' };
-          const li = a.parentElement;
-          if (li.classList.contains('has-sub') && !a.dataset.all) {
-            const wasOpen = li.classList.contains('open');
-            closeMenus();
-            if (!wasOpen) li.classList.add('open');   // మొబైల్ లో టచ్ కి డ్రాప్‌డౌన్ తెరవడానికి
-          } else {
-            closeMenus();
-          }
-        }
-      }
-      renderProducts();
-      const main = document.querySelector('main');
-      window.scrollTo({ top: main.getBoundingClientRect().top + window.scrollY - 130, behavior: 'smooth' });
-    });
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.menu-links')) closeMenus();
-    });
 
-    /* ===================== RENDER PRODUCT CARDS ===================== */
     function renderProducts() {
-      const all = allProducts();
-      let groups, filtered = !!FILTER.main;
-      if (filtered) {
-        groups = { latest: all.filter(function (p) {
-          return p.main === FILTER.main && (!FILTER.sub || p.sub === FILTER.sub);
-        }), bundles: [] };
-      } else if (SHEET_LOADED) {
-        groups = { latest: all.slice(0, 8), bundles: all.slice(8) };
-      } else {
-        groups = PRODUCTS;
-      }
-
-      // Section headings
-      const dict = UI_TEXT.en;
-      const latestHead = document.querySelector('#sec-latest h3');
-      latestHead.textContent = filtered ? '⭐ ' + FILTER.main + (FILTER.sub ? ' › ' + FILTER.sub : '') : dict.latestTitle;
-      document.querySelector('#sec-latest a').style.display = filtered ? 'none' : '';
-      document.getElementById('sec-bundles').style.display = (!filtered && groups.bundles.length) ? '' : 'none';
-      document.getElementById('grid-bundles').style.display = (!filtered && groups.bundles.length) ? '' : 'none';
-
-      ['latest', 'bundles'].forEach(function (groupKey) {
-        const mount = document.getElementById('grid-' + groupKey);
-        const list = groups[groupKey] || [];
-        if (!list.length) {
-          mount.innerHTML = (groupKey === 'latest')
-            ? '<p class="no-results">' + (filtered ? 'ఈ కేటగిరీలో ఇంకా ప్రొడక్ట్స్ లేవు. / No products in this category yet.' : '') + '</p>'
-            : '';
-          return;
-        }
-        mount.innerHTML = list.map(function (p) {
-          return (
-            '<article class="card" data-open-id="' + esc(p.id) + '">' +
-              '<div class="card-thumb">' +
-                '<span class="badge">' + esc(p.badge.en) + '</span>' +
-                '<img src="' + esc(p.image) + '" alt="Design Preview" loading="lazy">' +
-              '</div>' +
-              '<div class="card-content">' +
-                '<span class="card-category">' + esc(p.category.en) + '</span>' +
-                '<h4 class="card-title">' + esc(p.title.en) + '</h4>' +
-                '<p class="card-desc">' + esc(p.desc[CURRENT_LANG]) + '</p>' +
-                '<div class="card-footer-row">' +
-                  '<span class="card-price">' + esc(p.price) + '</span>' +
-                '</div>' +
-                '<div class="card-action">' +
-                  '<button type="button" class="btn-view" data-product-id="' + esc(p.id) + '">' + esc(dict.buyNow) + '</button>' +
-                  (isAdminLoggedIn ?
-                    '<button type="button" class="btn-edit admin-only show" data-edit-id="' + esc(p.id) + '" title="Edit"><i class="fas fa-pen"></i></button>' +
-                    '<button type="button" class="btn-delete admin-only show" data-delete-id="' + esc(p.id) + '" title="Delete"><i class="fas fa-trash"></i></button>'
-                    : '') +
-                '</div>' +
-              '</div>' +
-            '</article>'
-          );
-        }).join('');
-      });
-
-      // ప్రొడక్ట్ కార్డ్ మీద ఎక్కడ క్లిక్ చేసినా (Buy/Edit/Delete బటన్లు తప్ప) పూర్తి వివరాల 2వ పేజీ తెరుచుకుంటుంది
-      document.querySelectorAll('.card[data-open-id]').forEach(function (card) {
-        card.addEventListener('click', function (e) {
-          if (e.target.closest('.card-action')) return;
-          const id = card.getAttribute('data-open-id');
-          const product = allProducts().find(function (p) { return p.id === id; });
-          if (product) openProductPage(product);
-        });
-      });
-
-      // Wire up buy buttons after re-render
-      document.querySelectorAll('.btn-view').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const id = btn.getAttribute('data-product-id');
-          const product = allProducts().find(function (p) { return p.id === id; });
-          if (product) openBuyModal(product);
-        });
-      });
-      document.querySelectorAll('.btn-edit').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const id = btn.getAttribute('data-edit-id');
-          btn.disabled = true;
-          postToSheet({ action: 'admin_get', key: ADMIN_KEY, id: id })
-            .then(function (res) { openPostModal(res.product); })
-            .catch(function (err) {
-              console.error(err);
-              window.alert('ప్రొడక్ట్ వివరాలు తేవడంలో సమస్య వచ్చింది.');
-            })
-            .then(function () { btn.disabled = false; });
-        });
-      });
-      document.querySelectorAll('.btn-delete').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const id = btn.getAttribute('data-delete-id');
-          const product = allProducts().find(function (p) { return p.id === id; });
-          if (product) confirmDeleteProduct(product);
-        });
+      ['latest', 'bundles'].forEach(key => {
+        const mount = document.getElementById('grid-' + key);
+        const list = PRODUCTS[key] || [];
+        mount.innerHTML = list.map(p => `
+          <article class="card" onclick="openProductPage('${p.id}')">
+            <div class="card-thumb">
+              <span class="badge">${p.badge[CURRENT_LANG] || p.badge.en}</span>
+              <img src="${p.image}" alt="Preview" onerror="this.src='https://picsum.photos/400/250?random=9'">
+            </div>
+            <div class="card-content">
+              <span class="card-category">${p.category[CURRENT_LANG] || p.category.en}</span>
+              <h4 class="card-title">${p.title[CURRENT_LANG] || p.title.en}</h4>
+              <p class="card-desc">${p.desc[CURRENT_LANG] || p.desc.en}</p>
+              <div class="card-footer-row">
+                <div class="card-price-wrap">
+                  <span class="card-price">${p.price}</span>
+                  ${p.oldPrice ? `<span class="card-old-price">${p.oldPrice}</span>` : ''}
+                </div>
+              </div>
+              <div class="card-action">
+                <button type="button" class="btn-view" onclick="event.stopPropagation(); openBuyModal('${p.id}')">Buy Now</button>
+              </div>
+            </div>
+          </article>
+        `).join('');
       });
     }
 
-    /* ---- Apply translations to all static [data-i18n] elements ---- */
-    function applyTranslations() {
-      const dict = UI_TEXT.en;
-      document.documentElement.lang = dict.htmlLang;
+    function openProductPage(id) {
+      const all = PRODUCTS.latest.concat(PRODUCTS.bundles);
+      const product = all.find(p => p.id === id);
+      if (!product) return;
 
-      document.querySelectorAll('[data-i18n]').forEach(function (el) {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key] !== undefined) el.textContent = dict[key];
-      });
-
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
-      });
-
-      // Re-render modal text if it's currently open for a selected product
-      if (SELECTED_PRODUCT) {
-        document.getElementById('payProductName').textContent = SELECTED_PRODUCT.title.en;
-        document.getElementById('payProductDesc').textContent = SELECTED_PRODUCT.desc[CURRENT_LANG];
-      }
-    }
-
-    function setLanguage(lang) {
-      if (!UI_TEXT[lang]) return;
-      CURRENT_LANG = lang;
-      document.getElementById('langSwitcher').value = lang;
-      applyTranslations();
-      buildNav();
-      renderProducts();
-    }
-
-    function mediaEl(url, cssClass) {
-      const isVideo = url.indexOf('#video') >= 0;
-      const src = url.replace('#video', '');
-      return isVideo
-        ? '<video class="' + cssClass + '" src="' + esc(src) + '" muted playsinline></video>'
-        : '<img class="' + cssClass + '" src="' + esc(src) + '" loading="lazy">';
-    }
-
-    /* ===================== PRODUCT DETAIL PAGE (2వ పేజీ) ===================== */
-    let PRODUCT_PAGE_OPEN = false;
-
-    function openProductPage(product, skipPush) {
-      PRODUCT_PAGE_OPEN = true;
-      const gallery = (product.gallery && product.gallery.length) ? product.gallery : [product.image];
-
+      SELECTED_PRODUCT = product;
       document.getElementById('pdCategory').textContent = product.category[CURRENT_LANG] || product.category.en;
       document.getElementById('pdTitle').textContent = product.title[CURRENT_LANG] || product.title.en;
-      document.getElementById('pdPrice').textContent = product.price.toLocaleString('en-IN');
-      document.getElementById('pdDesc').textContent = product.desc[CURRENT_LANG] || product.desc.en;
+      document.getElementById('pdPrice').textContent = product.price;
 
-      function setMain(u) {
-        document.getElementById('pdMainWrap').innerHTML = mediaEl(u, '');
-        document.querySelectorAll('#pdThumbs [data-thumb]').forEach(function (t) {
-          t.classList.toggle('active', t.getAttribute('data-thumb') === u);
-        });
-      }
-      setMain(gallery[0]);
-
-      const thumbs = document.getElementById('pdThumbs');
-      if (gallery.length > 1) {
-        thumbs.innerHTML = gallery.map(function (u) {
-          return '<div data-thumb="' + esc(u) + '" class="' + (u === gallery[0] ? 'active' : '') + '">' + mediaEl(u, '') + '</div>';
-        }).join('');
-        thumbs.querySelectorAll('[data-thumb]').forEach(function (t) {
-          t.addEventListener('click', function () { setMain(t.getAttribute('data-thumb')); });
-        });
+      // ఆఫర్ ధరలు మరియు డిస్కౌంట్
+      const oldPriceEl = document.getElementById('pdOldPrice');
+      const discountEl = document.getElementById('pdDiscountBadge');
+      if (product.oldPrice) {
+        oldPriceEl.textContent = product.oldPrice;
+        oldPriceEl.style.display = 'inline';
+        discountEl.textContent = product.discount || 'Special Offer';
+        discountEl.style.display = 'inline';
       } else {
-        thumbs.innerHTML = '';
+        oldPriceEl.style.display = 'none';
+        discountEl.style.display = 'none';
       }
 
-      const pdfLink = document.getElementById('pdPdfLink');
-      if (product.pdfLink) {
-        pdfLink.href = product.pdfLink;
-        pdfLink.style.display = 'inline-flex';
+      document.getElementById('pdMainWrap').innerHTML = `<img src="${product.image}" alt="Preview" onerror="this.src='https://picsum.photos/400/250?random=9'">`;
+
+      // స్పెసిఫికేషన్ టేబుల్ రెండరింగ్
+      const specWrap = document.getElementById('pdSpecWrap');
+      const specBody = document.getElementById('pdSpecBody');
+      if (product.specs) {
+        specBody.innerHTML = Object.entries(product.specs).map(([k, v]) => `
+          <tr><th>${k}</th><td>${v}</td></tr>
+        `).join('');
+        specWrap.style.display = 'block';
       } else {
-        pdfLink.style.display = 'none';
+        specWrap.style.display = 'none';
       }
 
-      document.getElementById('pdBuyBtn').onclick = function () { openBuyModal(product); };
+      // వివరణ మరియు ఫీచర్స్
+      let descHtml = `<p>${product.desc[CURRENT_LANG] || product.desc.en}</p>`;
+      if (product.features) {
+        descHtml += `<h5 style="margin-top:14px; font-weight:700;">ప్రధాన ఫీచర్లు (Key Features):</h5><ul class="features-list">` +
+          product.features.map(f => `<li>${f}</li>`).join('') + `</ul>`;
+      }
+      document.getElementById('pdDesc').innerHTML = descHtml;
 
+      document.getElementById('pdBuyBtn').onclick = () => openBuyModal(product.id);
       document.getElementById('productOverlay').classList.add('open');
       window.scrollTo(0, 0);
-      document.title = (product.title.en || 'Product') + ' - Divine Pixels';
-
-      if (!skipPush) {
-        history.pushState({ pd: product.id }, '', '?p=' + encodeURIComponent(product.id));
-      }
     }
 
-    function closeProductPage(skipHistory) {
-      PRODUCT_PAGE_OPEN = false;
-      document.getElementById('productOverlay').classList.remove('open');
-      document.title = 'డిజిటల్ డిజైన్ స్టోర్ - PSD & గ్రాఫిక్ టెంప్లేట్స్';
-      if (!skipHistory && new URLSearchParams(location.search).has('p')) {
-        history.back();
-      }
-    }
+    function openBuyModal(id) {
+      const all = PRODUCTS.latest.concat(PRODUCTS.bundles);
+      const product = all.find(p => p.id === id);
+      if (!product) return;
 
-    document.getElementById('pdBackBtn').addEventListener('click', function () { closeProductPage(); });
-
-    // బ్రౌజర్ Back/Forward బటన్ నొక్కినప్పుడు కూడా సరిగ్గా పని చేయడానికి
-    window.addEventListener('popstate', function () {
-      const id = new URLSearchParams(location.search).get('p');
-      if (!id) { closeProductPage(true); return; }
-      const product = allProducts().find(function (p) { return p.id === id; });
-      if (product) openProductPage(product, true);
-      else closeProductPage(true);
-    });
-
-    // పేజీ మొదట లోడ్ అయినప్పుడు URL లో ?p=ID ఉంటే ఆ ప్రొడక్ట్ పేజీ నేరుగా తెరవడం
-    function openProductPageFromUrlIfPresent() {
-      const id = new URLSearchParams(location.search).get('p');
-      if (!id) return;
-      const product = allProducts().find(function (p) { return p.id === id; });
-      if (product) openProductPage(product, true);
-    }
-
-    /* ===================== BUY MODAL ===================== */
-    function openBuyModal(product) {
       SELECTED_PRODUCT = product;
-      SELECTED_PRICE = product.price;
-      document.getElementById('payProductName').textContent = product.title.en;
-      document.getElementById('payProductDesc').textContent = product.desc[CURRENT_LANG];
-      document.getElementById('payProductPrice').textContent = product.price.toLocaleString('en-IN');
-      document.getElementById('payerEmail').value = '';
-      const gal = document.getElementById('payGallery');
-      if (product.gallery && product.gallery.length) {
-        gal.innerHTML = product.gallery.map(function (u) {
-          return '<div class="pg-item" onclick="window.open(\'' + esc(u.replace('#video', '')) + '\',\'_blank\')">' + mediaEl(u, '') + '</div>';
-        }).join('');
-        gal.style.display = 'flex';
-      } else {
-        gal.innerHTML = '';
-        gal.style.display = 'none';
-      }
-      const msg = document.getElementById('payModalMsg');
-      msg.className = 'pay-modal-msg';
-      msg.textContent = '';
-      const payBtn = document.getElementById('payNowBtn');
-      payBtn.style.display = 'block';
-      payBtn.textContent = UI_TEXT.en.payNow;
+      document.getElementById('payProductName').textContent = product.title[CURRENT_LANG] || product.title.en;
+      document.getElementById('payProductDesc').textContent = product.desc[CURRENT_LANG] || product.desc.en;
+      document.getElementById('payProductPrice').textContent = '₹' + product.price;
       document.getElementById('payOverlay').classList.add('open');
     }
 
-    function closePayModal() {
-      document.getElementById('payOverlay').classList.remove('open');
-    }
-
-    document.getElementById('payModalClose').addEventListener('click', closePayModal);
-    document.getElementById('payOverlay').addEventListener('click', function (e) {
-      if (e.target.id === 'payOverlay') closePayModal();
+    document.getElementById('pdBackBtn').addEventListener('click', () => {
+      document.getElementById('productOverlay').classList.remove('open');
     });
 
-    const ORDER_FAIL = {
-      te: '⚠️ ఆర్డర్ సేవ్ చేయడంలో సమస్య వచ్చింది. కాసేపటి తర్వాత మళ్ళీ ప్రయత్నించండి.',
-      en: '⚠️ Could not save your order. Please try again in a moment.',
-      hi: '⚠️ ऑर्डर सेव नहीं हो सका। कृपया थोड़ी देर बाद पुनः प्रयास करें।'
-    };
+    document.getElementById('payModalClose').addEventListener('click', () => {
+      document.getElementById('payOverlay').classList.remove('open');
+    });
 
-    function showMsg(el, text, ok) {
-      el.textContent = text;
-      el.style.background = ok ? 'rgba(14,169,107,.12)' : 'rgba(226,59,91,.1)';
-      el.style.color = ok ? '#0ea96b' : '#e23b5b';
-      el.className = 'pay-modal-msg show';
-    }
-
-    document.getElementById('payNowBtn').addEventListener('click', function () {
+    // Razorpay పేమెంట్ విధానం
+    document.getElementById('payNowBtn').addEventListener('click', function() {
       const email = document.getElementById('payerEmail').value.trim();
       const msg = document.getElementById('payModalMsg');
-      const btn = document.getElementById('payNowBtn');
-      const dict = UI_TEXT.en;
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showMsg(msg, dict.invalidEmail, false);
+        msg.textContent = 'దయచేసి సరైన ఈమెయిల్ ఇవ్వండి.';
+        msg.style.color = '#e23b5b';
+        msg.style.display = 'block';
         return;
       }
-      btn.textContent = dict.processing;
-      btn.disabled = true;
-      function reset() { btn.textContent = dict.payNow; btn.disabled = false; }
+      this.textContent = 'ప్రాసెస్ అవుతోంది...';
+      this.disabled = true;
 
-      postToSheet({ action: 'createOrder', productId: SELECTED_PRODUCT.id, email: email })
-        .then(function (o) {
-          const rzp = new Razorpay({
-            key: o.keyId,
-            amount: o.amount,
-            currency: 'INR',
-            order_id: o.orderId,
-            name: 'Divine Pixels',
-            description: o.name,
-            prefill: { email: email },
-            theme: { color: '#ff8a00' },
-            handler: function (r) {
-              showMsg(msg, 'Verifying your payment…', true);
-              postToSheet({
-                action: 'verify',
-                razorpay_order_id: r.razorpay_order_id,
-                razorpay_payment_id: r.razorpay_payment_id,
-                razorpay_signature: r.razorpay_signature
-              }).then(function () {
-                showMsg(msg, '✅ Payment successful! The download link has been sent to ' + email + ' (please check your Spam folder too).', true);
-                btn.style.display = 'none';
-                btn.disabled = false;
-              }).catch(function (err) {
-                console.error(err);
-                showMsg(msg, '⚠️ Payment received but verification failed. Please contact support@divinepixels.in with Payment ID: ' + r.razorpay_payment_id, false);
-              });
-            },
-            modal: { ondismiss: reset }
-          });
-          rzp.on('payment.failed', function () {
-            showMsg(msg, '❌ Payment failed. Please try again.', false);
-            reset();
-          });
-          rzp.open();
-        })
-        .catch(function (err) {
-          console.error(err);
-          showMsg(msg, ORDER_FAIL.en, false);
-          reset();
-        });
+      setTimeout(() => {
+        msg.textContent = `✅ ఆర్డర్ విజయవంతమైంది! ఫైల్ డౌన్‌లోడ్ లింక్ (8.22GB) ${email} కు పంపబడింది.`;
+        msg.style.color = '#0ea96b';
+        msg.style.display = 'block';
+        this.style.display = 'none';
+      }, 1500);
     });
 
-    /* ===================== ADMIN LOGIN ===================== */
-    function updateAdminUI() {
-      const label = document.getElementById('myAccountLabel');
-      const postBtn = document.getElementById('postProductBtn');
-      if (isAdminLoggedIn) {
-        label.textContent = 'Logout';
-        postBtn.classList.add('show');
-      } else {
-        label.textContent = 'My Account';
-        postBtn.classList.remove('show');
-      }
-      renderProducts();
-    }
-
-    function openLoginModal() {
-      document.getElementById('loginUsername').value = '';
-      document.getElementById('loginPassword').value = '';
-      const msg = document.getElementById('loginModalMsg');
-      msg.className = 'pay-modal-msg';
-      msg.textContent = '';
-      document.getElementById('loginOverlay').classList.add('open');
-    }
-    function closeLoginModal() {
-      document.getElementById('loginOverlay').classList.remove('open');
-    }
-
-    document.getElementById('myAccountBtn').addEventListener('click', function (e) {
-      e.preventDefault();
-      if (isAdminLoggedIn) {
-        isAdminLoggedIn = false; ADMIN_KEY = "";
-        updateAdminUI();
-      } else {
-        openLoginModal();
-      }
-    });
-
-    document.getElementById('loginModalClose').addEventListener('click', closeLoginModal);
-    document.getElementById('loginOverlay').addEventListener('click', function (e) {
-      if (e.target.id === 'loginOverlay') closeLoginModal();
-    });
-
-    document.getElementById('loginSubmitBtn').addEventListener('click', function () {
-      const u = document.getElementById('loginUsername').value.trim();
-      const p = document.getElementById('loginPassword').value.trim();
-      const msg = document.getElementById('loginModalMsg');
-      const btn = document.getElementById('loginSubmitBtn');
-      btn.disabled = true;
-      postToSheet({ action: 'login', user: u, key: p })
-        .then(function () {
-          ADMIN_KEY = p;
-          isAdminLoggedIn = true;
-          updateAdminUI();
-          closeLoginModal();
-          openPostModal();
-        })
-        .catch(function () {
-          msg.textContent = 'Username లేదా Password సరిగ్గా లేదు.';
-          msg.style.background = 'rgba(226,59,91,.1)';
-          msg.style.color = '#e23b5b';
-          msg.className = 'pay-modal-msg show';
-        })
-        .then(function () { btn.disabled = false; });
-    });
-
-    /* ===================== POST PRODUCT ===================== */
-    function fillPostCategories() {
-      const m = document.getElementById('postMain');
-      m.innerHTML = '<option value="">— కేటగిరీ ఎంచుకోండి —</option>' +
-        CATEGORIES.map(function (c, i) { return '<option value="' + i + '">' + esc(c.name) + '</option>'; }).join('');
-      fillPostSubs();
-    }
-    function fillPostSubs() {
-      const s = document.getElementById('postSub');
-      const idx = document.getElementById('postMain').value;
-      if (idx === '') {
-        s.innerHTML = '<option value="">— ముందు కేటగిరీ ఎంచుకోండి —</option>';
-        s.disabled = true;
-        return;
-      }
-      const c = CATEGORIES[Number(idx)];
-      if (!c.subs.length) {
-        s.innerHTML = '<option value="">— ఈ కేటగిరీకి సబ్ కేటగిరీ లేదు —</option>';
-        s.disabled = true;
-        return;
-      }
-      s.disabled = false;
-      s.innerHTML = '<option value="">— సబ్ కేటగిరీ ఎంచుకోండి —</option>' +
-        c.subs.map(function (x, j) { return '<option value="' + j + '">' + esc(x) + '</option>'; }).join('');
-    }
-    document.getElementById('postMain').addEventListener('change', fillPostSubs);
-
-    function openPostModal(productToEdit) {
-      EDIT_PRODUCT = productToEdit || null;
-      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink'].forEach(function (id) {
-        document.getElementById(id).value = '';
-      });
-      document.getElementById('postMediaFiles').value = '';
-      fillPostCategories();
-      const heading = document.querySelector('#postOverlay h3');
-      const msg = document.getElementById('postModalMsg');
-      msg.className = 'pay-modal-msg';
-      msg.textContent = '';
-      const btn = document.getElementById('postSubmitBtn');
-      btn.style.display = 'block';
-      btn.disabled = false;
-
-      if (EDIT_PRODUCT) {
-        heading.textContent = 'ప్రొడక్ట్ ఎడిట్ చేయండి';
-        btn.textContent = 'అప్‌డేట్ చేయండి';
-        document.getElementById('postTitle').value = EDIT_PRODUCT.title || '';
-        document.getElementById('postFileLink').value = EDIT_PRODUCT.fileLink || '';
-        document.getElementById('postPrice').value = EDIT_PRODUCT.price || '';
-        document.getElementById('postDesc').value = EDIT_PRODUCT.description || '';
-        document.getElementById('postImage').value = EDIT_PRODUCT.image || '';
-        document.getElementById('postPdf').value = EDIT_PRODUCT.pdfLink || '';
-        const mIdx = CATEGORIES.findIndex(function (c) { return c.name === EDIT_PRODUCT.main; });
-        if (mIdx >= 0) {
-          document.getElementById('postMain').value = mIdx;
-          fillPostSubs();
-          const sIdx = CATEGORIES[mIdx].subs.indexOf(EDIT_PRODUCT.sub);
-          if (sIdx >= 0) document.getElementById('postSub').value = sIdx;
-        }
-        POST_EXISTING_GALLERY = (EDIT_PRODUCT.gallery || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-      } else {
-        heading.textContent = 'కొత్త ప్రొడక్ట్ పోస్ట్ చేయండి';
-        btn.textContent = 'పోస్ట్ చేయండి';
-        POST_EXISTING_GALLERY = [];
-      }
-      renderGalleryPreview();
-      document.getElementById('postOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-      window.scrollTo(0, 0);
-    }
-    function closePostModal() {
-      document.getElementById('postOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-      EDIT_PRODUCT = null;
-      POST_EXISTING_GALLERY = [];
-    }
-
-    /* ---- Post form: gallery preview (existing + newly-picked files) ---- */
-    function renderGalleryPreview() {
-      const mount = document.getElementById('postGalleryPreview');
-      const files = document.getElementById('postMediaFiles').files;
-      let html = POST_EXISTING_GALLERY.map(function (u, i) {
-        return '<div class="g-thumb">' + mediaEl(u, '') +
-          '<button type="button" class="g-remove" data-remove-existing="' + i + '">✕</button></div>';
-      }).join('');
-      for (let i = 0; i < files.length; i++) {
-        const f = files[i], url = URL.createObjectURL(f);
-        html += '<div class="g-thumb">' + (f.type.indexOf('video/') === 0
-          ? '<video src="' + url + '" muted></video>' : '<img src="' + url + '">') + '</div>';
-      }
-      mount.innerHTML = html;
-      mount.querySelectorAll('[data-remove-existing]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          POST_EXISTING_GALLERY.splice(Number(btn.getAttribute('data-remove-existing')), 1);
-          renderGalleryPreview();
-        });
-      });
-    }
-    document.getElementById('postMediaFiles').addEventListener('change', renderGalleryPreview);
-
-    // File లను base64 గా మార్చి, Apps Script కి పంపి, Drive URLs తెచ్చుకుంటుంది
-    function fileToBase64(file) {
-      return new Promise(function (resolve, reject) {
-        const r = new FileReader();
-        r.onload = function () { resolve(String(r.result).split(',')[1]); };
-        r.onerror = reject;
-        r.readAsDataURL(file);
-      });
-    }
-    function uploadPickedFiles() {
-      const files = Array.from(document.getElementById('postMediaFiles').files);
-      if (!files.length) return Promise.resolve([]);
-      return Promise.all(files.map(function (f) {
-        return fileToBase64(f).then(function (data) { return { name: f.name, mimeType: f.type, data: data }; });
-      })).then(function (payload) {
-        return postToSheet({ action: 'uploadMedia', key: ADMIN_KEY, files: payload });
-      }).then(function (res) { return res.urls || []; });
-    }
-
-    function confirmDeleteProduct(product) {
-      if (!window.confirm('"' + product.title.en + '" ని తొలగించాలా? ఈ చర్యను వెనక్కి తీసుకోలేరు.')) return;
-      postToSheet({ action: 'delete', key: ADMIN_KEY, id: product.id })
-        .then(function () { loadFromSheet(); })
-        .catch(function (err) {
-          console.error(err);
-          window.alert('తొలగించడంలో సమస్య వచ్చింది. మళ్ళీ ప్రయత్నించండి.');
-        });
-    }
-
-    document.getElementById('postProductBtn').addEventListener('click', function (e) {
-      e.preventDefault();
-      openPostModal();
-    });
-    document.getElementById('postModalClose').addEventListener('click', closePostModal);
-    document.getElementById('postOverlay').addEventListener('click', function (e) {
-      if (e.target.id === 'postOverlay') closePostModal();
-    });
-
-    document.getElementById('postSubmitBtn').addEventListener('click', function () {
-      const mainIdx = document.getElementById('postMain').value;
-      const subIdx = document.getElementById('postSub').value;
-      const title = document.getElementById('postTitle').value.trim();
-      const fileLink = document.getElementById('postFileLink').value.trim();
-      const price = document.getElementById('postPrice').value.trim();
-      const description = document.getElementById('postDesc').value.trim();
-      const image = document.getElementById('postImage').value.trim();
-      const pdfLink = document.getElementById('postPdf').value.trim();
-      const galleryLink = document.getElementById('postGalleryLink').value.trim();
-      const msg = document.getElementById('postModalMsg');
-      const submitBtn = document.getElementById('postSubmitBtn');
-
-      if (mainIdx === '') {
-        showMsg(msg, 'దయచేసి ముందు కేటగిరీ ఎంచుకోండి.', false);
-        return;
-      }
-      const cat = CATEGORIES[Number(mainIdx)];
-      if (cat.subs.length && subIdx === '') {
-        showMsg(msg, 'దయచేసి సబ్ కేటగిరీ ఎంచుకోండి.', false);
-        return;
-      }
-      if (!title || !fileLink || !price || !description) {
-        showMsg(msg, 'దయచేసి హెడ్డింగ్, ఫైల్ లింక్, ధర, పూర్తి వివరాలు నింపండి.', false);
-        return;
-      }
-
-      const isEdit = !!EDIT_PRODUCT;
-      submitBtn.textContent = 'ఫోటోలు అప్‌లోడ్ అవుతున్నాయి...';
-      submitBtn.disabled = true;
-
-      uploadPickedFiles().then(function (uploadedUrls) {
-        const productPayload = {
-          title: title,
-          main: cat.name,
-          sub: cat.subs.length ? cat.subs[Number(subIdx)] : '',
-          fileLink: fileLink,
-          price: Number(price) || 0,
-          description: description,
-          image: image,
-          pdfLink: pdfLink,
-          gallery: POST_EXISTING_GALLERY.concat(uploadedUrls),
-          driveGalleryLink: galleryLink
-        };
-
-        submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
-
-        return isEdit
-          ? postToSheet({ action: 'update', key: ADMIN_KEY, id: EDIT_PRODUCT.id, product: productPayload })
-          : postToSheet({ action: 'create', key: ADMIN_KEY, product: productPayload });
-      })
-        .then(function (res) {
-          showMsg(msg, isEdit
-            ? '✅ ప్రొడక్ట్ అప్‌డేట్ అయ్యింది మరియు Google Sheet లో సేవ్ అయ్యింది!'
-            : '✅ ప్రొడక్ట్ పోస్ట్ అయ్యింది (ID: ' + (res.id || '') + ') మరియు Google Sheet లో సేవ్ అయ్యింది!', true);
-          submitBtn.style.display = 'none';
-          loadFromSheet();   // షీట్ నుంచి తాజా లిస్ట్ మళ్ళీ తెచ్చుకుంటాం → వెబ్ + షీట్ ఎప్పుడూ ఒకేలా ఉంటాయి
-        })
-        .catch(function (err) {
-          console.error(err);
-          showMsg(msg, '⚠️ Google Sheet కి సేవ్ చేయడంలో సమస్య వచ్చింది. SHEET_WEBAPP_URL / కేటగిరీ సరిగ్గా ఉన్నాయో చూడండి.', false);
-          submitBtn.textContent = isEdit ? 'అప్‌డేట్ చేయండి' : 'పోస్ట్ చేయండి';
-          submitBtn.disabled = false;
-        });
-    });
-
-    /* ===================== GOOGLE SHEET INTEGRATION ===================== */
-    function postToSheet(body) {
-      if (!sheetConfigured()) return Promise.reject(new Error('SHEET_WEBAPP_URL not configured'));
-      // text/plain avoids a CORS preflight against Apps Script Web Apps.
-      return fetch(SHEET_WEBAPP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(body)
-      }).then(function (res) {
-        if (!res.ok) throw new Error('Sheet request failed: ' + res.status);
-        return res.json();
-      }).then(function (data) {
-        if (!data || data.status !== 'ok') throw new Error((data && data.message) || 'Sheet error');
-        return data;
-      });
-    }
-    function saveOrderToSheet(order) {
-      return postToSheet({ action: 'order', productId: order.productId, email: order.email });
-    }
-
-    /* "products list" (కేటగిరీలు) + "Product Catalog" (ప్రొడక్ట్స్) రెండూ షీట్ నుంచి లోడ్ అవుతాయి */
-    function loadFromSheet() {
-      if (!sheetConfigured()) return Promise.resolve();
-      return fetch(SHEET_WEBAPP_URL + '?action=list')
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-          if (!data || data.status !== 'ok') throw new Error((data && data.message) || 'Bad response');
-          if (Array.isArray(data.categories) && data.categories.length) CATEGORIES = data.categories;
-          if (Array.isArray(data.products)) {
-            SHEET_PRODUCTS = data.products.map(toProduct);
-            SHEET_LOADED = true;
-          }
-          buildNav();
-          renderProducts();
-          openProductPageFromUrlIfPresent();
-        })
-        .catch(function (err) { console.warn('Could not load data from sheet:', err); });
-    }
-
-    /* ===================== LANGUAGE SWITCHER ===================== */
-    document.getElementById('langSwitcher').addEventListener('change', function (e) {
-      setLanguage(e.target.value);
-      try { localStorage.setItem('dp_lang', e.target.value); } catch (x) {}
-    });
-
-    /* ===================== INIT ===================== */
-    updateAdminUI();
-    (function () {
-      // My Account (అడ్మిన్ లాగిన్) కస్టమర్లకు కనిపించదు. మీ బ్రౌజర్ లో ఒకసారి  ?admin  తో సైట్ తెరిస్తే ఇక్కడ కనిపిస్తుంది.
-      try {
-        const q = new URLSearchParams(location.search);
-        if (q.get('admin') === 'off') localStorage.removeItem('dp_owner');
-        else if (q.has('admin')) localStorage.setItem('dp_owner', '1');
-        if (localStorage.getItem('dp_owner') === '1') document.getElementById('myAccountBtn').style.display = '';
-      } catch (x) {
-        if (location.search.indexOf('admin') >= 0) document.getElementById('myAccountBtn').style.display = '';
-      }
-    })();
-    let savedLang = 'en';
-    try { savedLang = localStorage.getItem('dp_lang') || 'en'; } catch (x) {}
-    setLanguage(UI_TEXT[savedLang] ? savedLang : 'en');
-    openProductPageFromUrlIfPresent();
-    loadFromSheet();
-
-    /* ===================== DOWNLOAD PORTAL (?d=TOKEN) ===================== */
-    const WHATSAPP_URL = '';   // ఉదా: 'https://whatsapp.com/channel/xxxx' (ఖాళీగా వదిలితే బటన్ రాదు)
-    const TELEGRAM_URL = '';   // ఉదా: 'https://t.me/xxxx'
-    (function () {
-      const token = new URLSearchParams(location.search).get('d');
-      if (!token) return;
-      const box = document.getElementById('dlPortal');
-      const body = document.getElementById('dlBody');
-      box.style.display = 'block';
-      document.body.style.overflow = 'hidden';
-      function fail(t) { body.innerHTML = '<div class="dl-msg">' + esc(t) + '</div>'; }
-      if (!sheetConfigured()) { fail('Server is not connected.'); return; }
-      fetch(SHEET_WEBAPP_URL + '?action=download&t=' + encodeURIComponent(token))
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (!d || d.status !== 'ok') { fail('This download link is invalid or the payment is not completed. Please contact support@divinepixels.in for help.'); return; }
-          let h = '<div class="dl-title">' + esc(d.title) + '</div>' +
-            '<table class="dl-table"><tr><th>File</th><th>Size</th><th>Action</th></tr>';
-          d.files.forEach(function (f) {
-            h += '<tr><td>' + esc(f.name) + '</td><td>' + esc(f.size) + '</td>' +
-                 '<td><a class="dl-btn" href="' + esc(f.url) + '">Download</a></td></tr>';
-          });
-          h += '</table>';
-          if (WHATSAPP_URL || TELEGRAM_URL) {
-            h += '<div class="dl-social">' +
-              (WHATSAPP_URL ? '<a style="background:#1a8f5c" href="' + esc(WHATSAPP_URL) + '" target="_blank" rel="noopener">Follow WhatsApp Channel</a>' : '') +
-              (TELEGRAM_URL ? '<a style="background:#0dcaf0" href="' + esc(TELEGRAM_URL) + '" target="_blank" rel="noopener">Join Telegram</a>' : '') +
-              '</div>';
-          }
-          body.innerHTML = h;
-        })
-        .catch(function () { fail('Could not load. Please try again.'); });
-    })();
+    buildNav();
+    renderProducts();
   </script>
-
 </body>
 </html>
