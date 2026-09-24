@@ -621,6 +621,9 @@
     }
     .post-page-head h3 { margin: 0; }
     #postOverlay .pay-modal-body { padding: 22px 20px 0; max-width: 640px; margin: 0 auto; }
+    .pd-row3 { display: flex; gap: 10px; }
+    .pd-row3 > div { flex: 1; min-width: 0; }
+    .pd-row3 label { font-size: 12.5px; }
 
     /* Product Detail Page — ప్రొడక్ట్ మీద క్లిక్ చేస్తే వచ్చే పూర్తి పేజీ (popup కాదు) */
     #productOverlay {
@@ -706,7 +709,34 @@
       margin-bottom: 18px;
     }
     .pd-price::before { content: '\20b9'; font-size: 19px; }
-    .pd-buy-btn { max-width: 280px; margin-bottom: 22px; }
+    .pd-price-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+    .pd-price-row .pd-price { margin-bottom: 0; }
+    .pd-original-price { font-size: 16px; color: #a89684; text-decoration: line-through; }
+    .pd-original-price::before { content: '\20b9'; }
+    .pd-discount-badge { background: #16a34a; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 5px; }
+    .pd-buy-btn { max-width: 320px; margin-bottom: 12px; }
+    .pd-tutorial-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      max-width: 320px; background: #e23b3b; color: #fff; text-decoration: none;
+      font-weight: 700; font-size: 14px; padding: 12px; border-radius: 8px; margin-bottom: 22px;
+    }
+    .pd-note {
+      background: #fff5f0; border-left: 4px solid #ea580c; color: #6b5040;
+      font-size: 13.5px; line-height: 1.7; padding: 14px 16px; border-radius: 6px; margin-bottom: 22px;
+    }
+    .pd-note strong { color: #c2410c; }
+    .pd-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .pd-tags span {
+      background: #fdf1e2; color: #a1734f; font-size: 12px; font-weight: 600;
+      padding: 4px 11px; border-radius: 14px; border: 1px solid #f3dcc2;
+    }
+    .pd-specs { width: 100%; border-collapse: collapse; margin-bottom: 22px; font-size: 14px; }
+    .pd-specs td { padding: 9px 12px; border: 1px solid #f0dfc6; }
+    .pd-specs td:first-child { background: #fdf6ec; font-weight: 700; color: #6b5040; width: 42%; }
+    .pd-desc p { margin: 0 0 14px; }
+    .pd-desc h4 { font-size: 15px; color: #3d2b1f; margin: 20px 0 8px; }
+    .pd-desc ul { margin: 0 0 14px; padding-left: 20px; }
+    .pd-desc li { margin-bottom: 6px; }
     .pd-desc-title { font-size: 14px; font-weight: 700; color: #6b5040; margin-bottom: 8px; }
     .pd-desc {
       font-size: 14.5px;
@@ -994,8 +1024,13 @@
       <label for="postPrice">ధర (₹)</label>
       <input type="number" id="postPrice" placeholder="499">
 
+      <label for="postOriginalPrice">అసలు ధర (₹, ఐచ్ఛికం — డిస్కౌంట్ చూపించడానికి)</label>
+      <input type="number" id="postOriginalPrice" placeholder="ఉదా: 599 (కొట్టేసిన ధర)">
+      <span class="field-hint">ఇక్కడ ఇచ్చిన ధర పైన ధర కన్నా ఎక్కువ ఉంటేనే కొట్టేసిన ధర + డిస్కౌంట్ % కనిపిస్తుంది.</span>
+
       <label for="postDesc">ప్రోడక్ట్ యొక్క పూర్తి వివరాలు</label>
       <textarea id="postDesc" placeholder="ప్రొడక్ట్ గురించి పూర్తి వివరణ రాయండి..."></textarea>
+      <span class="field-hint">చక్కగా కనిపించాలంటే: ప్రతి పాయింట్ ని కొత్త లైన్ లో "- " తో మొదలుపెట్టి రాయండి, పేరాగ్రాఫ్‌ల మధ్య ఖాళీ లైన్ ఉంచండి.</span>
 
       <label for="postImage">ప్రొడక్ట్ ఇమేజ్ / ప్రివ్యూ లింక్</label>
       <input type="url" id="postImage" placeholder="https://...jpg or .png">
@@ -1013,6 +1048,43 @@
 
       <label for="postPdf">ప్రొడక్ట్ PDF లింక్ (ఐచ్ఛికం)</label>
       <input type="url" id="postPdf" placeholder="https://...pdf">
+
+      <div class="pd-row3">
+        <div>
+          <label for="postFileSize">ఫైల్ సైజ్ (ఐచ్ఛికం)</label>
+          <input type="text" id="postFileSize" placeholder="ఉదా: 1.2 GB">
+        </div>
+        <div>
+          <label for="postFileType">ఫైల్ టైప్ (ఐచ్ఛికం)</label>
+          <input type="text" id="postFileType" placeholder="ఉదా: PSD">
+        </div>
+        <div>
+          <label for="postFileCount">ఫైల్స్ సంఖ్య (ఐచ్ఛికం)</label>
+          <input type="text" id="postFileCount" placeholder="ఉదా: 25">
+        </div>
+      </div>
+
+      <div class="pd-row3">
+        <div>
+          <label for="postCompatibility">అనుకూలత (ఐచ్ఛికం)</label>
+          <input type="text" id="postCompatibility" placeholder="ఉదా: Photoshop CS6 & Above">
+        </div>
+        <div>
+          <label for="postArchiveType">కంప్రెషన్ రకం (ఐచ్ఛికం)</label>
+          <input type="text" id="postArchiveType" placeholder="ఉదా: WinRAR / 7-Zip (RAR)">
+        </div>
+      </div>
+
+      <label for="postTutorialLink">"How to Buy & Download" వీడియో లింక్ (ఐచ్ఛికం)</label>
+      <input type="url" id="postTutorialLink" placeholder="https://youtube.com/...">
+
+      <label for="postNote">ముఖ్యమైన గమనిక (ఐచ్ఛికం)</label>
+      <textarea id="postNote" placeholder="ఉదా: ఈ ఫైల్స్ Adobe Photoshop CS6 పైవర్షన్‌లో మాత్రమే పనిచేస్తాయి..."></textarea>
+      <span class="field-hint">ఇది ప్రొడక్ట్ పేజీలో ఎర్రటి హెచ్చరిక బాక్స్ లా కనిపిస్తుంది.</span>
+
+      <label for="postTags">ట్యాగ్స్ (కామాతో వేరు చేయండి, ఐచ్ఛికం)</label>
+      <input type="text" id="postTags" placeholder="ఉదా: wedding flex, telugu psd, festival banner">
+      <span class="field-hint">ఇవి ప్రొడక్ట్ పేజీలో చిన్న ట్యాగ్స్ గా కనిపిస్తాయి.</span>
 
       <button type="button" class="pay-btn" id="postSubmitBtn">పోస్ట్ చేయండి</button>
       <div class="pay-modal-msg" id="postModalMsg"></div>
@@ -1036,10 +1108,20 @@
           <div class="pd-info">
             <span class="pd-category" id="pdCategory"></span>
             <h1 class="pd-title" id="pdTitle"></h1>
-            <div class="pd-price" id="pdPrice">0</div>
+            <div class="pd-tags" id="pdTags"></div>
+            <div class="pd-price-row">
+              <div class="pd-price" id="pdPrice">0</div>
+              <div class="pd-original-price" id="pdOriginalPrice" style="display:none"></div>
+              <div class="pd-discount-badge" id="pdDiscountBadge" style="display:none"></div>
+            </div>
             <button type="button" class="pay-btn pd-buy-btn" id="pdBuyBtn">Buy Now</button>
-            <div class="pd-desc-title">వివరాలు / Description</div>
-            <p class="pd-desc" id="pdDesc"></p>
+            <a href="#" id="pdTutorialBtn" class="pd-tutorial-btn" target="_blank" rel="noopener" style="display:none">
+              <i class="fab fa-youtube"></i> How to Buy &amp; Download
+            </a>
+            <table class="pd-specs" id="pdSpecs" style="display:none"></table>
+            <div class="pd-note" id="pdNote" style="display:none"></div>
+            <div class="pd-desc-title">ప్రొడక్ట్ వివరణ (Description)</div>
+            <div class="pd-desc" id="pdDesc"></div>
             <a href="#" id="pdPdfLink" class="pd-pdf-link" target="_blank" rel="noopener" style="display:none">
               <i class="fas fa-file-pdf"></i> Preview PDF చూడండి
             </a>
@@ -1348,7 +1430,11 @@
         category: { te: label, en: label, hi: label },
         title: { te: row.title, en: row.title, hi: row.title },
         desc: { te: row.descTe || row.description || '', en: row.description || '', hi: row.descHi || row.description || '' },
-        pdfLink: row.pdfLink || ''
+        pdfLink: row.pdfLink || '',
+        fileSize: row.fileSize || '', fileType: row.fileType || '', fileCount: row.fileCount || '',
+        tags: (row.tags || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean),
+        originalPrice: Number(row.originalPrice) || 0, compatibility: row.compatibility || '',
+        archiveType: row.archiveType || '', tutorialLink: row.tutorialLink || '', note: row.note || ''
       };
     }
     function allProducts() {
@@ -1550,6 +1636,26 @@
     /* ===================== PRODUCT DETAIL PAGE (2వ పేజీ) ===================== */
     let PRODUCT_PAGE_OPEN = false;
 
+    // వివరణ టెక్స్ట్ ని పేరాగ్రాఫ్‌లు/బుల్లెట్ లిస్ట్‌లుగా చూపిస్తుంది.
+    // ("- " తో మొదలయ్యే లైన్స్ → బుల్లెట్ పాయింట్స్; ఖాళీ లైన్ → కొత్త పేరా)
+    function formatDesc(text) {
+      if (!text) return '';
+      const lines = String(text).replace(/\r\n/g, '\n').split('\n');
+      let html = '', para = [], list = [];
+      function flushPara() { if (para.length) { html += '<p>' + esc(para.join(' ')) + '</p>'; para = []; } }
+      function flushList() { if (list.length) { html += '<ul>' + list.map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>'; list = []; } }
+      lines.forEach(function (raw) {
+        const line = raw.trim();
+        if (!line) { flushPara(); flushList(); return; }
+        const bullet = line.match(/^[-*•]\s+(.*)/);
+        if (bullet) { flushPara(); list.push(bullet[1]); return; }
+        if (/^[^.:!?]{2,60}:$/.test(line) && !line.match(/https?:/)) { flushPara(); flushList(); html += '<h4>' + esc(line.slice(0, -1)) + '</h4>'; return; }
+        flushList(); para.push(line);
+      });
+      flushPara(); flushList();
+      return html || '<p>' + esc(text) + '</p>';
+    }
+
     function openProductPage(product, skipPush) {
       PRODUCT_PAGE_OPEN = true;
       const gallery = (product.gallery && product.gallery.length) ? product.gallery : [product.image];
@@ -1557,7 +1663,55 @@
       document.getElementById('pdCategory').textContent = product.category[CURRENT_LANG] || product.category.en;
       document.getElementById('pdTitle').textContent = product.title[CURRENT_LANG] || product.title.en;
       document.getElementById('pdPrice').textContent = product.price.toLocaleString('en-IN');
-      document.getElementById('pdDesc').textContent = product.desc[CURRENT_LANG] || product.desc.en;
+      document.getElementById('pdDesc').innerHTML = formatDesc(product.desc[CURRENT_LANG] || product.desc.en);
+
+      const origEl = document.getElementById('pdOriginalPrice');
+      const badgeEl = document.getElementById('pdDiscountBadge');
+      if (product.originalPrice && product.originalPrice > product.price) {
+        origEl.textContent = product.originalPrice.toLocaleString('en-IN');
+        origEl.style.display = 'inline';
+        const pct = Math.round((1 - product.price / product.originalPrice) * 100);
+        badgeEl.textContent = pct + '% OFF';
+        badgeEl.style.display = 'inline-block';
+      } else {
+        origEl.style.display = 'none';
+        badgeEl.style.display = 'none';
+      }
+
+      const tutorialEl = document.getElementById('pdTutorialBtn');
+      if (product.tutorialLink) {
+        tutorialEl.href = product.tutorialLink;
+        tutorialEl.style.display = 'flex';
+      } else {
+        tutorialEl.style.display = 'none';
+      }
+
+      const noteEl = document.getElementById('pdNote');
+      if (product.note) {
+        noteEl.innerHTML = '<strong>⚠ ముఖ్య గమనిక:</strong> ' + esc(product.note).replace(/\n/g, '<br>');
+        noteEl.style.display = 'block';
+      } else {
+        noteEl.style.display = 'none';
+      }
+
+      const tagsEl = document.getElementById('pdTags');
+      tagsEl.innerHTML = (product.tags && product.tags.length)
+        ? product.tags.map(function (t) { return '<span>#' + esc(t) + '</span>'; }).join('') : '';
+
+      const specsEl = document.getElementById('pdSpecs');
+      const specRows = [];
+      if (product.fileSize) specRows.push(['File Size', product.fileSize]);
+      if (product.fileType) specRows.push(['File Type', product.fileType]);
+      if (product.fileCount) specRows.push(['No. of Files', product.fileCount]);
+      if (product.compatibility) specRows.push(['Compatibility', product.compatibility]);
+      if (product.archiveType) specRows.push(['Archive Type', product.archiveType]);
+      if (specRows.length) specRows.push(['Delivery', 'Instant download via email']);
+      if (specRows.length) {
+        specsEl.innerHTML = specRows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('');
+        specsEl.style.display = 'table';
+      } else {
+        specsEl.style.display = 'none';
+      }
 
       function setMain(u) {
         document.getElementById('pdMainWrap').innerHTML = mediaEl(u, '');
@@ -1823,7 +1977,7 @@
 
     function openPostModal(productToEdit) {
       EDIT_PRODUCT = productToEdit || null;
-      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink'].forEach(function (id) {
+      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink', 'postFileSize', 'postFileType', 'postFileCount', 'postTags', 'postOriginalPrice', 'postCompatibility', 'postArchiveType', 'postTutorialLink', 'postNote'].forEach(function (id) {
         document.getElementById(id).value = '';
       });
       document.getElementById('postMediaFiles').value = '';
@@ -1845,6 +1999,15 @@
         document.getElementById('postDesc').value = EDIT_PRODUCT.description || '';
         document.getElementById('postImage').value = EDIT_PRODUCT.image || '';
         document.getElementById('postPdf').value = EDIT_PRODUCT.pdfLink || '';
+        document.getElementById('postFileSize').value = EDIT_PRODUCT.fileSize || '';
+        document.getElementById('postFileType').value = EDIT_PRODUCT.fileType || '';
+        document.getElementById('postFileCount').value = EDIT_PRODUCT.fileCount || '';
+        document.getElementById('postTags').value = EDIT_PRODUCT.tags || '';
+        document.getElementById('postOriginalPrice').value = EDIT_PRODUCT.originalPrice || '';
+        document.getElementById('postCompatibility').value = EDIT_PRODUCT.compatibility || '';
+        document.getElementById('postArchiveType').value = EDIT_PRODUCT.archiveType || '';
+        document.getElementById('postTutorialLink').value = EDIT_PRODUCT.tutorialLink || '';
+        document.getElementById('postNote').value = EDIT_PRODUCT.note || '';
         const mIdx = CATEGORIES.findIndex(function (c) { return c.name === EDIT_PRODUCT.main; });
         if (mIdx >= 0) {
           document.getElementById('postMain').value = mIdx;
@@ -1941,6 +2104,15 @@
       const image = document.getElementById('postImage').value.trim();
       const pdfLink = document.getElementById('postPdf').value.trim();
       const galleryLink = document.getElementById('postGalleryLink').value.trim();
+      const fileSize = document.getElementById('postFileSize').value.trim();
+      const fileType = document.getElementById('postFileType').value.trim();
+      const fileCount = document.getElementById('postFileCount').value.trim();
+      const tags = document.getElementById('postTags').value.trim();
+      const originalPrice = document.getElementById('postOriginalPrice').value.trim();
+      const compatibility = document.getElementById('postCompatibility').value.trim();
+      const archiveType = document.getElementById('postArchiveType').value.trim();
+      const tutorialLink = document.getElementById('postTutorialLink').value.trim();
+      const note = document.getElementById('postNote').value.trim();
       const msg = document.getElementById('postModalMsg');
       const submitBtn = document.getElementById('postSubmitBtn');
 
@@ -1973,7 +2145,10 @@
           image: image,
           pdfLink: pdfLink,
           gallery: POST_EXISTING_GALLERY.concat(uploadedUrls),
-          driveGalleryLink: galleryLink
+          driveGalleryLink: galleryLink,
+          fileSize: fileSize, fileType: fileType, fileCount: fileCount, tags: tags,
+          originalPrice: originalPrice, compatibility: compatibility, archiveType: archiveType,
+          tutorialLink: tutorialLink, note: note
         };
 
         submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
