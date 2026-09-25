@@ -725,6 +725,8 @@
       font-size: 13.5px; line-height: 1.7; padding: 14px 16px; border-radius: 6px; margin-bottom: 22px;
     }
     .pd-note strong { color: #c2410c; }
+    .pd-section { margin-top: 26px; padding-top: 4px; border-top: 1px dashed #f0dfc6; }
+    .pd-section .pd-desc-title { margin-top: 18px; }
     .pd-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
     .pd-tags span {
       background: #fdf1e2; color: #a1734f; font-size: 12px; font-weight: 600;
@@ -1082,6 +1084,22 @@
       <textarea id="postNote" placeholder="ఉదా: ఈ ఫైల్స్ Adobe Photoshop CS6 పైవర్షన్‌లో మాత్రమే పనిచేస్తాయి..."></textarea>
       <span class="field-hint">ఇది ప్రొడక్ట్ పేజీలో ఎర్రటి హెచ్చరిక బాక్స్ లా కనిపిస్తుంది.</span>
 
+      <label for="postCategoriesIncluded">Categories &amp; Templates Included in this Bundle (ఐచ్ఛికం)</label>
+      <textarea id="postCategoriesIncluded" placeholder="ప్రతి కేటగిరీ/టెంప్లేట్ ని కొత్త లైన్ లో '- ' తో మొదలుపెట్టి రాయండి..."></textarea>
+      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో బుల్లెట్ లిస్ట్ గా కనిపిస్తుంది.</span>
+
+      <label for="postKeyFeatures">Key Features (ఐచ్ఛికం)</label>
+      <textarea id="postKeyFeatures" placeholder="ప్రతి ఫీచర్ ని కొత్త లైన్ లో '- ' తో మొదలుపెట్టి రాయండి..."></textarea>
+      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో బుల్లెట్ లిస్ట్ గా కనిపిస్తుంది.</span>
+
+      <label for="postTutorials">Tutorials (ఐచ్ఛికం)</label>
+      <textarea id="postTutorials" placeholder="ఎలా ఎడిట్ చేయాలి, ఏ సాఫ్ట్‌వేర్ కావాలి వంటి వివరాలు..."></textarea>
+      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో కనిపిస్తుంది.</span>
+
+      <label for="postTermsLicense">Terms &amp; License (ఐచ్ఛికం)</label>
+      <textarea id="postTermsLicense" placeholder="వాడకం నిబంధనలు, రీసేల్ నియమాలు వంటివి..."></textarea>
+      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో కనిపిస్తుంది.</span>
+
       <label for="postTags">ట్యాగ్స్ (కామాతో వేరు చేయండి, ఐచ్ఛికం)</label>
       <input type="text" id="postTags" placeholder="ఉదా: wedding flex, telugu psd, festival banner">
       <span class="field-hint">ఇవి ప్రొడక్ట్ పేజీలో చిన్న ట్యాగ్స్ గా కనిపిస్తాయి.</span>
@@ -1122,6 +1140,24 @@
             <div class="pd-note" id="pdNote" style="display:none"></div>
             <div class="pd-desc-title">ప్రొడక్ట్ వివరణ (Description)</div>
             <div class="pd-desc" id="pdDesc"></div>
+
+            <div class="pd-section" id="pdSecCategories" style="display:none">
+              <div class="pd-desc-title">Categories &amp; Templates Included in this Bundle</div>
+              <div class="pd-desc" id="pdCategoriesIncluded"></div>
+            </div>
+            <div class="pd-section" id="pdSecFeatures" style="display:none">
+              <div class="pd-desc-title">Key Features</div>
+              <div class="pd-desc" id="pdKeyFeatures"></div>
+            </div>
+            <div class="pd-section" id="pdSecTutorials" style="display:none">
+              <div class="pd-desc-title">Tutorials</div>
+              <div class="pd-desc" id="pdTutorials"></div>
+            </div>
+            <div class="pd-section" id="pdSecTerms" style="display:none">
+              <div class="pd-desc-title">Terms &amp; License</div>
+              <div class="pd-desc" id="pdTermsLicense"></div>
+            </div>
+
             <a href="#" id="pdPdfLink" class="pd-pdf-link" target="_blank" rel="noopener" style="display:none">
               <i class="fas fa-file-pdf"></i> Preview PDF చూడండి
             </a>
@@ -1434,7 +1470,9 @@
         fileSize: row.fileSize || '', fileType: row.fileType || '', fileCount: row.fileCount || '',
         tags: (row.tags || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean),
         originalPrice: Number(row.originalPrice) || 0, compatibility: row.compatibility || '',
-        archiveType: row.archiveType || '', tutorialLink: row.tutorialLink || '', note: row.note || ''
+        archiveType: row.archiveType || '', tutorialLink: row.tutorialLink || '', note: row.note || '',
+        categoriesIncluded: row.categoriesIncluded || '', keyFeatures: row.keyFeatures || '',
+        tutorials: row.tutorials || '', termsLicense: row.termsLicense || ''
       };
     }
     function allProducts() {
@@ -1664,6 +1702,20 @@
       document.getElementById('pdTitle').textContent = product.title[CURRENT_LANG] || product.title.en;
       document.getElementById('pdPrice').textContent = product.price.toLocaleString('en-IN');
       document.getElementById('pdDesc').innerHTML = formatDesc(product.desc[CURRENT_LANG] || product.desc.en);
+
+      function fillSection(secId, fieldId, text) {
+        const sec = document.getElementById(secId);
+        if (text) {
+          document.getElementById(fieldId).innerHTML = formatDesc(text);
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      }
+      fillSection('pdSecCategories', 'pdCategoriesIncluded', product.categoriesIncluded);
+      fillSection('pdSecFeatures', 'pdKeyFeatures', product.keyFeatures);
+      fillSection('pdSecTutorials', 'pdTutorials', product.tutorials);
+      fillSection('pdSecTerms', 'pdTermsLicense', product.termsLicense);
 
       const origEl = document.getElementById('pdOriginalPrice');
       const badgeEl = document.getElementById('pdDiscountBadge');
@@ -1977,7 +2029,7 @@
 
     function openPostModal(productToEdit) {
       EDIT_PRODUCT = productToEdit || null;
-      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink', 'postFileSize', 'postFileType', 'postFileCount', 'postTags', 'postOriginalPrice', 'postCompatibility', 'postArchiveType', 'postTutorialLink', 'postNote'].forEach(function (id) {
+      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink', 'postFileSize', 'postFileType', 'postFileCount', 'postTags', 'postOriginalPrice', 'postCompatibility', 'postArchiveType', 'postTutorialLink', 'postNote', 'postCategoriesIncluded', 'postKeyFeatures', 'postTutorials', 'postTermsLicense'].forEach(function (id) {
         document.getElementById(id).value = '';
       });
       document.getElementById('postMediaFiles').value = '';
@@ -2008,6 +2060,10 @@
         document.getElementById('postArchiveType').value = EDIT_PRODUCT.archiveType || '';
         document.getElementById('postTutorialLink').value = EDIT_PRODUCT.tutorialLink || '';
         document.getElementById('postNote').value = EDIT_PRODUCT.note || '';
+        document.getElementById('postCategoriesIncluded').value = EDIT_PRODUCT.categoriesIncluded || '';
+        document.getElementById('postKeyFeatures').value = EDIT_PRODUCT.keyFeatures || '';
+        document.getElementById('postTutorials').value = EDIT_PRODUCT.tutorials || '';
+        document.getElementById('postTermsLicense').value = EDIT_PRODUCT.termsLicense || '';
         const mIdx = CATEGORIES.findIndex(function (c) { return c.name === EDIT_PRODUCT.main; });
         if (mIdx >= 0) {
           document.getElementById('postMain').value = mIdx;
@@ -2113,6 +2169,10 @@
       const archiveType = document.getElementById('postArchiveType').value.trim();
       const tutorialLink = document.getElementById('postTutorialLink').value.trim();
       const note = document.getElementById('postNote').value.trim();
+      const categoriesIncluded = document.getElementById('postCategoriesIncluded').value.trim();
+      const keyFeatures = document.getElementById('postKeyFeatures').value.trim();
+      const tutorials = document.getElementById('postTutorials').value.trim();
+      const termsLicense = document.getElementById('postTermsLicense').value.trim();
       const msg = document.getElementById('postModalMsg');
       const submitBtn = document.getElementById('postSubmitBtn');
 
@@ -2148,7 +2208,9 @@
           driveGalleryLink: galleryLink,
           fileSize: fileSize, fileType: fileType, fileCount: fileCount, tags: tags,
           originalPrice: originalPrice, compatibility: compatibility, archiveType: archiveType,
-          tutorialLink: tutorialLink, note: note
+          tutorialLink: tutorialLink, note: note,
+          categoriesIncluded: categoriesIncluded, keyFeatures: keyFeatures,
+          tutorials: tutorials, termsLicense: termsLicense
         };
 
         submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
