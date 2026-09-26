@@ -625,6 +625,38 @@
     .pd-row3 > div { flex: 1; min-width: 0; }
     .pd-row3 label { font-size: 12.5px; }
 
+    /* Rich text editor fields (Post/Edit Product) */
+    .rich-field { margin-bottom: 4px; }
+    .rich-toolbar {
+      display: flex; gap: 4px; background: #fdf1e2; border: 1px solid #e6d5c0;
+      border-bottom: none; border-radius: 8px 8px 0 0; padding: 6px 8px;
+    }
+    .rich-toolbar button {
+      background: #fff; border: 1px solid #e6d5c0; border-radius: 5px; width: 30px; height: 28px;
+      font-size: 13px; color: #6b5040; cursor: pointer;
+    }
+    .rich-toolbar button:hover { background: #ff8a00; color: #fff; }
+    .rich-toolbar .rt-sep { width: 1px; background: #e6d5c0; margin: 2px 4px; }
+    .rich-editable {
+      min-height: 90px; border: 1px solid #e6d5c0; border-radius: 0 0 8px 8px;
+      padding: 10px 12px; font-size: 14px; color: #3d2b1f; line-height: 1.6;
+      background: #fff; margin-bottom: 14px;
+    }
+    .rich-editable:empty:before { content: attr(data-placeholder); color: #b3a08d; }
+    .rich-editable ol, .rich-editable ul { margin: 6px 0; padding-left: 22px; }
+    .pd-add-heading-btn {
+      background: #fdf1e2; border: 1px dashed #ea580c; color: #ea580c; font-weight: 700;
+      font-size: 13.5px; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 20px;
+    }
+    .custom-section-block {
+      border: 1px solid #e6d5c0; border-radius: 10px; padding: 14px; margin-bottom: 14px; background: #fffaf2; position: relative;
+    }
+    .custom-section-block .cs-remove {
+      position: absolute; top: 10px; right: 10px; background: #dc2626; color: #fff; border: none;
+      width: 24px; height: 24px; border-radius: 50%; font-size: 12px; cursor: pointer;
+    }
+    .custom-section-block input[type="text"] { margin-bottom: 10px; }
+
     /* Product Detail Page — ప్రొడక్ట్ మీద క్లిక్ చేస్తే వచ్చే పూర్తి పేజీ (popup కాదు) */
     #productOverlay {
       background: #fdf6ec;
@@ -1084,21 +1116,68 @@
       <textarea id="postNote" placeholder="ఉదా: ఈ ఫైల్స్ Adobe Photoshop CS6 పైవర్షన్‌లో మాత్రమే పనిచేస్తాయి..."></textarea>
       <span class="field-hint">ఇది ప్రొడక్ట్ పేజీలో ఎర్రటి హెచ్చరిక బాక్స్ లా కనిపిస్తుంది.</span>
 
-      <label for="postCategoriesIncluded">Categories &amp; Templates Included in this Bundle (ఐచ్ఛికం)</label>
-      <textarea id="postCategoriesIncluded" placeholder="ప్రతి కేటగిరీ/టెంప్లేట్ ని కొత్త లైన్ లో '- ' తో మొదలుపెట్టి రాయండి..."></textarea>
-      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో బుల్లెట్ లిస్ట్ గా కనిపిస్తుంది.</span>
+      <label>Categories &amp; Templates Included in this Bundle (ఐచ్ఛికం)</label>
+      <div class="rich-field" data-field="postCategoriesIncluded">
+        <div class="rich-toolbar">
+          <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+          <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+          <button type="button" data-cmd="insertOrderedList" title="సీరియల్ నంబర్">1.</button>
+          <button type="button" data-cmd="insertUnorderedList" title="బుల్లెట్ లిస్ట్">•</button>
+          <span class="rt-sep"></span>
+          <button type="button" data-cmd="justifyLeft" title="ఎడమకి">⯇</button>
+          <button type="button" data-cmd="justifyCenter" title="మధ్యలో">☰</button>
+          <button type="button" data-cmd="justifyRight" title="కుడికి">⯈</button>
+        </div>
+        <div class="rich-editable" id="postCategoriesIncluded" contenteditable="true" data-placeholder="ప్రతి కేటగిరీ/టెంప్లేట్ ని ఒక పాయింట్ గా రాయండి..."></div>
+      </div>
 
-      <label for="postKeyFeatures">Key Features (ఐచ్ఛికం)</label>
-      <textarea id="postKeyFeatures" placeholder="ప్రతి ఫీచర్ ని కొత్త లైన్ లో '- ' తో మొదలుపెట్టి రాయండి..."></textarea>
-      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో బుల్లెట్ లిస్ట్ గా కనిపిస్తుంది.</span>
+      <label>Key Features (ఐచ్ఛికం)</label>
+      <div class="rich-field" data-field="postKeyFeatures">
+        <div class="rich-toolbar">
+          <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+          <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+          <button type="button" data-cmd="insertOrderedList" title="సీరియల్ నంబర్">1.</button>
+          <button type="button" data-cmd="insertUnorderedList" title="బుల్లెట్ లిస్ట్">•</button>
+          <span class="rt-sep"></span>
+          <button type="button" data-cmd="justifyLeft" title="ఎడమకి">⯇</button>
+          <button type="button" data-cmd="justifyCenter" title="మధ్యలో">☰</button>
+          <button type="button" data-cmd="justifyRight" title="కుడికి">⯈</button>
+        </div>
+        <div class="rich-editable" id="postKeyFeatures" contenteditable="true" data-placeholder="ప్రతి ఫీచర్ ని ఒక పాయింట్ గా రాయండి..."></div>
+      </div>
 
-      <label for="postTutorials">Tutorials (ఐచ్ఛికం)</label>
-      <textarea id="postTutorials" placeholder="ఎలా ఎడిట్ చేయాలి, ఏ సాఫ్ట్‌వేర్ కావాలి వంటి వివరాలు..."></textarea>
-      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో కనిపిస్తుంది.</span>
+      <label>Tutorials (ఐచ్ఛికం)</label>
+      <div class="rich-field" data-field="postTutorials">
+        <div class="rich-toolbar">
+          <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+          <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+          <button type="button" data-cmd="insertOrderedList" title="సీరియల్ నంబర్">1.</button>
+          <button type="button" data-cmd="insertUnorderedList" title="బుల్లెట్ లిస్ట్">•</button>
+          <span class="rt-sep"></span>
+          <button type="button" data-cmd="justifyLeft" title="ఎడమకి">⯇</button>
+          <button type="button" data-cmd="justifyCenter" title="మధ్యలో">☰</button>
+          <button type="button" data-cmd="justifyRight" title="కుడికి">⯈</button>
+        </div>
+        <div class="rich-editable" id="postTutorials" contenteditable="true" data-placeholder="ఎలా ఎడిట్ చేయాలి, ఏ సాఫ్ట్‌వేర్ కావాలి వంటి వివరాలు..."></div>
+      </div>
 
-      <label for="postTermsLicense">Terms &amp; License (ఐచ్ఛికం)</label>
-      <textarea id="postTermsLicense" placeholder="వాడకం నిబంధనలు, రీసేల్ నియమాలు వంటివి..."></textarea>
-      <span class="field-hint">ప్రొడక్ట్ పేజీలో ఇది ప్రత్యేక సైడ్ హెడ్డింగ్ తో కనిపిస్తుంది.</span>
+      <label>Terms &amp; License (ఐచ్ఛికం)</label>
+      <div class="rich-field" data-field="postTermsLicense">
+        <div class="rich-toolbar">
+          <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+          <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+          <button type="button" data-cmd="insertOrderedList" title="సీరియల్ నంబర్">1.</button>
+          <button type="button" data-cmd="insertUnorderedList" title="బుల్లెట్ లిస్ట్">•</button>
+          <span class="rt-sep"></span>
+          <button type="button" data-cmd="justifyLeft" title="ఎడమకి">⯇</button>
+          <button type="button" data-cmd="justifyCenter" title="మధ్యలో">☰</button>
+          <button type="button" data-cmd="justifyRight" title="కుడికి">⯈</button>
+        </div>
+        <div class="rich-editable" id="postTermsLicense" contenteditable="true" data-placeholder="వాడకం నిబంధనలు, రీసేల్ నియమాలు వంటివి..."></div>
+      </div>
+
+      <div id="customSectionsContainer"></div>
+      <button type="button" class="pd-add-heading-btn" id="addCustomSectionBtn">+ కొత్త హెడ్డింగ్ కలపండి</button>
 
       <label for="postTags">ట్యాగ్స్ (కామాతో వేరు చేయండి, ఐచ్ఛికం)</label>
       <input type="text" id="postTags" placeholder="ఉదా: wedding flex, telugu psd, festival banner">
@@ -1157,6 +1236,7 @@
               <div class="pd-desc-title">Terms &amp; License</div>
               <div class="pd-desc" id="pdTermsLicense"></div>
             </div>
+            <div id="pdCustomSections"></div>
 
             <a href="#" id="pdPdfLink" class="pd-pdf-link" target="_blank" rel="noopener" style="display:none">
               <i class="fas fa-file-pdf"></i> Preview PDF చూడండి
@@ -1472,7 +1552,8 @@
         originalPrice: Number(row.originalPrice) || 0, compatibility: row.compatibility || '',
         archiveType: row.archiveType || '', tutorialLink: row.tutorialLink || '', note: row.note || '',
         categoriesIncluded: row.categoriesIncluded || '', keyFeatures: row.keyFeatures || '',
-        tutorials: row.tutorials || '', termsLicense: row.termsLicense || ''
+        tutorials: row.tutorials || '', termsLicense: row.termsLicense || '',
+        customSections: row.customSections || '[]'
       };
     }
     function allProducts() {
@@ -1703,10 +1784,10 @@
       document.getElementById('pdPrice').textContent = product.price.toLocaleString('en-IN');
       document.getElementById('pdDesc').innerHTML = formatDesc(product.desc[CURRENT_LANG] || product.desc.en);
 
-      function fillSection(secId, fieldId, text) {
+      function fillSection(secId, fieldId, html) {
         const sec = document.getElementById(secId);
-        if (text) {
-          document.getElementById(fieldId).innerHTML = formatDesc(text);
+        if (html && html.replace(/<[^>]*>/g, '').trim()) {
+          document.getElementById(fieldId).innerHTML = html;
           sec.style.display = 'block';
         } else {
           sec.style.display = 'none';
@@ -1716,6 +1797,19 @@
       fillSection('pdSecFeatures', 'pdKeyFeatures', product.keyFeatures);
       fillSection('pdSecTutorials', 'pdTutorials', product.tutorials);
       fillSection('pdSecTerms', 'pdTermsLicense', product.termsLicense);
+
+      const customEl = document.getElementById('pdCustomSections');
+      customEl.innerHTML = '';
+      try {
+        const cs = JSON.parse(product.customSections || '[]');
+        cs.forEach(function (s) {
+          if (!s.heading && !s.html) return;
+          const div = document.createElement('div');
+          div.className = 'pd-section';
+          div.innerHTML = '<div class="pd-desc-title">' + esc(s.heading || '') + '</div><div class="pd-desc">' + s.html + '</div>';
+          customEl.appendChild(div);
+        });
+      } catch (err) { /* పాడైన JSON ఉంటే వదిలేయండి */ }
 
       const origEl = document.getElementById('pdOriginalPrice');
       const badgeEl = document.getElementById('pdDiscountBadge');
@@ -2027,11 +2121,53 @@
     }
     document.getElementById('postMain').addEventListener('change', fillPostSubs);
 
+    /* ---- Post form: rich-text toolbar (Bold/Underline/Numbered/Bulleted/Align) ---- */
+    document.getElementById('postOverlay').addEventListener('mousedown', function (e) {
+      if (e.target.closest('.rich-toolbar button')) e.preventDefault();   // ఫోకస్ ఎడిటబుల్ లోనే ఉండాలి
+    });
+    document.getElementById('postOverlay').addEventListener('click', function (e) {
+      const btn = e.target.closest('.rich-toolbar button[data-cmd]');
+      if (!btn) return;
+      const editable = btn.closest('.rich-field').querySelector('.rich-editable');
+      editable.focus();
+      document.execCommand(btn.getAttribute('data-cmd'), false, null);
+    });
+
+    /* ---- Post form: కొత్త కస్టమ్ హెడ్డింగ్ కలపడం ---- */
+    function richToolbarHtml() {
+      return '<div class="rich-toolbar">' +
+        '<button type="button" data-cmd="bold" title="Bold"><b>B</b></button>' +
+        '<button type="button" data-cmd="underline" title="Underline"><u>U</u></button>' +
+        '<button type="button" data-cmd="insertOrderedList" title="సీరియల్ నంబర్">1.</button>' +
+        '<button type="button" data-cmd="insertUnorderedList" title="బుల్లెట్ లిస్ట్">•</button>' +
+        '<span class="rt-sep"></span>' +
+        '<button type="button" data-cmd="justifyLeft" title="ఎడమకి">⯇</button>' +
+        '<button type="button" data-cmd="justifyCenter" title="మధ్యలో">☰</button>' +
+        '<button type="button" data-cmd="justifyRight" title="కుడికి">⯈</button>' +
+        '</div>';
+    }
+    function addCustomSectionBlock(heading, html) {
+      const wrap = document.createElement('div');
+      wrap.className = 'custom-section-block';
+      wrap.innerHTML =
+        '<button type="button" class="cs-remove">✕</button>' +
+        '<input type="text" class="cs-heading" placeholder="హెడ్డింగ్ పేరు (ఉదా: What You Will Get)" value="' + esc(heading || '') + '">' +
+        '<div class="rich-field">' + richToolbarHtml() + '<div class="rich-editable cs-body" contenteditable="true" data-placeholder="వివరాలు రాయండి..."></div></div>';
+      wrap.querySelector('.rich-editable').innerHTML = html || '';
+      wrap.querySelector('.cs-remove').addEventListener('click', function () { wrap.remove(); });
+      document.getElementById('customSectionsContainer').appendChild(wrap);
+    }
+    document.getElementById('addCustomSectionBtn').addEventListener('click', function () { addCustomSectionBlock('', ''); });
+
     function openPostModal(productToEdit) {
       EDIT_PRODUCT = productToEdit || null;
-      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink', 'postFileSize', 'postFileType', 'postFileCount', 'postTags', 'postOriginalPrice', 'postCompatibility', 'postArchiveType', 'postTutorialLink', 'postNote', 'postCategoriesIncluded', 'postKeyFeatures', 'postTutorials', 'postTermsLicense'].forEach(function (id) {
+      ['postTitle', 'postFileLink', 'postPrice', 'postDesc', 'postImage', 'postPdf', 'postGalleryLink', 'postFileSize', 'postFileType', 'postFileCount', 'postTags', 'postOriginalPrice', 'postCompatibility', 'postArchiveType', 'postTutorialLink', 'postNote'].forEach(function (id) {
         document.getElementById(id).value = '';
       });
+      ['postCategoriesIncluded', 'postKeyFeatures', 'postTutorials', 'postTermsLicense'].forEach(function (id) {
+        document.getElementById(id).innerHTML = '';
+      });
+      document.getElementById('customSectionsContainer').innerHTML = '';
       document.getElementById('postMediaFiles').value = '';
       fillPostCategories();
       const heading = document.querySelector('#postOverlay h3');
@@ -2060,10 +2196,14 @@
         document.getElementById('postArchiveType').value = EDIT_PRODUCT.archiveType || '';
         document.getElementById('postTutorialLink').value = EDIT_PRODUCT.tutorialLink || '';
         document.getElementById('postNote').value = EDIT_PRODUCT.note || '';
-        document.getElementById('postCategoriesIncluded').value = EDIT_PRODUCT.categoriesIncluded || '';
-        document.getElementById('postKeyFeatures').value = EDIT_PRODUCT.keyFeatures || '';
-        document.getElementById('postTutorials').value = EDIT_PRODUCT.tutorials || '';
-        document.getElementById('postTermsLicense').value = EDIT_PRODUCT.termsLicense || '';
+        document.getElementById('postCategoriesIncluded').innerHTML = EDIT_PRODUCT.categoriesIncluded || '';
+        document.getElementById('postKeyFeatures').innerHTML = EDIT_PRODUCT.keyFeatures || '';
+        document.getElementById('postTutorials').innerHTML = EDIT_PRODUCT.tutorials || '';
+        document.getElementById('postTermsLicense').innerHTML = EDIT_PRODUCT.termsLicense || '';
+        try {
+          const cs = JSON.parse(EDIT_PRODUCT.customSections || '[]');
+          cs.forEach(function (s) { addCustomSectionBlock(s.heading, s.html); });
+        } catch (err) { /* పాడైన JSON ఉంటే వదిలేయండి */ }
         const mIdx = CATEGORIES.findIndex(function (c) { return c.name === EDIT_PRODUCT.main; });
         if (mIdx >= 0) {
           document.getElementById('postMain').value = mIdx;
@@ -2169,10 +2309,13 @@
       const archiveType = document.getElementById('postArchiveType').value.trim();
       const tutorialLink = document.getElementById('postTutorialLink').value.trim();
       const note = document.getElementById('postNote').value.trim();
-      const categoriesIncluded = document.getElementById('postCategoriesIncluded').value.trim();
-      const keyFeatures = document.getElementById('postKeyFeatures').value.trim();
-      const tutorials = document.getElementById('postTutorials').value.trim();
-      const termsLicense = document.getElementById('postTermsLicense').value.trim();
+      const categoriesIncluded = document.getElementById('postCategoriesIncluded').innerHTML.trim();
+      const keyFeatures = document.getElementById('postKeyFeatures').innerHTML.trim();
+      const tutorials = document.getElementById('postTutorials').innerHTML.trim();
+      const termsLicense = document.getElementById('postTermsLicense').innerHTML.trim();
+      const customSections = JSON.stringify(Array.from(document.querySelectorAll('.custom-section-block')).map(function (b) {
+        return { heading: b.querySelector('.cs-heading').value.trim(), html: b.querySelector('.cs-body').innerHTML.trim() };
+      }).filter(function (s) { return s.heading || s.html; }));
       const msg = document.getElementById('postModalMsg');
       const submitBtn = document.getElementById('postSubmitBtn');
 
@@ -2210,7 +2353,7 @@
           originalPrice: originalPrice, compatibility: compatibility, archiveType: archiveType,
           tutorialLink: tutorialLink, note: note,
           categoriesIncluded: categoriesIncluded, keyFeatures: keyFeatures,
-          tutorials: tutorials, termsLicense: termsLicense
+          tutorials: tutorials, termsLicense: termsLicense, customSections: customSections
         };
 
         submitBtn.textContent = isEdit ? 'అప్‌డేట్ అవుతోంది...' : 'సేవ్ అవుతోంది...';
