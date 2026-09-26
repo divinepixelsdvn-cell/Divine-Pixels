@@ -2286,9 +2286,8 @@
       openPostModal();
     });
     document.getElementById('postModalClose').addEventListener('click', closePostModal);
-    document.getElementById('postOverlay').addEventListener('click', function (e) {
-      if (e.target.id === 'postOverlay') closePostModal();
-    });
+    // గమనిక: postOverlay ఇప్పుడు పూర్తి పేజీ (పాప్‌అప్ కాదు), కాబట్టి బ్యాక్‌గ్రౌండ్ మీద క్లిక్ చేస్తే మూసుకోకూడదు.
+    // ← Back బటన్ నొక్కితేనే (postModalClose) పేజీ మూసుకుంటుంది.
 
     document.getElementById('postSubmitBtn').addEventListener('click', function () {
       const mainIdx = document.getElementById('postMain').value;
