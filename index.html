@@ -716,6 +716,11 @@
       background: #fff;
     }
     .pd-thumbs .active { border-color: #ea580c; }
+    .pd-included { margin-top: 20px; }
+    .pd-included-list { display: flex; flex-direction: column; gap: 12px; }
+    .pd-included-list img, .pd-included-list video {
+      width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid #f0dfc6;
+    }
     .pd-info { flex: 1 1 340px; min-width: 280px; }
     .pd-category {
       display: inline-block;
@@ -1066,9 +1071,14 @@
       <textarea id="postDesc" placeholder="ప్రొడక్ట్ గురించి పూర్తి వివరణ రాయండి..."></textarea>
       <span class="field-hint">చక్కగా కనిపించాలంటే: ప్రతి పాయింట్ ని కొత్త లైన్ లో "- " తో మొదలుపెట్టి రాయండి, పేరాగ్రాఫ్‌ల మధ్య ఖాళీ లైన్ ఉంచండి.</span>
 
-      <label for="postImage">ప్రొడక్ట్ ఇమేజ్ / ప్రివ్యూ లింక్</label>
+      <label for="postImage">ప్రొడక్ట్ థంబ్‌నెయిల్ — Drive లింక్ (ఐచ్ఛికం)</label>
       <input type="url" id="postImage" placeholder="https://...jpg or .png">
-      <span class="field-hint">కార్డు మీద కనిపించే ప్రివ్యూ ఫోటో లింక్ ఇది.</span>
+      <span class="field-hint">కార్డు మీద కనిపించే ప్రివ్యూ ఫోటో ఇది. కింద ఫోటో అప్‌లోడ్ చేస్తే అదే వాడుకుంటాం, ఈ లింక్ అవసరం లేదు.</span>
+
+      <label for="postImageFile">లేదా థంబ్‌నెయిల్ ఫోటో అప్‌లోడ్ చేయండి (ఐచ్ఛికం)</label>
+      <input type="file" id="postImageFile" accept="image/*">
+      <span class="field-hint">ఇక్కడ అప్‌లోడ్ చేసిన ఫోటో మీ Google Drive లో సేవ్ అయ్యి, కార్డు థంబ్‌నెయిల్ గా వాడబడుతుంది.</span>
+      <div id="postImagePreview" class="gallery-preview"></div>
 
       <label for="postMediaFiles">ఫోటోలు / వీడియో అప్‌లోడ్ చేయండి (ఐచ్ఛికం, ఒకటి కన్నా ఎక్కువ ఎంచుకోవచ్చు)</label>
       <input type="file" id="postMediaFiles" accept="image/*,video/*" multiple>
@@ -1201,6 +1211,10 @@
           <div class="pd-media">
             <div class="pd-main-wrap" id="pdMainWrap"></div>
             <div class="pd-thumbs" id="pdThumbs"></div>
+            <div class="pd-included" id="pdIncludedWrap" style="display:none">
+              <div class="pd-desc-title">Included Items</div>
+              <div class="pd-included-list" id="pdIncludedList"></div>
+            </div>
           </div>
           <div class="pd-info">
             <span class="pd-category" id="pdCategory"></span>
@@ -1879,6 +1893,17 @@
         thumbs.innerHTML = '';
       }
 
+      const includedWrap = document.getElementById('pdIncludedWrap');
+      const onlyImages = gallery.filter(function (u) { return u.indexOf('#video') < 0; });
+      if (onlyImages.length) {
+        document.getElementById('pdIncludedList').innerHTML = onlyImages.map(function (u) {
+          return '<img src="' + esc(u) + '" loading="lazy">';
+        }).join('');
+        includedWrap.style.display = 'block';
+      } else {
+        includedWrap.style.display = 'none';
+      }
+
       const pdfLink = document.getElementById('pdPdfLink');
       if (product.pdfLink) {
         pdfLink.href = product.pdfLink;
@@ -2169,6 +2194,8 @@
       });
       document.getElementById('customSectionsContainer').innerHTML = '';
       document.getElementById('postMediaFiles').value = '';
+      document.getElementById('postImageFile').value = '';
+      document.getElementById('postImagePreview').innerHTML = '';
       fillPostCategories();
       const heading = document.querySelector('#postOverlay h3');
       const msg = document.getElementById('postModalMsg');
@@ -2186,6 +2213,8 @@
         document.getElementById('postPrice').value = EDIT_PRODUCT.price || '';
         document.getElementById('postDesc').value = EDIT_PRODUCT.description || '';
         document.getElementById('postImage').value = EDIT_PRODUCT.image || '';
+        document.getElementById('postImagePreview').innerHTML = EDIT_PRODUCT.image
+          ? '<div class="g-thumb">' + mediaEl(EDIT_PRODUCT.image, '') + '</div>' : '';
         document.getElementById('postPdf').value = EDIT_PRODUCT.pdfLink || '';
         document.getElementById('postFileSize').value = EDIT_PRODUCT.fileSize || '';
         document.getElementById('postFileType').value = EDIT_PRODUCT.fileType || '';
@@ -2252,6 +2281,12 @@
     }
     document.getElementById('postMediaFiles').addEventListener('change', renderGalleryPreview);
 
+    document.getElementById('postImageFile').addEventListener('change', function () {
+      const mount = document.getElementById('postImagePreview');
+      const f = this.files[0];
+      mount.innerHTML = f ? '<div class="g-thumb"><img src="' + URL.createObjectURL(f) + '"></div>' : '';
+    });
+
     // File లను base64 గా మార్చి, Apps Script కి పంపి, Drive URLs తెచ్చుకుంటుంది
     function fileToBase64(file) {
       return new Promise(function (resolve, reject) {
@@ -2261,8 +2296,8 @@
         r.readAsDataURL(file);
       });
     }
-    function uploadPickedFiles() {
-      const files = Array.from(document.getElementById('postMediaFiles').files);
+    function uploadPickedFiles(inputId) {
+      const files = Array.from(document.getElementById(inputId || 'postMediaFiles').files);
       if (!files.length) return Promise.resolve([]);
       return Promise.all(files.map(function (f) {
         return fileToBase64(f).then(function (data) { return { name: f.name, mimeType: f.type, data: data }; });
@@ -2336,7 +2371,11 @@
       submitBtn.textContent = 'ఫోటోలు అప్‌లోడ్ అవుతున్నాయి...';
       submitBtn.disabled = true;
 
-      uploadPickedFiles().then(function (uploadedUrls) {
+      uploadPickedFiles('postMediaFiles').then(function (uploadedUrls) {
+        return uploadPickedFiles('postImageFile').then(function (coverUrls) {
+          return { uploadedUrls: uploadedUrls, coverUrl: coverUrls[0] || '' };
+        });
+      }).then(function (res) {
         const productPayload = {
           title: title,
           main: cat.name,
@@ -2344,9 +2383,9 @@
           fileLink: fileLink,
           price: Number(price) || 0,
           description: description,
-          image: image,
+          image: res.coverUrl || image,
           pdfLink: pdfLink,
-          gallery: POST_EXISTING_GALLERY.concat(uploadedUrls),
+          gallery: POST_EXISTING_GALLERY.concat(res.uploadedUrls),
           driveGalleryLink: galleryLink,
           fileSize: fileSize, fileType: fileType, fileCount: fileCount, tags: tags,
           originalPrice: originalPrice, compatibility: compatibility, archiveType: archiveType,
