@@ -30,6 +30,16 @@
       color: inherit;
     }
 
+    /* అన్ని ఇమేజ్‌లు/వీడియోలు, పొడవైన టెక్స్ట్, టేబుల్స్ ఆటోమేటిక్ గా స్క్రీన్ కి సరిపోయేలా */
+    img, video { max-width: 100%; height: auto; display: block; }
+    body, p, h1, h2, h3, h4, td, li, .pd-desc, .rich-editable {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    table { max-width: 100%; }
+    .table-scroll, .pd-specs-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    * { min-width: 0; }   /* flex/grid ఐటమ్స్ లో టెక్స్ట్ ఓవర్‌ఫ్లో కాకుండా */
+
     .container {
       width: 90%;
       max-width: 1250px;
@@ -1553,7 +1563,7 @@
       const gallery = (row.gallery || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
       return {
         id: row.id, main: row.main || '', sub: row.sub || '',
-        image: gallery[0] || fixImage(row.image, row.id),
+        image: (row.image && row.image.trim()) ? fixImage(row.image, row.id) : (gallery[0] || fixImage(row.image, row.id)),
         gallery: gallery,
         price: Number(row.price) || 0,
         badge: { te: 'కొత్తది', en: 'New', hi: 'नया' },
@@ -1791,7 +1801,9 @@
 
     function openProductPage(product, skipPush) {
       PRODUCT_PAGE_OPEN = true;
-      const gallery = (product.gallery && product.gallery.length) ? product.gallery : [product.image];
+      let gallery = (product.gallery && product.gallery.length) ? product.gallery.slice() : [];
+      if (product.image && gallery.indexOf(product.image) === -1) gallery.unshift(product.image);
+      if (!gallery.length) gallery = [product.image];
 
       document.getElementById('pdCategory').textContent = product.category[CURRENT_LANG] || product.category.en;
       document.getElementById('pdTitle').textContent = product.title[CURRENT_LANG] || product.title.en;
