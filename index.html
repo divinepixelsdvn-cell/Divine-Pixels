@@ -2356,11 +2356,24 @@
     }
 
     /* "products list" (కేటగిరీలు) + "Product Catalog" (ప్రొడక్ట్స్) రెండూ షీట్ నుంచి లోడ్ అవుతాయి */
+    function showLoadError(msg) {
+      const grid = document.getElementById('grid-latest');
+      grid.innerHTML = '<p class="no-results">' + esc(msg) +
+        ' <button type="button" id="retryLoadBtn" style="margin-left:8px;background:#ea580c;color:#fff;border:none;' +
+        'padding:6px 14px;border-radius:6px;cursor:pointer;">మళ్ళీ ప్రయత్నించండి / Retry</button></p>';
+      const btn = document.getElementById('retryLoadBtn');
+      if (btn) btn.addEventListener('click', function () { grid.innerHTML = ''; loadFromSheet(); });
+    }
     function loadFromSheet() {
-      if (!sheetConfigured()) { renderProducts(); return Promise.resolve(); }
+      if (!sheetConfigured()) { showLoadError('సర్వర్ కనెక్ట్ కాలేదు (SHEET_WEBAPP_URL సెట్ చేయలేదు). / Server not configured.'); return Promise.resolve(); }
+      // 20 సెకన్ల లోపు జవాబు రాకపోతే "చాలా సమయం పడుతోంది" చూపిస్తుంది, ఖాళీగా వేలాడకుండా
+      const slowTimer = setTimeout(function () {
+        showLoadError('లోడ్ అవ్వడానికి ఎక్కువ సమయం పడుతోంది. ఇంటర్నెట్ చెక్ చేసి మళ్ళీ ప్రయత్నించండి. / Taking longer than usual.');
+      }, 20000);
       return fetch(SHEET_WEBAPP_URL + '?action=list')
         .then(function (res) { return res.json(); })
         .then(function (data) {
+          clearTimeout(slowTimer);
           if (!data || data.status !== 'ok') throw new Error((data && data.message) || 'Bad response');
           if (Array.isArray(data.categories) && data.categories.length) CATEGORIES = data.categories;
           if (Array.isArray(data.products)) {
@@ -2372,9 +2385,9 @@
           openProductPageFromUrlIfPresent();
         })
         .catch(function (err) {
+          clearTimeout(slowTimer);
           console.warn('Could not load data from sheet:', err);
-          document.getElementById('grid-latest').innerHTML =
-            '<p class="no-results">ప్రొడక్ట్స్ లోడ్ కావడంలో సమస్య వచ్చింది. దయచేసి పేజీ రిఫ్రెష్ చేయండి. / Could not load products, please refresh.</p>';
+          showLoadError('ప్రొడక్ట్స్ లోడ్ కావడంలో సమస్య వచ్చింది (' + (err && err.message ? err.message : 'error') + '). / Could not load products.');
         });
     }
 
