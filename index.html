@@ -1063,6 +1063,8 @@
 
       <label for="postSub">సబ్ కేటగిరీ (Sub Category)</label>
       <select id="postSub" disabled></select>
+      <input type="text" id="postNewSub" placeholder="కొత్త సబ్ కేటగిరీ పేరు రాయండి..." style="display:none; margin-top:8px;">
+      <span class="field-hint" id="postNewSubHint" style="display:none;">ఈ పేరు Google Sheet లోని "products list" లో కూడా ఆటోమేటిక్ గా కలుస్తుంది.</span>
 
       <label for="postTitle">ప్రొడక్ట్ హెడ్డింగ్ (Title)</label>
       <input type="text" id="postTitle" placeholder="ఉదా: Wedding Flex Banner PSD">
@@ -1549,9 +1551,10 @@
     function renderProducts() {
       const all = allProducts();
       let groups, filtered = !!FILTER.main;
+      function norm(s) { return String(s || '').trim().toLowerCase(); }
       if (filtered) {
         groups = { latest: all.filter(function (p) {
-          return p.main === FILTER.main && (!FILTER.sub || p.sub === FILTER.sub);
+          return norm(p.main) === norm(FILTER.main) && (!FILTER.sub || norm(p.sub) === norm(FILTER.sub));
         }), bundles: [] };
       } else if (SHEET_LOADED) {
         groups = { latest: all.slice(0, 8), bundles: all.slice(8) };
@@ -2049,22 +2052,27 @@
     function fillPostSubs() {
       const s = document.getElementById('postSub');
       const idx = document.getElementById('postMain').value;
+      document.getElementById('postNewSub').style.display = 'none';
+      document.getElementById('postNewSub').value = '';
+      document.getElementById('postNewSubHint').style.display = 'none';
       if (idx === '') {
         s.innerHTML = '<option value="">— ముందు కేటగిరీ ఎంచుకోండి —</option>';
         s.disabled = true;
         return;
       }
       const c = CATEGORIES[Number(idx)];
-      if (!c.subs.length) {
-        s.innerHTML = '<option value="">— ఈ కేటగిరీకి సబ్ కేటగిరీ లేదు —</option>';
-        s.disabled = true;
-        return;
-      }
       s.disabled = false;
-      s.innerHTML = '<option value="">— సబ్ కేటగిరీ ఎంచుకోండి —</option>' +
-        c.subs.map(function (x, j) { return '<option value="' + j + '">' + esc(x) + '</option>'; }).join('');
+      s.innerHTML = (c.subs.length ? '<option value="">— సబ్ కేటగిరీ ఎంచుకోండి —</option>' : '<option value="">— ఈ కేటగిరీకి సబ్ కేటగిరీ లేదు —</option>') +
+        c.subs.map(function (x, j) { return '<option value="' + j + '">' + esc(x) + '</option>'; }).join('') +
+        '<option value="__new__">+ కొత్త సబ్ కేటగిరీ కలపండి</option>';
     }
     document.getElementById('postMain').addEventListener('change', fillPostSubs);
+    document.getElementById('postSub').addEventListener('change', function () {
+      const isNew = this.value === '__new__';
+      document.getElementById('postNewSub').style.display = isNew ? 'block' : 'none';
+      document.getElementById('postNewSubHint').style.display = isNew ? 'block' : 'none';
+      if (isNew) document.getElementById('postNewSub').focus();
+    });
 
     /* ---- Post form: rich-text toolbar (Bold/Underline/Numbered/Bulleted/Align) ---- */
     document.getElementById('postOverlay').addEventListener('mousedown', function (e) {
@@ -2278,8 +2286,14 @@
         return;
       }
       const cat = CATEGORIES[Number(mainIdx)];
+      const isNewSub = subIdx === '__new__';
+      const newSubName = document.getElementById('postNewSub').value.trim();
       if (cat.subs.length && subIdx === '') {
         showMsg(msg, 'దయచేసి సబ్ కేటగిరీ ఎంచుకోండి.', false);
+        return;
+      }
+      if (isNewSub && !newSubName) {
+        showMsg(msg, 'దయచేసి కొత్త సబ్ కేటగిరీ పేరు రాయండి.', false);
         return;
       }
       if (!title || !fileLink || !price || !description) {
@@ -2288,18 +2302,28 @@
       }
 
       const isEdit = !!EDIT_PRODUCT;
-      submitBtn.textContent = 'ఫోటోలు అప్‌లోడ్ అవుతున్నాయి...';
       submitBtn.disabled = true;
 
-      uploadPickedFiles('postMediaFiles').then(function (uploadedUrls) {
+      Promise.resolve().then(function () {
+        if (!isNewSub) return null;
+        submitBtn.textContent = 'కొత్త సబ్ కేటగిరీ కలుపుతోంది...';
+        return postToSheet({ action: 'addSubCategory', key: ADMIN_KEY, main: cat.name, sub: newSubName })
+          .then(function () {
+            if (cat.subs.indexOf(newSubName) < 0) cat.subs.push(newSubName);
+          });
+      }).then(function () {
+        submitBtn.textContent = 'ఫోటోలు అప్‌లోడ్ అవుతున్నాయి...';
+        return uploadPickedFiles('postMediaFiles');
+      }).then(function (uploadedUrls) {
         return uploadPickedFiles('postImageFile').then(function (coverUrls) {
           return { uploadedUrls: uploadedUrls, coverUrl: coverUrls[0] || '' };
         });
       }).then(function (res) {
+        const finalSub = isNewSub ? newSubName : (cat.subs.length ? cat.subs[Number(subIdx)] : '');
         const productPayload = {
           title: title,
           main: cat.name,
-          sub: cat.subs.length ? cat.subs[Number(subIdx)] : '',
+          sub: finalSub,
           fileLink: fileLink,
           price: Number(price) || 0,
           description: description,
