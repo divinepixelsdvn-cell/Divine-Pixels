@@ -1551,7 +1551,7 @@
     function renderProducts() {
       const all = allProducts();
       let groups, filtered = !!FILTER.main;
-      function norm(s) { return String(s || '').trim().toLowerCase(); }
+      function norm(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
       if (filtered) {
         groups = { latest: all.filter(function (p) {
           return norm(p.main) === norm(FILTER.main) && (!FILTER.sub || norm(p.sub) === norm(FILTER.sub));
